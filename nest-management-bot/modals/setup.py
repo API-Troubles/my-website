@@ -6,14 +6,9 @@ def setup_wizard_modal(user_token):
             "text": "Setup Wizard",
             "emoji": True
         },
-        "submit": {
-            "type": "plain_text",
-            "text": "Submit",
-            "emoji": True
-        },
         "close": {
             "type": "plain_text",
-            "text": "Cancel",
+            "text": "Ok tysm!",
             "emoji": True
         },
         "blocks": [

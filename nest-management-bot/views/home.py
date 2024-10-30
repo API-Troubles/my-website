@@ -153,17 +153,22 @@ def generate_setup(client, event):
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": "Get your client token here =>"
-                    },
-                    "accessory": {
-                        "type": "button",
-                        "text": {
-                            "type": "plain_text",
-                            "text": "Get Token",
-                            "emoji": True
-                        },
-                        "action_id": "setup-get-client-token"
+                        "text": ":point_down: Get your client token here"
                     }
+                },
+                {
+                    "type": "actions",
+                    "elements": [
+                        {
+                            "type": "button",
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Get Token",
+                                "emoji": True
+                            },
+                            "action_id": "setup-get-client-token"
+                        }
+                    ]
                 }
             ]
         }
