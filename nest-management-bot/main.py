@@ -3,6 +3,7 @@ import os
 import logging
 
 from slack_bolt import App
+from slack_bolt.adapter.socket_mode import SocketModeHandler # Socket mode lol
 
 from dotenv import load_dotenv
 
@@ -24,8 +25,8 @@ logging.basicConfig(level=logging.INFO)
 
 # Initialize bot with token and signing secret
 app = App(
-    token=os.environ["SLACK_MANAGEMENT_BOT_TOKEN"],
-    signing_secret=os.environ["SLACK_MANAGEMENT_SIGNING_SECRET"]
+    token=os.environ["NEST_MANAGEMENT_BOT_TOKEN"],
+    signing_secret=os.environ["NEST_MANAGEMENT_SIGNING_SECRET"]
 )
 
 # Open database for account management
@@ -85,4 +86,4 @@ def setup_user(ack, body, client, logger):
 atexit.register(lambda: db.close())
 
 if __name__ == "__main__":
-    app.start(port=8000)
+    SocketModeHandler(app, os.environ["NEST_MANAGEMENT_APP_TOKEN"]).start()
