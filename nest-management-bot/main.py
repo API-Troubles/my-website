@@ -13,6 +13,7 @@ import certifi
 
 import database
 import views.home as home
+import modals
 
 import server_utils as utils
 
@@ -40,21 +41,44 @@ me = os.environ['MY_SLACK_ID']
 
 
 @app.event("app_home_opened")
-def update_home_tab(client, event):
+def update_home_tab(client, event, logger):
     user_id = event['user']
+    logger.info(f"{user_id} opened the home tab")
+
     if user_id != me: 
         # Testing check, blocks others from using D:
         home.generate_unauthorized(client, event)
+        logger.warn(f"{user_id} is not authorized to use this bot")
+        return
 
-    if not db.get_user(slack_id=user_id): 
+    if not db.get_user(slack_id=user_id):
         #User not registered, signup!
         home.generate_setup(client, event)
+        logger.info(f"{user_id} has started the setup process")
+        return
+
+    logger.info(f"{user_id} has opened the dashboard")
+    home.generate_dashboard(client, event)
 
 
 # TODO: Action btn to generate code
-def setup_user(client):
-    user_token = utils.generate_token()
-    #db.add_user("U07BU2HS17Z", user_token)
+@app.action("setup-get-client-token")
+def setup_user(ack, body, client, logger):
+    user_id = body['user']['id']
+    logger.info(f"{user_id} opened the client key modal")
+
+    ack()
+    if db.get_user(slack_id=user_id):
+        user_token = db.get_user(slack_id=user_id)[0]
+        logger.info(f"Obtained existing token for {user_id}")
+
+        home.generate_dashboard(client, user_id)
+    else:
+        user_token = utils.generate_token()
+        db.add_user(user_id, user_token)
+        logger.info(f"Created token for {user_id}")
+
+    client.views_open(trigger_id=body["trigger_id"], view=modals.setup_wizard_modal(user_token))
 
 
 # Close the database on code end
