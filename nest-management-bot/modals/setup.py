@@ -1,0 +1,48 @@
+def setup_wizard_modal(user_token):
+    return {
+        "type": "modal",
+        "title": {
+            "type": "plain_text",
+            "text": "Setup Wizard",
+            "emoji": True
+        },
+        "submit": {
+            "type": "plain_text",
+            "text": "Submit",
+            "emoji": True
+        },
+        "close": {
+            "type": "plain_text",
+            "text": "Cancel",
+            "emoji": True
+        },
+        "blocks": [
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": f"This is your client token:\n `{user_token}`"
+                }
+            },
+            {
+                "type": "divider"
+            },
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": f"To add the client key to your Nest user, run the following in Nest:\n```echo CLIENT_TOKEN={user_token} > ~/.env.nest-management-bot```"
+                }
+            },
+            {
+                "type": "divider"
+            },
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": ":siren-real::warning: *Do not share your token pwease* :thumbsup-dino:"
+                }
+            }
+        ]
+    }

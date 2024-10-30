@@ -1,4 +1,4 @@
-def modal():
+def processes_list_modal():
     base = {
         "type": "modal",
         "title": {

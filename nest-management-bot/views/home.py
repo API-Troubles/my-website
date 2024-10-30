@@ -148,6 +148,22 @@ def generate_setup(client, event):
                         "type": "mrkdwn",
                         "text": "This bot is provided without any guarantee of warranty. I am not responsible for misuse of this bot. Don't kill processes you don't understand. :)"
                     }
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": "Get your client token here =>"
+                    },
+                    "accessory": {
+                        "type": "button",
+                        "text": {
+                            "type": "plain_text",
+                            "text": "Get Token",
+                            "emoji": True
+                        },
+                        "action_id": "setup-get-client-token"
+                    }
                 }
             ]
         }

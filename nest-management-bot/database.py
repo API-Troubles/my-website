@@ -39,7 +39,7 @@ class Database:
         Get a user from database with either token or slack user_id
         """
         if token and slack_id:
-            return ValueError('Cannot fill in token and user_id. What was the point? You already have all the info!')
+            raise ValueError('Cannot fill in token and user_id. What was the point? You already have all the info!')
         elif token:
             self.cur.execute("SELECT * FROM Users WHERE token = %s", (token,))
         elif slack_id:
