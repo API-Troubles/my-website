@@ -1,7 +1,7 @@
-def generate_dashboard(client, event):
+def generate_dashboard(client, user_id):
     client.views_publish(
         # the user that opened your app's app home
-        user_id=event["user"],
+        user_id=user_id,
         # the view object that appears in the app home
         view={
             "type": "home",
@@ -93,10 +93,10 @@ def generate_dashboard(client, event):
         }
     )
 
-def generate_unauthorized(client, event):
+def generate_unauthorized(client, user_id):
     client.views_publish(
         # the user that opened your app's app home
-        user_id=event["user"],
+        user_id=user_id,
         # the view object that appears in the app home
         view={
             "type": "home",
@@ -119,10 +119,10 @@ def generate_unauthorized(client, event):
         }
     )
 
-def generate_setup(client, event):
+def generate_setup(client, user_id):
     client.views_publish(
         # the user that opened your app's app home
-        user_id=event["user"],
+        user_id=user_id,
         # the view object that appears in the app home
         view={
             "type": "home",

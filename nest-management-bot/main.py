@@ -1,6 +1,8 @@
 import atexit
 import os
 import logging
+import requests
+import json
 
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler # Socket mode lol
@@ -40,6 +42,27 @@ db = database.Database({
 
 me = os.environ['MY_SLACK_ID']
 
+class LogWebhookHandler(logging.Handler):
+    def __init__(self, webhook_url):
+        super().__init__()
+        self.webhook_url = webhook_url
+
+    def emit(self, record):
+        log_entry = self.format(record)
+        payload = {"text": f"[{record.levelname}] - {log_entry}"}
+
+        response = requests.post(
+            self.webhook_url, data=json.dumps(payload),
+            headers={'Content-Type': 'application/json'}
+        )
+
+        print("Error emitted to slack channel")
+
+
+# Create and add the Slack log handler
+slack_handler = LogWebhookHandler(os.environ['NEST_MANAGEMENT_LOG_WEBHOOK'])
+#logging.addHandler(slack_handler)
+
 
 @app.event("app_home_opened")
 def update_home_tab(client, event, logger):
@@ -65,18 +88,17 @@ def update_home_tab(client, event, logger):
 # TODO: Action btn to generate code
 @app.action("setup-get-client-token")
 def setup_user(ack, body, client, logger):
+    ack()
     user_id = body['user']['id']
     logger.info(f"{user_id} opened the client key modal")
 
-    ack()
     if db.get_user(slack_id=user_id):
         user_token = db.get_user(slack_id=user_id)[0]
         logger.info(f"Obtained existing token for {user_id}")
-
-        home.generate_dashboard(client, user_id)
     else:
         user_token = utils.generate_token()
         db.add_user(user_id, user_token)
+        home.generate_dashboard(client, user_id)
         logger.info(f"Created token for {user_id}")
 
     client.views_open(trigger_id=body["trigger_id"], view=modals.setup_wizard_modal(user_token))
