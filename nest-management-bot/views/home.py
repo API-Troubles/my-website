@@ -81,6 +81,22 @@ def generate_dashboard(client, user_id):
                     "type": "divider"
                 },
                 {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": "Need to get/reset your token again? Click here =>"
+                    },
+                    "accessory": {
+                        "type": "button",
+                        "text": {
+                            "type": "plain_text",
+                            "text": "Manage Token",
+                            "emoji": True
+                        },
+                        "action_id": "setup-get-client-token"
+                    }
+                },
+                {
                     "type": "context",
                     "elements": [
                         {
