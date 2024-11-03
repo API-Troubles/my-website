@@ -63,5 +63,18 @@ class Database:
         except psycopg.errors.UniqueViolation as error:
             # Rollback changes, D:
             self.conn.rollback()
+            raise ValueError("User already exists") from error
         else:
             self.conn.commit()
+
+
+    def update_token(self, slack_id: str, new_token: str) -> None:
+        """
+        Updates the token of a user
+        """
+        self.cur.execute("""
+            UPDATE Users
+            SET token = (%s)
+            WHERE slack_id = (%s)""", (new_token, slack_id)
+        )
+        self.conn.commit()

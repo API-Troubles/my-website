@@ -71,37 +71,63 @@ def update_home_tab(client, event, logger):
 
     if user_id != me: 
         # Testing check, blocks others from using D:
-        home.generate_unauthorized(client, event)
-        logger.warn(f"{user_id} is not authorized to use this bot")
+        home.generate_unauthorized(client, user_id)
+        logger.warning(f"{user_id} is not authorized to use this bot")
         return
 
     if not db.get_user(slack_id=user_id):
         #User not registered, signup!
-        home.generate_setup(client, event)
+        home.generate_setup(client, user_id)
         logger.info(f"{user_id} has started the setup process")
         return
 
     logger.info(f"{user_id} has opened the dashboard")
-    home.generate_dashboard(client, event)
+    home.generate_dashboard(client, user_id)
 
 
-# TODO: Action btn to generate code
 @app.action("setup-get-client-token")
 def setup_user(ack, body, client, logger):
-    ack()
     user_id = body['user']['id']
-    logger.info(f"{user_id} opened the client key modal")
+    logger.info(f"{user_id} opened the client-token modal")
 
-    if db.get_user(slack_id=user_id):
-        user_token = db.get_user(slack_id=user_id)[0]
+    user = db.get_user(slack_id=user_id)
+
+    if user:
+        user_token = user[0]
+        client.views_open(trigger_id=body["trigger_id"], view=modals.manage_token_wizard_modal(user_token))
         logger.info(f"Obtained existing token for {user_id}")
     else:
         user_token = utils.generate_token()
         db.add_user(user_id, user_token)
-        home.generate_dashboard(client, user_id)
+        home.generate_dashboard(client, user_id) # TODO: Replace with model for step 2
+        client.views_open(trigger_id=body["trigger_id"], view=modals.setup_token_wizard_modal(user_token))
         logger.info(f"Created token for {user_id}")
 
-    client.views_open(trigger_id=body["trigger_id"], view=modals.setup_wizard_modal(user_token))
+    ack()
+
+
+@app.action("setup-new-client-token")
+def setup_user(ack, body, client, logger):
+    user_id = body['user']['id']
+    logger.info(f"{user_id} has chosen to get a new token")
+
+    if not db.get_user(slack_id=user_id):
+        logger.warning(f"{user_id} doesn't exist and thus can't get a new token :skull:")
+        return
+
+    user_token = utils.generate_token()
+    db.update_token(user_id, user_token)
+    client.view_update(trigger_id=body["trigger_id"], view=modals.setup_token_wizard_modal(user_token))
+    # TODO: step 2 app home + new client modal and kick out websocket if connected
+    logger.info(f"Created new token for {user_id}")
+
+    ack()
+
+
+@app.action("open-process-usage")
+def handle_some_action(ack, body, logger):
+    ack()
+    logger.info(body)
 
 
 # Close the database on code end
