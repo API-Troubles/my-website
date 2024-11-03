@@ -117,7 +117,7 @@ def setup_user(ack, body, client, logger):
 
     user_token = utils.generate_token()
     db.update_token(user_id, user_token)
-    client.view_update(trigger_id=body["trigger_id"], view=modals.setup_token_wizard_modal(user_token))
+    client.views_update(view_id=body["view"]["id"], view=modals.setup_token_wizard_modal(user_token))
     # TODO: step 2 app home + new client modal and kick out websocket if connected
     logger.info(f"Created new token for {user_id}")
 
