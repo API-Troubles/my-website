@@ -53,7 +53,6 @@ Commands may have a payload in cases where more specific info is needed
 ```
 
 Commands can have the following message text:
-- `obtain_global_info`
 - `obtain_all_process_info`
 - `obtain_process_info`
 - `kill_process`

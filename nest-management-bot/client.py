@@ -79,32 +79,7 @@ async def client():
 
 
 def command_handler(status: str, payload: dict) -> dict:
-    if status == "obtain_global_info":
-        """
-        Provides global system information for all of Nest
-        """
-        memory = psutil.virtual_memory()
-        storage = psutil.disk_usage('/')
-
-        return {
-            "status": "command_response",
-            "payload": {
-                "cpu": {
-                    "usage": psutil.cpu_percent(interval=0.1),
-                    "frequency": psutil.cpu_freq().current
-                },
-                "memory": {
-                    "total": memory.total,
-                    "used": memory.used
-                },
-                "storage": {
-                    "total": storage.total,
-                    "used": storage.used
-                }
-            }
-        }
-
-    elif status == "obtain_all_process_info":
+    if status == "obtain_all_process_info":
         """
         Lists running processes and associated systemd data if it exists 
         """
