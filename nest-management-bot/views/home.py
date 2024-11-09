@@ -1,4 +1,10 @@
 def generate_dashboard(client, user_id):
+    """
+    Generates the default dashboard
+    :param client:
+    :param user_id:
+    :return:
+    """
     client.views_publish(
         # the user that opened your app's app home
         user_id=user_id,
@@ -110,6 +116,12 @@ def generate_dashboard(client, user_id):
     )
 
 def generate_unauthorized(client, user_id):
+    """
+    Woah there! You're not allowed here :/ Generates unauthorized view
+    :param client:
+    :param user_id:
+    :return:
+    """
     client.views_publish(
         # the user that opened your app's app home
         user_id=user_id,
@@ -135,7 +147,13 @@ def generate_unauthorized(client, user_id):
         }
     )
 
-def generate_setup(client, user_id):
+def generate_setup_token(client, user_id):
+    """
+    (setup) Generate step 1;the token setup step
+    :param client:
+    :param user_id:
+    :return:
+    """
     client.views_publish(
         # the user that opened your app's app home
         user_id=user_id,
@@ -155,7 +173,7 @@ def generate_setup(client, user_id):
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": "To get setup with this bot, read the setup <www.example.com|here>."
+                        "text": "To get setup with this bot, read the setup guide <https://hackclub.slack.com/docs/T0266FRGM/F07UDKPC3RV|here>."
                     }
                 },
                 {
@@ -188,4 +206,19 @@ def generate_setup(client, user_id):
                 }
             ]
         }
+    )
+
+
+def generate_setup_websocket(client, user_id):
+    """
+    (setup) Generate step 2;the websocket setup step
+    :param client:
+    :param user_id:
+    :return:
+    """
+    client.views_publish(
+        # the user that opened your app's app home
+        user_id=user_id,
+        # the view object that appears in the app home
+        view={}
     )
