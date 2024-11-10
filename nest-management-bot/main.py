@@ -41,7 +41,7 @@ db = database.Database({
     })
 
 me = os.environ['MY_SLACK_ID']
-
+"""
 class LogWebhookHandler(logging.Handler):
     def __init__(self, webhook_url):
         super().__init__()
@@ -61,6 +61,7 @@ class LogWebhookHandler(logging.Handler):
 
 # Create and add the Slack log handler
 slack_handler = LogWebhookHandler(os.environ['NEST_MANAGEMENT_LOG_WEBHOOK'])
+"""
 #logging.addHandler(slack_handler)
 
 
@@ -77,7 +78,7 @@ def update_home_tab(client, event, logger):
 
     if not db.get_user(slack_id=user_id):
         #User not registered, signup!
-        home.generate_setup(client, user_id)
+        home.generate_setup_token(client, user_id)
         logger.info(f"{user_id} has started the setup process")
         return
 
@@ -91,7 +92,6 @@ def setup_user(ack, body, client, logger):
     logger.info(f"{user_id} opened the client-token modal")
 
     user = db.get_user(slack_id=user_id)
-
     if user:
         user_token = user[0]
         client.views_open(trigger_id=body["trigger_id"], view=modals.manage_token_wizard_modal(user_token))
