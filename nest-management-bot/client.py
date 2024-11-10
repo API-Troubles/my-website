@@ -1,4 +1,3 @@
-import atexit
 import asyncio
 import json
 import os
@@ -8,6 +7,7 @@ import subprocess
 import psutil
 from websockets.asyncio.client import connect
 
+from dotenv import load_dotenv
 
 __version__ = "0.1.0a" # Use for later version checking
 
@@ -19,6 +19,8 @@ status_emojis = {
     "stopped": "⏹️",
     "disk-sleep": "💽"
 }
+
+load_dotenv(dotenv_path='.env.nest-management-bot')
 
 
 def get_storage() -> list:
@@ -55,7 +57,8 @@ async def client():
             {
                 'status': "let_me_in_pls",
                 'payload': {
-                    'version': __version__
+                    'version': __version__,
+                    'token': os.environ['CLIENT_TOKEN']
                 }
             }
         ))
@@ -131,4 +134,5 @@ def command_handler(status: str, payload: dict) -> dict:
 
 
 if __name__ == "__main__":
+    print(f"Starting client websocket... version: {__version__}")
     asyncio.run(client())
