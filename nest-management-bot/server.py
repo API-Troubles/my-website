@@ -28,6 +28,10 @@ async def server(websocket):
             await utils.send_error(websocket, 'Invalid response type.', possible=False)
             return
 
+        #elif first_message.get('payload').get('token'): todo: get db connected to validate this
+        #    await utils.send_error(websocket, 'Invalid or malformed client token.', possible=True)
+        #    return
+
         elif first_message.get('payload').get('version') != "0.1.0a":
             await utils.send_error(websocket, 'Invalid client version or malformed data.', possible=False)
             return
