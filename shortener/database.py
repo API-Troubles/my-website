@@ -17,7 +17,7 @@ felixgao_url_shortener=> SELECT * FROM Analytics;
 """
 
 class Database:
-    def __init__(self, conn_params):
+    def __init__(self, conn_params: dict):
         print("Database opened")
         self.conn = psycopg.connect(**conn_params)
         self.cur = self.conn.cursor()
