@@ -6,6 +6,13 @@ import secrets
 import json
 import socket
 from typing import Optional
+import dbus # Does not work cause well... my dev
+
+
+# DBus bindings to systemd
+session_bus = dbus.SessionBus()
+systemd = session_bus.get_object('org.freedesktop.systemd1', '/org/freedesktop/systemd1')
+manager = dbus.Interface(systemd, 'org.freedesktop.systemd1.Manager')
 
 clients = {}
 
@@ -67,25 +74,21 @@ async def send_error(error_msg, user_uuid: str, *, possible=False, disconnect=Tr
         await clients[user_uuid].close()
 
 
-# Wip; not using rn, might later
+"""
+Wip; not using rn, might later
 def ident_request(local_port, remote_port) -> str:
-    """
-    Send an ident request to identify the user from a websocket port
-    :param local_port:
-    :param remote_port:
-    :return: Username of websocket client
-    """
     with socket.create_connection(('localhost', 113), timeout=10) as sock:
         query = f"{local_port}, {remote_port}\r\n"
         sock.sendall(query.encode())
 
         response = sock.recv(1024).decode().strip()
         return response
+"""
 
 
 def generate_token() -> str:
     """
-    Generates a token to be used for authenication
+    Generates a token to be used for authentication
     :return: A token
     """
     raw_token = secrets.token_hex(32)
@@ -116,6 +119,13 @@ def verify_token_checksum(token: str) -> bool:
 
     return expected_checksum == checksum
 
+
+def get_services():
+    """
+    Get a list of systemd processes which the user has
+    :return: A list of services
+    """
+    units = manager.ListUnits()
 
 if __name__ == "__main__":
     print(generate_token())
