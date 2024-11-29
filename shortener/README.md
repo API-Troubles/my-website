@@ -10,10 +10,3 @@ A simple URL shortener to shorten all your life problems!
 ## How to use:
 
 Add the URL you want to shorten in the first field. Ensure it starts with https:// (this is a limitation of the URL validator used and seems to be required to redirect w/ flask anwyays). Then add the URL you want to convert into. The host is already filled out (As seen in the screenshot) so just add the end bit lol. The converted URL can **only contain** alphanumeric characters, dashes, and underscores.
-
-## My TODO List:
-- [x] Polish CSS better
-- [x] Allow broader URL options
-- [ ] A logo?
-- [x] Get a shortened domain (I'm thinking __url.dino.icu/u/your-URL-here__?)
-- [ ] Actually use the new shortened domain (couldn't get done by end of Arcade :noo:)

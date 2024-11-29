@@ -1,0 +1,56 @@
+Index: shortener/main.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import atexit\nimport os\nimport random\nimport string\nimport re\nfrom calendar import error\n\nimport validators\nfrom flask import Flask, request\nimport flask\n\nimport database\n\napp = Flask(\n    'app', \n    template_folder=\"template/\",\n    static_folder='static/'\n)\n\napp.secret_key = os.environ['FLASK_SECRET_KEY']\n\ndb = database.Database()\n\n\n@app.route('/')\ndef landing_page():\n    return flask.render_template(\"index.html\")\n\n\n@app.route('/test')\ndef test_page_lol():\n    return str(db.get_analytics(\"test5\"))\n\n\n@app.route('/analytics/<analytics_path>')\ndef analytics(analytics_path):\n    result = db.get_analytics(analytics_path)\n    if not result:\n        return flask.abort(404)\n    else:\n        return flask.render_template(\"analytics.html\", analytics=result)\n\n\n@app.route('/u/<url_path>')\ndef url_shortener(url_path):\n    result = db.get_url(url_path)\n    if not result:\n        return flask.abort(404)\n    new_url = result[0][1]\n\n    db.add_analytics(\n        int(result[0][0]),\n        request.referrer,\n        request.headers.get('User-Agent')\n    )\n\n    # Note to self: HTTP 302 = temp redirect, don't use HTTP 301 it breaks everything D:\n    if new_url.startswith(\"https://\") or new_url.startswith(\"http://\"):\n        return flask.redirect(new_url, code=302) # Temp redirect\n    else:\n        return flask.redirect(\"https://\" + new_url, code=302) # Temp redirect\n\n\n@app.route('/create_url', methods=[\"POST\"])\ndef _api_url_creator():\n    error_state = False\n    new_url = request.form.get(\"shortened-link-field\")\n    old_url = request.form.get(\"original-link-field\")\n\n    # Checks go burr\n    if new_url is None or old_url is None:\n        return {\n            \"status\": \"Ahh, mission control we're missing data somehow. Make a github issue abt this and Felix will fix this (maybe).\",\n            \"type\": \"shortened-link-error\"\n        }, 400\n\n    forbidden_url_paths = [\"api\", \"analytics\", \"analytic\", \"admin\", \"login\", \"dashboard\", \"settings\", \"manage\"]\n    if new_url.lower() in forbidden_url_paths:\n        return {\n            \"status\": \"Woah area 51 documents! That shortened URL path is reserved!\",\n            \"type\": \"shortened-link-error\"\n        }, 400\n\n    elif not re.compile(r'^[a-zA-Z0-9-_]+$').match(new_url):\n        return {\n            \"status\": \"Whoops! The URL can only contain alphanumeric characters, dashes, and underscores.\",\n            \"type\": \"shortened-link-error\"\n        }, 400\n\n    elif len(new_url) > 15:\n        return {\n            \"status\": \"Woah wheres the end? The shortened URL path is too long.\",\n            \"type\": \"shortened-link-error\"\n        }, 400\n\n    elif db.check_url_exists(\"shortened_url\", new_url):\n        return {\n            \"status\": \"Sorry, that shortened URL has already been taken! Our database hates twins.\",\n            \"type\": \"shortened-link-error\"\n        }, 400\n\n    if not (old_url.startswith(\"https://\") or old_url.startswith(\"http://\")):\n        return {\n            \"status\": \"The shortened URL should start with http:// or https://, or else our db explodes /hj.\",\n            \"type\": \"shortened-link-error\"\n        }, 400\n\n\n    elif isinstance(validators.url(old_url), validators.utils.ValidationError):\n        return {\n            \"status\": \"That's an invalid URL. Pls check again\",\n            \"type\": \"original-link-error\"\n        }, 400\n\n    while True:\n        analytics_url = \"\".join(\n            # Generate a 10 character string of alphanumeric characters\n            random.choice(string.ascii_letters + string.digits) for _ in range(10)\n        )\n        if not db.check_url_exists(\"analytics_url\", analytics_url):\n            break\n\n    db.add_url(old_url, new_url, analytics_url) # Add DB entry\n    return flask.render_template(\n        \"url_created.html\",\n        shortened_url=f\"https://url.felixgao.dev/u/{new_url}\",\n        analytics_url=f\"https://url.felixgao.dev/analytics/{analytics_url}\"\n    ), 201\n\n\n# Close the database on code end\natexit.register(lambda: db.close())\n\napp.run(host='0.0.0.0', port=8080, debug=True)\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/shortener/main.py b/shortener/main.py
+--- a/shortener/main.py	(revision 70b28a98faefe9c49066df897731ee76bbda4477)
++++ b/shortener/main.py	(date 1725238029867)
+@@ -66,6 +66,7 @@
+     error_state = False
+     new_url = request.form.get("shortened-link-field")
+     old_url = request.form.get("original-link-field")
++    turnstile = request.form.get("cf-turnstile-response")
+ 
+     # Checks go burr
+     if new_url is None or old_url is None:
+@@ -73,6 +74,7 @@
+             "status": "Ahh, mission control we're missing data somehow. Make a github issue abt this and Felix will fix this (maybe).",
+             "type": "shortened-link-error"
+         }, 400
++    if not 
+ 
+     forbidden_url_paths = ["api", "analytics", "analytic", "admin", "login", "dashboard", "settings", "manage"]
+     if new_url.lower() in forbidden_url_paths:
+Index: shortener/template/index.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>{% extends \"layout.html\" %}\n\n{% block head %}\n    <script src=\"{{ url_for('static', filename='formHandler.js') }}\"></script>\n    <link rel=\"stylesheet\" href=\"{{ url_for('static', filename='index.css') }}\">\n{% endblock %}\n\n{% block content %}\n    <h1>URL Shortener</h1>\n    <p>Free for anyone in Hack Club</p>\n    <p>Hosted with \uD83D\uDC96 on <a href=\"https://hackclub.app\">Nest</a></p>\n\n    <form method=\"POST\" action=\"{{ url_for('_api_url_creator') }}\" id=\"create-url-form\" class=\"center box\">\n        <div class=\"form-item\">\n            <label for=\"original-link-field\" class=\"left-align\">URL to redirect to:</label>\n            <input type=\"text\" name=\"original-link-field\" id=\"original-link-field\" class=\"form-item text-box\" required>\n        </div>\n        <div class=\"error-box left-align hide\">\n            <span class=\"material-symbols-outlined\">error</span>\n            <p id=\"original-link-error\"></p>\n        </div><br>\n\n        <label for=\"shortened-link-field\" class=\"left-align\">URL will become:</label>\n        <div class=\"form-item input-group\">\n            <p>url.felixgao.dev/u/</p>\n            <input type=\"text\" maxlength=\"15\" name=\"shortened-link-field\" id=\"shortened-link-field\" class=\"form-item text-box\" required>\n        </div>\n        <div class=\"error-box left-align hide\">\n            <span class=\"material-symbols-outlined\">error</span>\n            <p id=\"shortened-link-error\"></p>\n        </div>\n        <br><br>\n\n        <div class=\"left-align\">\n            <input type=\"checkbox\" id=\"confirm-checkbox\">\n            <label for=\"confirm-checkbox\">I agree that I am using this service in <b>good faith</b> (otherwise you’ll make Orpheus sad)</label>\n        </div>\n\n        <input type=\"submit\" value=\"Shorten my URL!\" id=\"submit-btn\" class=\"form-item\" disabled>\n    </form>\n{% endblock %}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/shortener/template/index.html b/shortener/template/index.html
+--- a/shortener/template/index.html	(revision 70b28a98faefe9c49066df897731ee76bbda4477)
++++ b/shortener/template/index.html	(date 1725237618338)
+@@ -3,6 +3,9 @@
+ {% block head %}
+     <script src="{{ url_for('static', filename='formHandler.js') }}"></script>
+     <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
++
++    <!-- Turnstile -->
++    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+ {% endblock %}
+ 
+ {% block content %}
+@@ -36,6 +39,8 @@
+             <label for="confirm-checkbox">I agree that I am using this service in <b>good faith</b> (otherwise you’ll make Orpheus sad)</label>
+         </div>
+ 
++        <div class="cf-turnstile" data-sitekey="0x4AAAAAAAih_9a4nppTrGVp"></div>
++
+         <input type="submit" value="Shorten my URL!" id="submit-btn" class="form-item" disabled>
+     </form>
+ {% endblock %}
+\ No newline at end of file
