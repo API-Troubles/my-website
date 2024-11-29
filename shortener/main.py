@@ -140,8 +140,8 @@ def _api_url_creator():
         flask.flash("Sorry, that shortened URL has already been taken! Our database hates twins.", "shortened-link-error")
         error_state = True
 
-    if not old_url.startswith("https://") or not old_url.startswith("http://"): # Not a check but instead just appends https:// if not already there
-        old_url = "https://" + old_url
+    if not old_url.startswith("https://") and not old_url.startswith("http://"):
+        old_url = "https://" + old_url # Not a check but instead just appends https:// if not already there
 
     if isinstance(validators.url(old_url), validators.utils.ValidationError):
         flask.flash("That's an invalid URL. Does it start with https://?", "original-link-error")
@@ -159,13 +159,13 @@ def _api_url_creator():
             break
 
     db.add_url(old_url, new_url, analytics_url, url_hostnames.split(" ")) # Add DB entry
-    print([f"https://{hostname}/{new_url}" for hostname in url_hostnames.split(" ")])
-    print(url_hostnames)
+    #print([f"https://{hostname}/{new_url}" for hostname in url_hostnames.split(" ")])
+    #print(url_hostnames)
     return flask.render_template(
         "url_created.html",
         shortened_url=f"https://url.felixgao.dev/u/{new_url}",
         analytics_url=f"https://url.felixgao.dev/analytics/{analytics_url}",
-        generated_urls= enumerate([f"https://{hostname}/{new_url}" for hostname in url_hostnames.split(" ")])
+        generated_urls= enumerate([f"{hostname}{new_url}" for hostname in url_hostnames.split(" ")])
     ), 201
 
 
