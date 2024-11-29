@@ -28,7 +28,7 @@ app = Flask(
 app.secret_key = os.environ['FLASK_SECRET_KEY']
 
 conn_params = {
-    "dbname": "felixgao_dev_url_shortener",
+    "dbname": "felixgao_url_shortener",
     "user": "felixgao",
     "password": os.environ['DB_PASSWORD'],
     "host": "hackclub.app",
