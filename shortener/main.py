@@ -2,6 +2,7 @@ import atexit
 import os
 import random
 import string
+import sys
 import re
 import requests
 
@@ -53,6 +54,7 @@ def analytics(analytics_path):
 
 @app.route('/u/<url_path>')
 def url_shortener(url_path):
+    sys.stderr.write(request.host_url)
     result = db.get_url(url_path)
     if not result:
         return flask.abort(404)

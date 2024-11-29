@@ -1,9 +1,10 @@
 {
 	admin unix//home/felixgao/caddy-admin.sock
 }
-http://felixgao.hackclub.app, http://felixgao.dev {
+http://felixgao.hackclub.app, http://felixgao.dev, http://felixgao.is-a.dev {
 	bind unix/.webserver.sock|777
 	bind unix/.felixgao.dev.webserver.sock|777
+        bind unix//home/felixgao/.felixgao.is-a.dev.webserver.sock
 
 	root * /home/felixgao/main
 	file_server {
@@ -25,8 +26,9 @@ http://url.felixgao.dev, http://url.dino.icu {
 	reverse_proxy :34191
 }
 
-http://qr.felixgao.dev {
+http://qr.felixgao.dev, http://qr.dino.icu {
     bind unix//home/felixgao/.qr.felixgao.dev.webserver.sock|777
+    bind unix//home/felixgao/.qr.dino.icu.webserver.sock|777
 
     root * /home/felixgao/qr_code
     file_server {
