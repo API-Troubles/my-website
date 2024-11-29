@@ -32,6 +32,7 @@
 .forward
 .ssh/
 **/__pycache__/
+.idea # intellij nonsense
 
 # Env, venv & git
 .env
