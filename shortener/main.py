@@ -103,7 +103,7 @@ def _api_url_creator():
     url_hostnames += url_dino_icu if url_dino_icu else ""
 
     for url in url_hostnames.split(" "):
-        if url not in os.environ['ALLOWED_HOSTNAMES'].split(" "):
+        if url not in [url.replace("https://", "http://") for url in os.environ['ALLOWED_HOSTNAMES'].split(" ")]: # Quick lazy workaround
             return flask.abort(400) # HTTP 400: bad req - bad data
 
     # Validate turnstile key
