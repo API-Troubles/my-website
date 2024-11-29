@@ -15,17 +15,19 @@
     <p class="bottom-padding">Haphazardly stuck inside PortgreSQL /hj</p>
 
     <div id="shortened-url" class="box center">
-        <p class="left-align">Share your URL with the world!</p>
-        <div class="gray-box">
-            <p id="clipboard-shortened">{{ shortened_url }}</p>
-            <span class="material-symbols-outlined icon div-right" id="btn-shortened">content_paste</span>
-        </div>
-    </div><br>
+        <p class="left-align">Share your URL(s) with the world!</p>
+        {% for url in generated_urls %}
+            <div class="gray-box">
+                <p id="clipboard-shortened">{{ url[1] }}</p>
+                <span class="material-symbols-outlined icon div-right clipboard" id="btn-shortened{{ url[0] }}">content_paste</span>
+            </div><br>
+        {% endfor %}
+    </div>
     <div class="box center bottom-padding">
         <p class="left-align">Pst... keep this analytics URL, you won’t see this again!</p>
         <div class="gray-box">
             <p id="clipboard-analytics">{{ analytics_url }}</p>
-            <span class="material-symbols-outlined icon div-right" id="btn-analytics">content_paste</span>
+            <span class="material-symbols-outlined icon div-right clipboard" id="btn-analytics">content_paste</span>
         </div>
     </div>
 

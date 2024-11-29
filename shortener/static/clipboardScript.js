@@ -1,25 +1,16 @@
 document.addEventListener("DOMContentLoaded", (event) => {
     console.log("DOM has fully loaded");
-    const clipboardShortenedBtn = document.getElementById("btn-shortened");
-    const clipboardAnalyticsBtn = document.getElementById("btn-analytics");
+    document.querySelectorAll('.clipboard').forEach((clipboardSpan) => {
+        clipboardSpan.addEventListener('click', () => {
+            // Find the previous sibling element which is the adjacent <p> element
+            const textToCopy = clipboardSpan.previousElementSibling.textContent;
 
-    clipboardShortenedBtn.addEventListener("click", (event) => {
-        let copyText = document.getElementById("clipboard-shortened").textContent;
-        clipboardShortenedBtn.textContent = 'check';
-
-        navigator.clipboard.writeText(copyText)
-            .then(r => setTimeout(() => {
-                clipboardShortenedBtn.textContent = 'content_paste';
-            }, 800)); // Revert checkmark back to clipboard icon
-    });
-
-    clipboardAnalyticsBtn.addEventListener("click", (event) => {
-        let copyText = document.getElementById("clipboard-analytics").textContent;
-        clipboardAnalyticsBtn.textContent = 'check';
-
-        navigator.clipboard.writeText(copyText)
-            .then(r => setTimeout(() => {
-                clipboardAnalyticsBtn.textContent = 'content_paste';
-            }, 800)); // Revert checkmark back to clipboard icon
+            // Copy text to clipboard
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                console.log('Text copied to clipboard: ' + textToCopy);
+            }).catch((err) => {
+                console.error('Failed to copy text: ', err);
+            });
+        });
     });
 });
