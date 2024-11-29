@@ -64,7 +64,7 @@ def url_shortener(url_path):
     if not domains:
         raise ValueError(f"No domains found for URL ID {result[0][0]}")
     for domain in domains:
-        if request.host_url.startswith(domain[1]):
+        if request.host_url.replace("http://", "https://").startswith(domain[1]):
             break
     else: # Not in the right domain so 404 it lol
         return flask.abort(404)
@@ -98,12 +98,12 @@ def _api_url_creator():
     if url_blahaj_click is None and url_dino_icu is None:
         return flask.abort(400)
 
-    url_hostnames = ""
-    url_hostnames += url_blahaj_click + " " if url_blahaj_click else ""
-    url_hostnames += url_dino_icu if url_dino_icu else ""
+    url_hostnames = []
+    url_hostnames.append(url_blahaj_click) if url_blahaj_click else None
+    url_hostnames.append(url_dino_icu) if url_dino_icu else None
 
-    for url in url_hostnames.split(" "):
-        if url not in [url.replace("https://", "http://") for url in os.environ['ALLOWED_HOSTNAMES'].split(" ")]: # Quick lazy workaround
+    for url in url_hostnames:
+        if url not in os.environ['ALLOWED_HOSTNAMES'].split(" "):
             return flask.abort(400) # HTTP 400: bad req - bad data
 
     # Validate turnstile key
@@ -158,14 +158,14 @@ def _api_url_creator():
         if not db.check_url_exists("analytics_url", analytics_url):
             break
 
-    db.add_url(old_url, new_url, analytics_url, url_hostnames.split(" ")) # Add DB entry
-    #print([f"https://{hostname}/{new_url}" for hostname in url_hostnames.split(" ")])
+    db.add_url(old_url, new_url, analytics_url, url_hostnames) # Add DB entry
+    #print([f"https://{hostname}/{new_url}" for hostname in url_hostnames])
     #print(url_hostnames)
     return flask.render_template(
         "url_created.html",
         shortened_url=f"https://url.felixgao.dev/u/{new_url}",
         analytics_url=f"https://url.felixgao.dev/analytics/{analytics_url}",
-        generated_urls= enumerate([f"{hostname}{new_url}" for hostname in url_hostnames.split(" ")])
+        generated_urls= enumerate([f"{hostname}{new_url}" for hostname in url_hostnames])
     ), 201
 
 
