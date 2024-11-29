@@ -175,4 +175,4 @@ def _api_url_creator():
 atexit.register(lambda: db.close())
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=int(os.environ['PORT_URL_SHORTENER']), debug=True)
+    app.run(host='0.0.0.0', port=int(os.environ['PORT_URL_SHORTENER']), debug=False)

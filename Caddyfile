@@ -21,7 +21,7 @@ http://monitor.felixgao.hackclub.app, http://monitor.felixgao.dev {
 }
 
 http://url.felixgao.dev, http://url.dino.icu, http://blahaj.click {
-	bind unix//home/felixgao/.url.dino.icu.webserver.sock|777
+	bind unix//home/felixgao/.url.felixgao.dev.webserver.sock|777
 	bind unix//home/felixgao/.url.dino.icu.webserver.sock|777
 	bind unix//home/felixgao/.blahaj.click.webserver.sock|777
 
