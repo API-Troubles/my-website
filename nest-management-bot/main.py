@@ -40,6 +40,14 @@ db = database.Database({
     "port": "5432"
     })
 
+status_emojis = {
+    "running": "🏃",
+    "sleeping": "😴",
+    "zombie": "🧟",
+    "stopped": "⏹️",
+    "disk-sleep": "💽"
+}
+
 me = os.environ['MY_SLACK_ID']
 
 
