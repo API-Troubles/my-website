@@ -41,28 +41,6 @@ db = database.Database({
     })
 
 me = os.environ['MY_SLACK_ID']
-"""
-class LogWebhookHandler(logging.Handler):
-    def __init__(self, webhook_url):
-        super().__init__()
-        self.webhook_url = webhook_url
-
-    def emit(self, record):
-        log_entry = self.format(record)
-        payload = {"text": f"[{record.levelname}] - {log_entry}"}
-
-        response = requests.post(
-            self.webhook_url, data=json.dumps(payload),
-            headers={'Content-Type': 'application/json'}
-        )
-
-        print("Error emitted to slack channel")
-
-
-# Create and add the Slack log handler
-slack_handler = LogWebhookHandler(os.environ['NEST_MANAGEMENT_LOG_WEBHOOK'])
-"""
-#logging.addHandler(slack_handler)
 
 
 @app.event("app_home_opened")
