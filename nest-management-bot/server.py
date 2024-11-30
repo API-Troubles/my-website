@@ -2,6 +2,7 @@ import asyncio
 import json
 import ssl
 
+
 from websockets.asyncio.server import serve
 import websockets
 
@@ -15,25 +16,42 @@ async def server(websocket):
         try:
             first_message_json = await asyncio.wait_for(websocket.recv(), timeout=60)
         except asyncio.TimeoutError:
-            await utils.send_error(websocket, 'Authentication message was not received.', possible=False)
+            await websocket.send(json.dumps({
+                'message': 'The client did not send a response to the server.',
+                'status': 'error'
+            }))
             return
 
         try:
             first_message = json.loads(first_message_json)
         except json.decoder.JSONDecodeError:
-            await utils.send_error(websocket, 'Authentication message isn\'t json.', possible=False)
+            await websocket.send(json.dumps({
+                'message': 'The client sent malformed data which isn\'t JSON.',
+                'status': 'error'
+            }))
             return
 
+        # not ideal location but for some reason intellij ONLY WANTS IT *HERE*
+        db_client_tokens = ["trust_me_bro", "hello_world"] # TODO ASAP: get db connected to validate this
         if first_message.get('status') != "let_me_in_pls":
-            await utils.send_error(websocket, 'Invalid response type.', possible=False)
+            await websocket.send(json.dumps({
+                'message': 'The client sent malformed data with the incorrect type.',
+                'status': 'error'
+            }))
             return
 
-        #elif first_message.get('payload').get('token'): todo: get db connected to validate this
-        #    await utils.send_error(websocket, 'Invalid or malformed client token.', possible=True)
-        #    return
+        elif first_message.get('payload').get('client_token') not in db_client_tokens:
+            await websocket.send(json.dumps({
+                'message': 'Invalid client token or the client sent malformed data.',
+                'status': 'error'
+            }))
+            return
 
         elif first_message.get('payload').get('version') != "0.1.0a":
-            await utils.send_error(websocket, 'Invalid client version or malformed data.', possible=False)
+            await websocket.send(json.dumps({
+                'message': 'Your version is out of date or the client sent malformed data.',
+                'status': 'error'
+            }))
             return
 
         # User authenticated yay
