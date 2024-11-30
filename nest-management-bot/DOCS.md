@@ -56,11 +56,11 @@ Commands can have the following message text:
 - `obtain_all_process_info`
 - `obtain_process_info`
 - `kill_process`
-- `restart_process`*
-- `start_process`*
+- `start_service`
+- `stop_service`
+- `restart_service`
+- `reload_service`
 - `exec_command`
-
-*Makes use of systemd (tbd)
 
 ### Connecting:
 To connect fully, the client needs to send the following message
@@ -69,7 +69,8 @@ To connect fully, the client needs to send the following message
   "status": "let_me_in_pls",
   "message": "let me in! :D",
   "payload": {
-    "version": "0.1.0a"
+    "version": "0.1.0a",
+    "client_token": "e70f344347c59f6619489ee2b11c453dc9c25b2e33ddc532c73ebbc0b2b4684f.ddc69770"
   }
 }
 ```
