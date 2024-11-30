@@ -6,13 +6,14 @@ import secrets
 import json
 import socket
 from typing import Optional
-import dbus # Does not work cause well... my dev
+#import dbus # Does not work cause well... my dev
 
 
 # DBus bindings to systemd
+"""
 session_bus = dbus.SessionBus()
 systemd = session_bus.get_object('org.freedesktop.systemd1', '/org/freedesktop/systemd1')
-manager = dbus.Interface(systemd, 'org.freedesktop.systemd1.Manager')
+manager = dbus.Interface(systemd, 'org.freedesktop.systemd1.Manager')"""
 
 clients = {}
 
