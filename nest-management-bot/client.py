@@ -43,8 +43,6 @@ def manage_systemd_service(service_name: str, action: Literal["start", "stop", "
 
     actions[action](service_name, 'replace')
 
-    #except dbus.DBusException as error
-
 
 def get_storage() -> list:
     """
@@ -142,17 +140,27 @@ def command_handler(status: str, payload: dict) -> dict:
         }
 
     elif status == "kill_process":
-        process = psutil.Process(payload.get('pid'))
         try:
+            process = psutil.Process(payload.get('pid'))
             process.kill()
         except Exception as error:
             return {
-                "status": "error",
+                "status": "command_response_error",
                 "message": f"Process was not killed. Error: {error}"
             }
 
     elif status == "start_service":
-        ...
+        try:
+            manage_systemd_service(payload.get('service_name'), "start")
+            return {
+                "status": "command_response",
+                "message": f"Service was not started. Error: {error}"
+            }
+        except dbus.DBusException as error:
+            return {
+                "status": "command_response_error",
+                "message": f"Service was not started. Error: {error}"
+            }
     elif status == "stop_service":
         ...
     elif status == "restart_service":
