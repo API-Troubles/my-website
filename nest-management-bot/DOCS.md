@@ -1,8 +1,6 @@
 # Nest Management Bot
-Websocket Docs
-
 wip docs, all items inside are subject to change. Some doc items are for what's planned and haven't been fully implemented yet
-
+for questions and to contribute, DM @Felix Gao on Hack Club's slack :D
 
 ## Websocket Docs
 ### Message Syntax
@@ -24,12 +22,12 @@ or...
 ```
 
 The following are valid status types:
-- `info`
+- `info` (these are usually messages which will be logged)
 - `command`
 - `command_response`
 - `command_response_error`
-- `warning`
-- `error`
+- `warning` (unused for now ig)
+- `error` (errors which aren't command responses)
 
 Command responses and commands can also include a payload item with anything inside:
 ```json
@@ -41,6 +39,7 @@ Command responses and commands can also include a payload item with anything ins
   }
 }
 ```
+
 Commands may have a payload in cases where more specific info is needed
 ```json
 {
