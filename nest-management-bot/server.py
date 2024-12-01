@@ -36,7 +36,7 @@ async def server(websocket):
             return
 
         # not ideal location but for some reason intellij ONLY WANTS IT *HERE*
-        client_token_provided = first_message.get('payload').get('client_token')
+        client_token_provided = first_message.get('payload', {}).get('client_token')
         if first_message.get('status') != "let_me_in_pls":
             await websocket.send(json.dumps({
                 'message': 'The client sent malformed data with the incorrect type.',
@@ -58,7 +58,7 @@ async def server(websocket):
             }))
             return
 
-        elif first_message.get('payload').get('version') != "0.1.0a":
+        elif first_message.get('payload', {}).get('version') != "0.1.0a":
             await websocket.send(json.dumps({
                 'message': 'Your version is out of date or the client sent malformed data.',
                 'status': 'error'
