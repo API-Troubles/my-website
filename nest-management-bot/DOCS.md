@@ -40,6 +40,17 @@ Command responses and commands can also include a payload item with anything ins
 }
 ```
 
+Errors suck :(
+```json
+{
+  "status": "command_response_error",
+  "message": "response_download_raid_shadow_legends",
+  "payload": {
+    "error": "I like NordVPN better l bozo take that mister server!"
+  }
+}
+```
+
 Commands may have a payload in cases where more specific info is needed
 ```json
 {
