@@ -44,6 +44,8 @@ class Database:
             self.cur.execute("SELECT * FROM Users WHERE token = %s", (token,))
         elif slack_id:
             self.cur.execute("SELECT * FROM Users WHERE slack_id = %s", (slack_id,))
+        else:
+            raise ValueError('No token or user_id provided. You realize this was mandatory, right?')
 
         user = self.cur.fetchall()
         if not user:
