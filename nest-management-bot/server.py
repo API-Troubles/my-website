@@ -10,7 +10,11 @@ import server_utils as utils
 from server_utils import clients
 
 
+db = None
+
 async def server(websocket):
+    if not db:
+        raise ValueError('Database not initialized/provided')
     try:
         # Client info validation
         try:
@@ -32,7 +36,7 @@ async def server(websocket):
             return
 
         # not ideal location but for some reason intellij ONLY WANTS IT *HERE*
-        db_client_tokens = ["trust_me_bro", "hello_world"] # TODO ASAP: get db connected to validate this
+        client_token_provided = first_message.get('payload').get('client_token')
         if first_message.get('status') != "let_me_in_pls":
             await websocket.send(json.dumps({
                 'message': 'The client sent malformed data with the incorrect type.',
@@ -40,9 +44,16 @@ async def server(websocket):
             }))
             return
 
-        elif first_message.get('payload').get('client_token') not in db_client_tokens:
+        elif not db.get_user(token=client_token_provided):
             await websocket.send(json.dumps({
                 'message': 'Invalid client token or the client sent malformed data.',
+                'status': 'error'
+            }))
+            return
+
+        elif client_token_provided in clients.keys():
+            await websocket.send(json.dumps({
+                'message': 'Already connected, if this is incorrect regenerate your token NOW.',
                 'status': 'error'
             }))
             return
@@ -58,7 +69,7 @@ async def server(websocket):
         await websocket.send(json.dumps({'status': 'info', 'message': 'Authenticated :D'}))
 
         # Add client to list to use for sending messages later
-        clients[f'{websocket.id}']: websocket = websocket
+        clients[client_token_provided]: websocket = websocket
         print("ACTIVE CLIENTS:", clients.keys())
 
 
@@ -84,7 +95,6 @@ async def main():
         print("server running...")
         await asyncio.get_running_loop().create_future()  # run forever
 
-
 """
 try:
     cmd_response = await asyncio.wait_for(
@@ -98,5 +108,25 @@ except asyncio.TimeoutError:
 print(f"RESPONSE: {cmd_response}")
 """
 
-if __name__ == "__main__":
+def start(database):
+    global db
+    db = database
     asyncio.run(main())
+
+
+if __name__ == "__main__":
+    import os
+    from dotenv import load_dotenv
+    import database as db_thingy
+
+    load_dotenv()
+
+    database_thingy = db_thingy.Database({
+        "dbname": "felixgao_nest_management",
+        "user": "felixgao",
+        "password": os.environ['DB_PASSWORD'],
+        "host": "hackclub.app",
+        "port": "5432"
+    })
+
+    start(database_thingy)

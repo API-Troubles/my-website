@@ -1,8 +1,7 @@
 import atexit
-import os
 import logging
-import requests
-import json
+import os
+import threading
 
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler # Socket mode lol
@@ -19,6 +18,7 @@ import views.home as home
 import modals
 
 import server_utils as utils
+import server
 
 os.environ['SSL_CERT_FILE'] = certifi.where()
 
@@ -38,7 +38,7 @@ db = database.Database({
     "password": os.environ['DB_PASSWORD'],
     "host": "hackclub.app",
     "port": "5432"
-    })
+})
 
 status_emojis = {
     "running": "🏃",
@@ -120,4 +120,7 @@ def handle_some_action(ack, body, logger):
 atexit.register(lambda: db.close())
 
 if __name__ == "__main__":
+    server_thread = threading.Thread(target=server.start, args=(db,))
+    server_thread.start()
+
     SocketModeHandler(app, os.environ["NEST_MANAGEMENT_APP_TOKEN"]).start()
