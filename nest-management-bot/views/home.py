@@ -16,7 +16,7 @@ def generate_dashboard(client, user_id):
                     "type": "header",
                     "text": {
                         "type": "plain_text",
-                        "text": "Heya!",
+                        "text": "Welcome Back!",
                         "emoji": True
                     }
                 },
