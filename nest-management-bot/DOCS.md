@@ -53,17 +53,17 @@ Commands may have a payload in cases where more specific info is needed
 ```
 
 Commands can have the following message text:
-- `obtain_all_process_info`
-- `obtain_process_info`
-- `kill_process`
-- `start_service`
-- `stop_service`
-- `restart_service`
-- `reload_service`
-- `exec_command`
+- `obtain_all_process_info` (no payload)
+- `obtain_process_info`(payload of `pid`)
+- `kill_process`(payload of `pid`)
+- `start_service` (payload of `service_name`)
+- `stop_service` (payload of `service_name`)
+- `restart_service` (payload of `service_name`)
+- `reload_service` (payload of `service_name`)
+- `exec_command` (payload of `command`)
 
 ### Connecting:
-To connect fully, the client needs to send the following message
+To connect fully, the client needs to send the following message (with a different `client_token`)
 ```json
 {
   "status": "let_me_in_pls",
@@ -82,3 +82,4 @@ The server will verify the data sent and then either disconnect the client if th
   "message": "Authenticated :D"
 }
 ```
+Once that message is received, the client is fully connected. The server will log the client as connected and the user can interface with the bot, sending it commands through the websocket.
