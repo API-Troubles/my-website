@@ -141,7 +141,7 @@ def command_handler(status: str, payload: dict) -> dict:
 
     elif status == "kill_process":
         try:
-            process = psutil.Process(payload.get('pid'))
+            process = psutil.Process(payload['pid'])
             process.kill()
         except Exception as error:
             return {
@@ -151,22 +151,66 @@ def command_handler(status: str, payload: dict) -> dict:
 
     elif status == "start_service":
         try:
-            manage_systemd_service(payload.get('service_name'), "start")
+            manage_systemd_service(payload['service_name'], "start")
             return {
                 "status": "command_response",
-                "message": f"Service was not started. Error: {error}"
+                "message": "response_start_service"
             }
         except dbus.DBusException as error:
             return {
                 "status": "command_response_error",
-                "message": f"Service was not started. Error: {error}"
+                "message": "response_start_service",
+                "payload": {
+                    "error": f"Service was not started. Error: {error}"
+                }
             }
+
     elif status == "stop_service":
-        ...
+        try:
+            manage_systemd_service(payload['service_name'], "stop")
+            return {
+                "status": "command_response",
+                "message": "response_stop_service"
+            }
+        except dbus.DBusException as error:
+            return {
+                "status": "command_response_error",
+                "message": "response_stop_service",
+                "payload": {
+                    "error": f"Service was not stopped. Error: {error}"
+                }
+            }
+
     elif status == "restart_service":
-        ...
+        try:
+            manage_systemd_service(payload['service_name'], "restart")
+            return {
+                "status": "command_response",
+                "message": "response_restart_service",
+            }
+        except dbus.DBusException as error:
+            return {
+                "status": "command_response_error",
+                "message": "response_restart_service",
+                "payload": {
+                    "error": f"Service was not restarted. Error: {error}"
+                }
+            }
     elif status == "reload_service":
-        ...
+        try:
+            manage_systemd_service(payload['service_name'], "reload")
+            return {
+                "status": "command_response",
+                "message": f"response_reload_service"
+            }
+        except dbus.DBusException as error:
+            return {
+                "status": "command_response_error",
+                "message": "response_reload_service",
+                "payload": {
+                    "error": f"Service was not reloaded. Error: {error}"
+                }
+            }
     elif status == "exec_command":
         ... # uhhh
 
