@@ -26,7 +26,7 @@ def setup_token_wizard_modal(user_token):
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": f"To add the client key to your Nest user, run the following in Nest:\n```echo CLIENT_TOKEN={user_token} > ~/.env.nest-management-bot```"
+                    "text": f"To add the client key to your Nest user, run the following in Nest:\n```echo CLIENT_TOKEN={user_token} >> ~/.env.nest-management-bot```"
                 }
             },
             {
