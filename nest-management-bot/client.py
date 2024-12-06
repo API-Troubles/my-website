@@ -84,6 +84,13 @@ async def client():
             }
         ))
 
+        try:
+            server_response = await asyncio.wait_for(websocket.recv(), timeout=60)
+        except asyncio.TimeoutError:
+            raise Exception("Server did not respond in time") from None
+
+        if server_response.get('status') == 'error':
+
         async for message_json in websocket:
             try:
                 message = json.loads(message_json)
@@ -212,7 +219,7 @@ def command_handler(status: str, payload: dict) -> dict:
                 }
             }
     elif status == "exec_command":
-        ... # uhhh
+        ... # uhhh, unused for now lol (idk weather this will exist)
 
 
 
