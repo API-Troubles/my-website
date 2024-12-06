@@ -56,16 +56,22 @@ def update_home_tab(client, event, logger):
     user_id = event['user']
     logger.info(f"{user_id} opened the home tab")
 
+    user = db.get_user(slack_id=user_id)
+
     if user_id != me: 
         # Testing check, blocks others from using D:
         home.generate_unauthorized(client, user_id)
         logger.warning(f"{user_id} is not authorized to use this bot")
         return
 
-    if not db.get_user(slack_id=user_id):
+    if not user:
         #User not registered, signup!
         home.generate_setup_token(client, user_id)
         logger.info(f"{user_id} has started the setup process")
+        return
+
+    if not utils.clients.get(user[0]):
+        home.generate_not_connected(client, user_id)
         return
 
     logger.info(f"{user_id} has opened the dashboard")
