@@ -90,6 +90,7 @@ async def client():
             raise Exception("Server did not respond in time") from None
 
         if server_response.get('status') == 'error':
+            raise Exception(f"errors make code sad :( - {server_response.get('message')}")
 
         async for message_json in websocket:
             try:
