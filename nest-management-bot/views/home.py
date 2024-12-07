@@ -1,8 +1,9 @@
-def generate_dashboard(client, user_id):
+def generate_dashboard(client, user_id, data: dict):
     """
     Generates the default dashboard
     :param client:
     :param user_id:
+    :param data: The data to display on the dashboard
     :return:
     """
     client.views_publish(
@@ -22,7 +23,7 @@ def generate_dashboard(client, user_id):
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": "View your Nest stats quickly below!\nDEVELOPMENT - NOT REAL DATA YET"
+                        "text": "View your Nest stats quickly below!\nDEVELOPMENT - attempting real data :pf:"
                     }
                 },
                 {
@@ -39,21 +40,21 @@ def generate_dashboard(client, user_id):
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": "*CPU:* 23%"
+                        "text": f"*CPU:* {data["cpu"]}"
                     }
                 },
                 {
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": "*MEM:* 0.53/2.00 GB"
+                        "text": f"*MEM:* {data["mem"]}"
                     }
                 },
                 {
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": "*Storage:* 2.34/10.00 GB"
+                        "text": f"*Storage:* {data["storage"]}"
                     }
                 },
                 {
@@ -225,5 +226,46 @@ def generate_not_connected(client, user_id):
     """
     client.views_publish(
         user_id=user_id,
-        view={}
+        view={
+            "type": "home",
+            "blocks": [
+                {
+                    "type": "header",
+                    "text": {
+                        "type": "plain_text",
+                        "text": ":warn: Your websocket is not connected :roo-oh-no: ",
+                        "emoji": True
+                    }
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": "*I just setup the bot!*"
+                    }
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "Don't fear yet! Continue the setup instructions as normal. If you setup the client correctly this will disappear :).",
+                        "emoji": True
+                    }
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": "*What went wrong?*"
+                    }
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": "This bot relies on the websocket for all information and functionality. Check that you have setup and ran the websocket script correctly (`systemctl --user status nest-msg-bot.service` to check its running). For support, ask in #nest-management-bot."
+                    }
+                }
+            ]
+        }
     )
