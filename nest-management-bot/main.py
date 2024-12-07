@@ -1,4 +1,6 @@
+import asyncio
 import atexit
+import json
 import logging
 import os
 import threading
@@ -56,26 +58,32 @@ def update_home_tab(client, event, logger):
     user_id = event['user']
     logger.info(f"{user_id} opened the home tab")
 
-    user = db.get_user(slack_id=user_id)
+    try: # todo: Catch any errors and display a error home tab
+        user = db.get_user(slack_id=user_id)
 
-    if user_id != me: 
-        # Testing check, blocks others from using D:
-        home.generate_unauthorized(client, user_id)
-        logger.warning(f"{user_id} is not authorized to use this bot")
+        if user_id != me:
+            # Testing check, blocks others from using D:
+            home.generate_unauthorized(client, user_id)
+            logger.warning(f"{user_id} is not authorized to use this bot")
+            return
+
+        if not user:
+            #User not registered, signup!
+            home.generate_setup_token(client, user_id)
+            logger.info(f"{user_id} has started the setup process")
+            return
+
+        if not utils.clients.get(user[0]):
+            home.generate_not_connected(client, user_id)
+            return
+
+        logger.info(f"{user_id} has opened the dashboard")
+        data = utils.get_global_resources()
+        home.generate_dashboard(client, user_id, data)
+
+    except Exception as e:
+        logger.error(f"Error updating home tab: {e}")
         return
-
-    if not user:
-        #User not registered, signup!
-        home.generate_setup_token(client, user_id)
-        logger.info(f"{user_id} has started the setup process")
-        return
-
-    if not utils.clients.get(user[0]):
-        home.generate_not_connected(client, user_id)
-        return
-
-    logger.info(f"{user_id} has opened the dashboard")
-    home.generate_dashboard(client, user_id)
 
 
 @app.action("setup-get-client-token")
@@ -119,7 +127,11 @@ def setup_user(ack, body, client, logger):
 @app.action("open-process-usage")
 def handle_some_action(ack, body, logger):
     ack()
+    user_id = body['user']['id']
     logger.info(body)
+
+    user_token = db.get_user(slack_id=user_id)[0]
+    print(asyncio.run(utils.send_command_to_client(user_token, "obtain_all_process_info")))
 
 
 # Close the database on code end
