@@ -101,7 +101,7 @@ async def client():
             msg_status = message.get('status')
             msg_data = message.get('message')
             if msg_status == 'command':
-                websocket.send(json.dumps(command_handler(msg_status, msg_data.get('payload'))))
+                await websocket.send(json.dumps(command_handler(msg_status, msg_data)))
             elif msg_status == 'error':
                 print(f'ERROR: {msg_data}')
             elif msg_status == 'info':
