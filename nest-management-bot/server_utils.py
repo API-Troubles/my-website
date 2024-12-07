@@ -128,7 +128,7 @@ async def send_command_to_client(client_token: str, command: str) -> dict:
     :param command: The command to send to the client
     :return: The result of the client's response
     """
-    result = await clients[client_token].send(json.dumps({'status': 'command', 'payload': command}))
+    result = await clients[client_token].send(json.dumps({'status': 'command', 'message': command}))
     return result
 
 def get_global_resources():

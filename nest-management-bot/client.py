@@ -101,7 +101,7 @@ async def client():
             msg_status = message.get('status')
             msg_data = message.get('message')
             if msg_status == 'command':
-                await websocket.send(json.dumps(command_handler(msg_status, msg_data)))
+                await websocket.send(json.dumps(command_handler(msg_data, message.get('payload'))))
             elif msg_status == 'error':
                 print(f'ERROR: {msg_data}')
             elif msg_status == 'info':
@@ -110,8 +110,8 @@ async def client():
                 print(f'Message of unknown "{msg_status}" type: {msg_data}')
 
 
-def command_handler(status: str, payload: dict) -> dict:
-    if status == "obtain_all_process_info":
+def command_handler(message: str, payload: dict) -> dict:
+    if message == "obtain_all_process_info":
         """
         Lists running processes and associated systemd data if it exists 
         """
@@ -127,7 +127,7 @@ def command_handler(status: str, payload: dict) -> dict:
             "payload": process_data
         }
 
-    elif status == "obtain_process_info":
+    elif message == "obtain_process_info":
         """
         Provides information about a specific process
         """
@@ -147,7 +147,7 @@ def command_handler(status: str, payload: dict) -> dict:
             }
         }
 
-    elif status == "kill_process":
+    elif message == "kill_process":
         try:
             process = psutil.Process(payload['pid'])
             process.kill()
@@ -157,7 +157,7 @@ def command_handler(status: str, payload: dict) -> dict:
                 "message": f"Process was not killed. Error: {error}"
             }
 
-    elif status == "start_service":
+    elif message == "start_service":
         try:
             manage_systemd_service(payload['service_name'], "start")
             return {
@@ -173,7 +173,7 @@ def command_handler(status: str, payload: dict) -> dict:
                 }
             }
 
-    elif status == "stop_service":
+    elif message == "stop_service":
         try:
             manage_systemd_service(payload['service_name'], "stop")
             return {
@@ -189,7 +189,7 @@ def command_handler(status: str, payload: dict) -> dict:
                 }
             }
 
-    elif status == "restart_service":
+    elif message == "restart_service":
         try:
             manage_systemd_service(payload['service_name'], "restart")
             return {
@@ -204,7 +204,7 @@ def command_handler(status: str, payload: dict) -> dict:
                     "error": f"Service was not restarted. Error: {error}"
                 }
             }
-    elif status == "reload_service":
+    elif message == "reload_service":
         try:
             manage_systemd_service(payload['service_name'], "reload")
             return {
@@ -219,7 +219,7 @@ def command_handler(status: str, payload: dict) -> dict:
                     "error": f"Service was not reloaded. Error: {error}"
                 }
             }
-    elif status == "exec_command":
+    elif message == "exec_command":
         ... # uhhh, unused for now lol (idk weather this will exist)
 
 
