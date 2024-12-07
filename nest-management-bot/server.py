@@ -80,6 +80,10 @@ async def server(websocket):
         ws_clients[websocket.id]: str = client_token_provided
         print("ACTIVE CLIENTS:", clients.keys())
 
+        # Update any existing home tabs :yay:
+        #user_id = db.get_user(token=client_token_provided)[0] # 0 is the user_id col
+        # TODO finish
+
 
         async for message in websocket:
             print(f"RANDOM MESSAGE: {message}")
@@ -103,7 +107,7 @@ async def main():
     #ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
     #ssl_context.load_cert_chain("cert.pem", "private_key.pem")
 
-    async with serve(server, "localhost", 8989, ping_interval=20, ping_timeout=10):#, ssl=ssl_context):
+    async with serve(server, "localhost", 8989):#, ssl=ssl_context):
         print("server running...")
         await asyncio.get_running_loop().create_future()  # run forever
 
