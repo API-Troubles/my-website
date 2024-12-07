@@ -121,12 +121,26 @@ def verify_token_checksum(token: str) -> bool:
     return expected_checksum == checksum
 
 
-def get_services():
+async def send_command_to_client(client_token: str, command: str) -> dict:
+    """
+    Send a command to a client
+    :param client_token: The client to send the command to
+    :param command: The command to send to the client
+    :return: The result of the client's response
+    """
+    result = await clients[client_token].send(json.dumps({'status': 'command', 'payload': command}))
+    return result
+
+def get_global_resources():
     """
     Get a list of systemd processes which the user has
     :return: A list of services
     """
-    units = manager.ListUnits()
+    return {
+        "cpu": "40%",
+        "mem": "45/400MB",
+        "storage": "42.234GB/100GB",
+    }
 
 if __name__ == "__main__":
     print(generate_token())
