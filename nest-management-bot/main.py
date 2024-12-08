@@ -60,6 +60,7 @@ def update_home_tab(client, event, logger):
 
     try: # todo: Catch any errors and display a error home tab
         user = db.get_user(slack_id=user_id)
+        print(client.users_info(user=user_id))
 
         if user_id != me:
             # Testing check, blocks others from using D:
@@ -78,8 +79,7 @@ def update_home_tab(client, event, logger):
             return
 
         logger.info(f"{user_id} has opened the dashboard")
-        data = utils.get_global_resources()
-        home.generate_dashboard(client, user_id, data)
+        home.generate_dashboard(client, user_id, utils.get_global_resources())
 
     except Exception as e:
         logger.error(f"Error updating home tab: {e}")
@@ -99,7 +99,7 @@ def setup_user(ack, body, client, logger):
     else:
         user_token = utils.generate_token()
         db.add_user(user_id, user_token)
-        home.generate_dashboard(client, user_id) # TODO: Replace with model for step 2
+        home.generate_dashboard(client, user_id, utils.get_global_resources()) # TODO: Replace with model for step 2
         client.views_open(trigger_id=body["trigger_id"], view=modals.setup_token_wizard_modal(user_token))
         logger.info(f"Created token for {user_id}")
 
@@ -124,14 +124,21 @@ def setup_user(ack, body, client, logger):
     ack()
 
 
-@app.action("open-process-usage")
-def handle_some_action(ack, body, logger):
+@app.action("menu-process-usage")
+def menu_process_usage(ack, body, logger):
     ack()
     user_id = body['user']['id']
     logger.info(body)
 
     user_token = db.get_user(slack_id=user_id)[0]
     print(asyncio.run(utils.send_command_to_client(user_token, "obtain_all_process_info")))
+
+
+@app.action("menu-systemd-services")
+def menu_systemd_services(ack, body, logger):
+    ack()
+    user_id = body['user']['id']
+    logger.info(body)
 
 
 # Close the database on code end

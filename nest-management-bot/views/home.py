@@ -78,7 +78,29 @@ def generate_dashboard(client, user_id, data: dict):
                                 "emoji": True
                             },
                             "value": "open-process-usage",
-                            "action_id": "open-process-usage"
+                            "action_id": "menu-process-usage"
+                        }
+                    ]
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": "*View `systemd` Services:*"
+                    }
+                },
+                {
+                    "type": "actions",
+                    "elements": [
+                        {
+                            "type": "button",
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Open Menu",
+                                "emoji": True
+                            },
+                            "value": "open-process-usage",
+                            "action_id": "menu-systemd-services"
                         }
                     ]
                 },
