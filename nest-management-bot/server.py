@@ -41,7 +41,7 @@ async def server(websocket):
         client_token_provided = first_message.get('payload', {}).get('client_token')
         if first_message.get('status') != "let_me_in_pls":
             await websocket.send(json.dumps({
-                'message': 'The client sent malformed data with the incorrect type. This shouldn\'t happen, ask in #nest-management-bot.',
+                'message': 'The client sent malformed data of incorrect type. This shouldn\'t happen, ask in #nest-management-bot.',
                 'status': 'error'
             }))
             await websocket.close()
