@@ -125,13 +125,16 @@ def setup_user(ack, body, client, logger):
 
 
 @app.action("menu-process-usage")
-def menu_process_usage(ack, body, logger):
+def menu_process_usage(ack, body, client, logger):
     ack()
     user_id = body['user']['id']
     logger.info(body)
 
     user_token = db.get_user(slack_id=user_id)[0]
-    print(asyncio.run(utils.send_command_to_client(user_token, "obtain_all_process_info")))
+    result = asyncio.run(utils.send_command("obtain_all_process_info", user_token))
+    process_list = result["payload"]
+
+    client.views_open(trigger_id=body["trigger_id"], view=modals.process_list_modal(process_list))
 
 
 @app.action("menu-systemd-services")
