@@ -1,6 +1,7 @@
 """
 All the utilities used by server.py to make life easier lol
 """
+import asyncio
 import hashlib
 import secrets
 import json
@@ -40,7 +41,7 @@ async def send_command(message: str, user_uuid: str) -> Optional[dict]:
     :return: The client's response to the command
     """
     await clients[user_uuid].send(json.dumps({'status': 'command', 'message': message}))
-    response_json = await clients[user_uuid].recv()
+    response_json = await asyncio.wait_for(clients[user_uuid].recv(), timeout=1)
 
     try:
         response = json.loads(response_json)
@@ -117,19 +118,8 @@ def verify_token_checksum(token: str) -> bool:
     checksum = token[-8:] # Obtain checksum
 
     expected_checksum = hashlib.sha256(raw_token.encode()).hexdigest()[:8]
-
     return expected_checksum == checksum
 
-
-async def send_command_to_client(client_token: str, command: str) -> dict:
-    """
-    Send a command to a client
-    :param client_token: The client to send the command to
-    :param command: The command to send to the client
-    :return: The result of the client's response
-    """
-    result = await clients[client_token].send(json.dumps({'status': 'command', 'message': command}))
-    return result
 
 def get_global_resources():
     """
