@@ -1,28 +1,22 @@
 import asyncio
 import atexit
-import json
+from functools import partial
 import logging
 import os
-import threading
 
-from slack_bolt import App
-from slack_bolt.adapter.socket_mode import SocketModeHandler # Socket mode lol
+from websockets.asyncio.server import serve
+
+from slack_bolt.async_app import AsyncApp as App
+from slack_bolt.adapter.socket_mode.aiohttp import AsyncSocketModeHandler
 
 from dotenv import load_dotenv
-
-# Local environment BUGFIX: I can't figure out why but ig im missing some cert files lol
-# might be unneeded for others
-# TODO: REMOVE IN PROD, prob
-import certifi
 
 import database
 import views.home as home
 import modals
-
 import server_utils as utils
-import server
+from server import ws_server
 
-os.environ['SSL_CERT_FILE'] = certifi.where()
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
@@ -42,6 +36,8 @@ db = database.Database({
     "port": "5432"
 })
 
+ws_clients = {} # Internal list used to manage connection state
+
 status_emojis = {
     "running": "🏃",
     "sleeping": "😴",
@@ -54,32 +50,32 @@ me = os.environ['MY_SLACK_ID']
 
 
 @app.event("app_home_opened")
-def update_home_tab(client, event, logger):
+async def update_home_tab(client, event, logger):
     user_id = event['user']
     logger.info(f"{user_id} opened the home tab")
 
     try: # todo: Catch any errors and display a error home tab
         user = db.get_user(slack_id=user_id)
-        print(client.users_info(user=user_id))
+        #print(await client.users_info(user=user_id))
 
         if user_id != me:
             # Testing check, blocks others from using D:
-            home.generate_unauthorized(client, user_id)
+            await home.generate_unauthorized(client, user_id)
             logger.warning(f"{user_id} is not authorized to use this bot")
             return
 
         if not user:
             #User not registered, signup!
-            home.generate_setup_token(client, user_id)
+            await home.generate_setup_token(client, user_id)
             logger.info(f"{user_id} has started the setup process")
             return
 
         if not utils.clients.get(user[0]):
-            home.generate_not_connected(client, user_id)
+            await home.generate_not_connected(client, user_id)
             return
 
         logger.info(f"{user_id} has opened the dashboard")
-        home.generate_dashboard(client, user_id, utils.get_global_resources())
+        await home.generate_dashboard(client, user_id, utils.get_global_resources())
 
     except Exception as e:
         logger.error(f"Error updating home tab: {e}")
@@ -87,27 +83,27 @@ def update_home_tab(client, event, logger):
 
 
 @app.action("setup-get-client-token")
-def setup_user(ack, body, client, logger):
+async def setup_user(ack, body, client, logger):
     user_id = body['user']['id']
     logger.info(f"{user_id} opened the client-token modal")
 
     user = db.get_user(slack_id=user_id)
     if user:
         user_token = user[0]
-        client.views_open(trigger_id=body["trigger_id"], view=modals.manage_token_wizard_modal(user_token))
+        await client.views_open(trigger_id=body["trigger_id"], view=modals.manage_token_wizard_modal(user_token))
         logger.info(f"Obtained existing token for {user_id}")
     else:
         user_token = utils.generate_token()
         db.add_user(user_id, user_token)
-        home.generate_dashboard(client, user_id, utils.get_global_resources()) # TODO: Replace with model for step 2
-        client.views_open(trigger_id=body["trigger_id"], view=modals.setup_token_wizard_modal(user_token))
+        await home.generate_dashboard(client, user_id, utils.get_global_resources()) # TODO: Replace with model for step 2
+        await client.views_open(trigger_id=body["trigger_id"], view=modals.setup_token_wizard_modal(user_token))
         logger.info(f"Created token for {user_id}")
 
-    ack()
+    await ack()
 
 
 @app.action("setup-new-client-token")
-def setup_user(ack, body, client, logger):
+async def setup_user(ack, body, client, logger):
     user_id = body['user']['id']
     logger.info(f"{user_id} has chosen to get a new token")
 
@@ -117,38 +113,54 @@ def setup_user(ack, body, client, logger):
 
     user_token = utils.generate_token()
     db.update_token(user_id, user_token)
-    client.views_update(view_id=body["view"]["id"], view=modals.setup_token_wizard_modal(user_token))
+    await client.views_update(view_id=body["view"]["id"], view=modals.setup_token_wizard_modal(user_token))
     # TODO: step 2 app home + new client modal and kick out websocket if connected
     logger.info(f"Created new token for {user_id}")
-
-    ack()
+    await ack()
 
 
 @app.action("menu-process-usage")
-def menu_process_usage(ack, body, client, logger):
-    ack()
+async def menu_process_usage(ack, body, client, logger):
     user_id = body['user']['id']
     logger.info(body)
 
     user_token = db.get_user(slack_id=user_id)[0]
-    result = asyncio.run(utils.send_command("obtain_all_process_info", user_token))
+    result = await utils.send_command("obtain_all_process_info", user_token)
     process_list = result["payload"]
 
-    client.views_open(trigger_id=body["trigger_id"], view=modals.process_list_modal(process_list))
+    await client.views_open(trigger_id=body["trigger_id"], view=modals.process_list_modal(process_list))
+    await ack()
 
 
 @app.action("menu-systemd-services")
-def menu_systemd_services(ack, body, logger):
-    ack()
+async def menu_systemd_services(ack, body, logger):
     user_id = body['user']['id']
     logger.info(body)
 
+    await ack()
+
+
+ws_handler = partial(ws_server, clients=ws_clients, db=db)
+async def ws_main():
+    #ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+    #ssl_context.load_cert_chain("cert.pem", "private_key.pem")
+
+    async with serve(ws_handler, "localhost", 8989):#, ssl=ssl_context):
+        print("server running...")
+        await asyncio.get_running_loop().create_future()  # run forever
+
+
+async def slack_bot_main():
+    slack_bot = AsyncSocketModeHandler(app, os.environ["NEST_MANAGEMENT_APP_TOKEN"])
+    await slack_bot.start_async()
+
+
+async def real_main():
+    await asyncio.gather(slack_bot_main(), ws_main())
 
 # Close the database on code end
 atexit.register(lambda: db.close())
 
-if __name__ == "__main__":
-    server_thread = threading.Thread(target=server.start, args=(db,))
-    server_thread.start()
 
-    SocketModeHandler(app, os.environ["NEST_MANAGEMENT_APP_TOKEN"]).start()
+if __name__ == "__main__":
+    asyncio.run(real_main())
