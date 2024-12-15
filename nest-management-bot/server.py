@@ -9,10 +9,8 @@ import websockets
 import server_utils as utils
 from server_utils import clients
 
-ws_clients = {} # Internal list used to manage connection state
-db = None
 
-async def server(websocket):
+async def ws_server(websocket, ws_clients, db):
     if not db:
         raise ValueError('Database not initialized/provided')
     try:
@@ -101,48 +99,3 @@ async def server(websocket):
         if clients.get(client_id):
             clients.pop(client_id)
         print("ACTIVE CLIENTS:", clients.keys())
-
-
-async def main():
-    #ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-    #ssl_context.load_cert_chain("cert.pem", "private_key.pem")
-
-    async with serve(server, "localhost", 8989):#, ssl=ssl_context):
-        print("server running...")
-        await asyncio.get_running_loop().create_future()  # run forever
-
-"""
-try:
-    cmd_response = await asyncio.wait_for(
-        utils.send_command('download raid shadow legends!', f'{websocket.id}'),
-        5
-    )
-except asyncio.TimeoutError:
-    await utils.send_error(websocket, 'Did not receive a response in time', possible=False)
-    return
-
-print(f"RESPONSE: {cmd_response}")
-"""
-
-def start(database):
-    global db
-    db = database
-    asyncio.run(main())
-
-
-if __name__ == "__main__":
-    import os
-    from dotenv import load_dotenv
-    import database as db_thingy
-
-    load_dotenv()
-
-    database_thingy = db_thingy.Database({
-        "dbname": "felixgao_nest_management",
-        "user": "felixgao",
-        "password": os.environ['DB_PASSWORD'],
-        "host": "hackclub.app",
-        "port": "5432"
-    })
-
-    start(database_thingy)
