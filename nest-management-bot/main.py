@@ -36,8 +36,6 @@ db = database.Database({
     "port": "5432"
 })
 
-ws_clients = {} # Internal list used to manage connection state
-
 status_emojis = {
     "running": "🏃",
     "sleeping": "😴",
@@ -128,7 +126,7 @@ async def menu_process_usage(ack, body, client, logger):
     result = await utils.send_command("obtain_all_process_info", user_token)
     process_list = result["payload"]
 
-    await client.views_open(trigger_id=body["trigger_id"], view=modals.process_list_modal(process_list))
+    await client.views_open(trigger_id=body["trigger_id"], view=modals.processes_list_modal(process_list))
     await ack()
 
 
@@ -140,7 +138,13 @@ async def menu_systemd_services(ack, body, logger):
     await ack()
 
 
-ws_handler = partial(ws_server, clients=ws_clients, db=db)
+@app.action("manage-process")
+async def handle_some_action(ack, body, logger):
+    await ack()
+    logger.info(body)
+
+
+ws_handler = partial(ws_server, db=db)
 async def ws_main():
     #ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
     #ssl_context.load_cert_chain("cert.pem", "private_key.pem")
