@@ -2,6 +2,7 @@ import asyncio
 import json
 import os
 import ssl
+import signal
 import subprocess
 from typing import Literal
 
@@ -72,7 +73,9 @@ async def client():
     print("Attempting to connect to server...")
     async for websocket in connect(uri):#, ssl=ssl_context):
         print("Connected to server...")
-        #atexit.register(await websocket.close()) # Register exit handler
+
+        loop = asyncio.get_running_loop()
+        loop.add_signal_handler(signal.SIGTERM, loop.create_task, websocket.close())
 
         await websocket.send(json.dumps(
             {
