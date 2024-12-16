@@ -40,13 +40,22 @@ async def send_command(message: str, user_uuid: str) -> Optional[dict]:
     :param user_uuid: The client to send a message to
     :return: The client's response to the command
     """
-    await clients[user_uuid].send(json.dumps({'status': 'command', 'message': message}))
-    response_json = await asyncio.wait_for(clients[user_uuid].recv(), timeout=1)
+    client = clients[user_uuid]
+    await client.send(json.dumps({'status': 'command', 'message': message}))
+
+    print(user_uuid)
+    try:
+        async with asyncio.timeout(1):
+            response_json = await client.recv()
+            print(response_json)
+    except asyncio.TimeoutError:
+        await send_error('Wheres my response? Did not receive a command_response.', user_uuid)
+        return
 
     try:
         response = json.loads(response_json)
     except json.decoder.JSONDecodeError:
-        await send_error(await clients[f'{user_uuid}'], 'Invalid Response', possible=False)
+        await send_error('Response was not JSON.', user_uuid)
         return
 
     if response.get('status') == 'command_response':
@@ -54,7 +63,7 @@ async def send_command(message: str, user_uuid: str) -> Optional[dict]:
     elif response.get('status') == 'error':
         raise ClientError(response.get('message'))
     else:
-        await send_error(await clients[f'{user_uuid}'], 'Invalid Response type', possible=False)
+        await send_error('Response did not have a valid status value.', user_uuid)
 
 
 async def send_error(error_msg, user_uuid: str, *, possible=False, disconnect=True) -> None:
@@ -74,18 +83,6 @@ async def send_error(error_msg, user_uuid: str, *, possible=False, disconnect=Tr
     ))
     if disconnect:
         await clients[user_uuid].close()
-
-
-"""
-Wip; not using rn, might later
-def ident_request(local_port, remote_port) -> str:
-    with socket.create_connection(('localhost', 113), timeout=10) as sock:
-        query = f"{local_port}, {remote_port}\r\n"
-        sock.sendall(query.encode())
-
-        response = sock.recv(1024).decode().strip()
-        return response
-"""
 
 
 def generate_token() -> str:

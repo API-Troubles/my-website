@@ -1,7 +1,5 @@
 import asyncio
 import json
-import ssl
-
 
 from websockets.asyncio.server import serve
 import websockets
@@ -9,14 +7,16 @@ import websockets
 import server_utils as utils
 from server_utils import clients
 
+ws_clients = {} # Internal list used to manage connection state
 
-async def ws_server(websocket, ws_clients, db):
+async def ws_server(websocket, db):
     if not db:
         raise ValueError('Database not initialized/provided')
     try:
         # Client info validation
         try:
-            first_message_json = await asyncio.wait_for(websocket.recv(), timeout=60)
+            async with asyncio.timeout(1):
+                first_message_json = await websocket.recv()
         except asyncio.TimeoutError:
             await websocket.send(json.dumps({
                 'message': 'The client did not send a response to the server.',
@@ -45,18 +45,25 @@ async def ws_server(websocket, ws_clients, db):
             await websocket.close()
             return
 
+        elif not utils.verify_token_checksum(client_token_provided):
+            await websocket.send(json.dumps({
+                'message': f'"{client_token_provided}" is of incorrect format or the client sent malformed data.',
+                'status': 'error'
+            }))
+            await websocket.close()
+            return
+
         elif not db.get_user(token=client_token_provided):
             await websocket.send(json.dumps({
                 'message': f'Invalid client token "{client_token_provided}" or the client sent malformed data.',
                 'status': 'error'
             }))
-            print(first_message_json)
             await websocket.close()
             return
 
         elif client_token_provided in clients.keys():
             await websocket.send(json.dumps({
-                'message': 'Already connected, if this is incorrect regenerate your token NOW.',
+                'message': 'Already connected, if this is incorrect regenerate your token :heavysob:.',
                 'status': 'error'
             }))
             await websocket.close()
@@ -79,15 +86,11 @@ async def ws_server(websocket, ws_clients, db):
         print("ACTIVE CLIENTS:", clients.keys())
 
         # Update any existing home tabs :yay:
-        #user_id = db.get_user(token=client_token_provided)[0] # 0 is the user_id col
+        #user_id = db.get_user(token=client_token_provided)[1] # 1 is the user_id col
+        #await home.generate_dashboard(client, user_id, utils.get_global_resources())
         # TODO finish
 
-
-        async for message in websocket:
-            print(f"RANDOM MESSAGE: {message}")
-            if message == "close":
-                await websocket.close()
-                return
+        await asyncio.Future() # Keep the connection open forever muhahahahaha
 
     except websockets.exceptions.ConnectionClosed as e:
         print(f"Connection suddenly closed: {e}")
