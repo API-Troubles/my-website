@@ -61,45 +61,24 @@ async def generate_dashboard(client, user_id, data: dict):
                     "type": "divider"
                 },
                 {
-                    "type": "section",
-                    "text": {
-                        "type": "mrkdwn",
-                        "text": "*Process Usage:*"
-                    }
-                },
-                {
                     "type": "actions",
                     "elements": [
                         {
                             "type": "button",
                             "text": {
                                 "type": "plain_text",
-                                "text": "Open Menu",
+                                "text": "Process Usage Menu",
                                 "emoji": True
                             },
-                            "value": "open-process-usage",
                             "action_id": "menu-process-usage"
-                        }
-                    ]
-                },
-                {
-                    "type": "section",
-                    "text": {
-                        "type": "mrkdwn",
-                        "text": "*View `systemd` Services:*"
-                    }
-                },
-                {
-                    "type": "actions",
-                    "elements": [
+                        },
                         {
                             "type": "button",
                             "text": {
                                 "type": "plain_text",
-                                "text": "Open Menu",
+                                "text": "Systemd Menu",
                                 "emoji": True
                             },
-                            "value": "open-process-usage",
                             "action_id": "menu-systemd-services"
                         }
                     ]
