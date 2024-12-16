@@ -1,4 +1,4 @@
-def processes_list_modal():
+def processes_list_modal(processes):
     base = {
         "type": "modal",
         "title": {
@@ -34,15 +34,12 @@ def processes_list_modal():
             }
         ]
     }
-    # TODO: Replace with actual processes
-    processes = []
     for item in processes:
-        # TODO: Replace names with values below
         process_item = {
             "type": "section",
             "text": {
                 "type": "mrkdwn",
-                "text": "[NAME]"
+                "text": f"{item['name']} - PID: {item['pid']}"
             },
             "accessory": {
                 "type": "button",
@@ -51,8 +48,9 @@ def processes_list_modal():
                     "text": "Manage Process",
                     "emoji": True
                 },
-                "value": "[PID/ANY ID]",
+                "value": f"{item['pid']}",
                 "action_id": "manage-process"
             }
         }
-        base['blocks'].insert(-3, process_item)
+        base["blocks"].insert(-2, process_item)
+    return base
