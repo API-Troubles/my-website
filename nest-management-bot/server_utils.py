@@ -33,17 +33,23 @@ async def send_message(message: str, user_uuid: str) -> None:
     await clients[user_uuid].send(json.dumps({'status': 'info', 'message': message}))
 
 
-async def send_command(message: str, user_uuid: str) -> Optional[dict]:
+async def send_command(message: str, user_uuid: str, *, payload: Optional[dict] = None) -> Optional[dict]:
     """
     Send a command to the client
     :param message: The message to send
     :param user_uuid: The client to send a message to
+    :param payload: The payload to send (optional)
     :return: The client's response to the command
     """
     client = clients[user_uuid]
-    await client.send(json.dumps({'status': 'command', 'message': message}))
+    command_to_send = {
+        'status': 'command',
+        'message': message
+    }
+    if payload:
+        command_to_send["payload"] = payload
+    await client.send(json.dumps(command_to_send))
 
-    print(user_uuid)
     try:
         async with asyncio.timeout(1):
             response_json = await client.recv()
