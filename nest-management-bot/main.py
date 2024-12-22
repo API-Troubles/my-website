@@ -143,7 +143,7 @@ async def menu_process_usage(ack, body, client, logger):
 
 @app.action("processes-change-page-prev")
 @app.action("processes-change-page-next")
-async def handle_some_action(ack, body, client, logger):
+async def processes_change_page(ack, body, client, logger):
     user_id = body['user']['id']
     page = int(body['actions'][0]['value'])
 
