@@ -1,0 +1,56 @@
+def error_modal(error):
+    return {
+        "type": "modal",
+        "title": {
+            "type": "plain_text",
+            "text": "Error Experienced :(",
+            "emoji": True
+        },
+        "submit": {
+            "type": "plain_text",
+            "text": "Submit",
+            "emoji": True
+        },
+        "close": {
+            "type": "plain_text",
+            "text": "Cancel",
+            "emoji": True
+        },
+        "blocks": [
+            {
+                "type": "section",
+                "text": {
+                    "type": "plain_text",
+                    "text": "Mission control to blahaj, we have an error!",
+                    "emoji": True
+                }
+            },
+            {
+                "type": "section",
+                "text": {
+                    "type": "plain_text",
+                    "text": "We have experienced an error and cannot continue (my code tried its best ok) :im-sobbing:",
+                    "emoji": True
+                }
+            },
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": f"```{error}```"
+                }
+            },
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "_If the error does not contain troubleshooting steps, take a screenshot of this error and send it in #nest-management-bot :heavysob: I'm sorry (Canadian Edition apology)_"
+                }
+            },
+            {
+                "type": "image",
+                "image_url": "https://media1.tenor.com/m/1BWouEztZM4AAAAd/troubleshooting-it.gif",
+                "alt_text": "GIF of a loading bar reaching 99% then showing an error prompt. A cat then throws a keyboard at the monitor. Text displays at the bottom 'if all else fails try percussive engineering!'"
+            }
+        ]
+    }
