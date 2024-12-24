@@ -52,7 +52,7 @@ async def processes_list_page(client, user_id, processes, page, total_pages):
         }
         base["blocks"].insert(-2, process_item)
 
-    if page > 0:
+    if page > 0: # insert prev button if not first page
         base["blocks"][-1]["elements"].insert(0, {
             "type": "button",
             "text": {
@@ -63,7 +63,7 @@ async def processes_list_page(client, user_id, processes, page, total_pages):
             "value": f"{page-1}",
             "action_id": "processes-change-page-prev"
         })
-    if page+1 != total_pages:
+    if page+1 != total_pages: # insert next button if not last page
         base["blocks"][-1]["elements"].append({
             "type": "button",
             "text": {
