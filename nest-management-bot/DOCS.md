@@ -4,7 +4,7 @@ for questions and to contribute, DM @Felix Gao on Hack Club's slack :D
 
 ## Websocket Docs
 ### Message Syntax
-All messages have a status, along with a message or payload:
+All messages have a status, along with a message or payload. Usually messages aren't read by the code, but often used to hide funny easter eggs and to transmit certain messages for the user to see.
 ```json
 {
   "status": "info",
@@ -20,14 +20,16 @@ or...
   }
 }
 ```
+Payloads can either be a dictionary (`{'key': 'value'}`) or a list (`[1, 2, 3, 4, 5]`) depending on its usage.
+
 
 The following are valid status types:
 - `info` (these are usually messages which will be logged)
 - `command`
 - `command_response`
 - `command_response_error`
-- `warning` (unused for now ig)
-- `error` (errors which aren't command responses)
+- `warning` (unused for now)
+- `error` (errors which aren't command responses, basically only sent by the server)
 
 Command responses and commands can also include a payload item with anything inside:
 ```json
@@ -65,12 +67,15 @@ Commands may have a payload in cases where more specific info is needed
 Commands can have the following message text:
 - `obtain_all_process_info` (no payload)
 - `obtain_process_info`(payload of `pid`)
-- `kill_process`(payload of `pid`)
+- `kill_process`(payload of `pid` and `method` [`SIGKILL` or `SIGTERM`])
+- `pause_process`(payload of `pid`)
+- `resume_process`(payload of `pid`)
+- `list_services` (no payload)
+- `obtain_service_info` (payload of `service_name`)
 - `start_service` (payload of `service_name`)
 - `stop_service` (payload of `service_name`)
 - `restart_service` (payload of `service_name`)
 - `reload_service` (payload of `service_name`)
-- `exec_command` (payload of `command`)
 
 ### Connecting:
 To connect fully, the client needs to send the following message (with a different `client_token`)
