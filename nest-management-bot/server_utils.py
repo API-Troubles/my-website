@@ -64,12 +64,10 @@ async def send_command(message: str, user_uuid: str, *, payload: Optional[dict] 
         await send_error('Response was not JSON.', user_uuid)
         return
 
-    if response.get('status') == 'command_response':
+    if response.get('status') in ['command_response', 'command_response_error']:
         return response
-    elif response.get('status') == 'error':
-        raise ClientError(response.get('message'))
     else:
-        await send_error('Response did not have a valid status value.', user_uuid)
+        raise ValueError(f'Response was not of valid type ({response.get('status', 'no status?!?')}), code is cashing out')
 
 
 async def send_error(error_msg, user_uuid: str, *, possible=False, disconnect=True) -> None:
