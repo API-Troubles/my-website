@@ -97,7 +97,6 @@ def get_service_info(service_name: str) -> dict:
     unit_path = service_interface.Get('org.freedesktop.systemd1.Unit', 'FragmentPath')
     main_pid = service_interface.Get('org.freedesktop.systemd1.Service', 'MainPID')
     start_timestamp = int(service_interface.Get('org.freedesktop.systemd1.Service', 'ExecMainStartTimestamp')) / 1_000_000
-    exec_reload = service_interface.Get('org.freedesktop.systemd1.Unit', 'ExecReload')
 
     uptime = None
     time_ago = None
@@ -118,8 +117,7 @@ def get_service_info(service_name: str) -> dict:
         'sub_state': service_interface.Get('org.freedesktop.systemd1.Unit', 'SubState'),
         'file_location': unit_path,
         'uptime': formatted_uptime,
-        'pid': main_pid,
-        'can_reload': True if exec_reload else False
+        'pid': main_pid
     }
 
 
@@ -140,21 +138,6 @@ def get_storage() -> list:
         new_result.append(split)
 
     return new_result
-
-
-def get_max_memory() -> float:
-    output = subprocess.run(
-        ["quota"],
-        capture_output=True,
-        text=True,
-        check=True
-    ).stdout
-
-    quota_line = next((line for line in output.splitlines() if "/dev/" in line), None)
-    extracted_line = list(map(int, re.findall(r"\d+", quota_line)))
-    total_limit = extracted_line[3]
-
-    return round(total_limit * 4 / 10**9, 3) # 4KB blocks multiplied by 10^9 to get GB :D
 
 
 async def client():
@@ -217,7 +200,25 @@ async def client():
 
 def command_handler(message: str, payload: dict) -> dict:
     logging.debug(f"Command of type '{message}' received")
-    if message == "obtain_all_process_info":
+    if message == "obtain_user_usages":
+        """
+        Obtains the usage data for the user
+        """
+        result = subprocess.run(
+            ["nest", "resources"],
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        logging.info("Sending usage data...")
+        return {
+            "status": "command_response",
+            "payload": {
+                "resources": result.stdout,
+                "storage": get_storage()
+            }
+        }
+    elif message == "obtain_all_process_info":
         """
         Lists running processes and associated systemd data if it exists 
         """
@@ -240,7 +241,6 @@ def command_handler(message: str, payload: dict) -> dict:
         """
         Provides information about a specific process
         """
-        # Get process
         try:
             process = psutil.Process(payload.get('pid'))
         except psutil.NoSuchProcess:
