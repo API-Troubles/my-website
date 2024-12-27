@@ -67,7 +67,7 @@ async def generate_dashboard(client, user_id, data: dict):
                             "type": "button",
                             "text": {
                                 "type": "plain_text",
-                                "text": "Process Usage Menu",
+                                "text": "Processes Menu",
                                 "emoji": True
                             },
                             "action_id": "menu-process-usage"
@@ -76,10 +76,24 @@ async def generate_dashboard(client, user_id, data: dict):
                             "type": "button",
                             "text": {
                                 "type": "plain_text",
-                                "text": "Systemd Menu",
+                                "text": "Systemd Services Menu",
                                 "emoji": True
                             },
                             "action_id": "menu-systemd-services"
+                        }
+                    ]
+                },
+                {
+                    "type": "actions",
+                    "elements": [
+                        {
+                            "type": "button",
+                            "text": {
+                                "type": "plain_text",
+                                "text": "View Your Usages",
+                                "emoji": True
+                            },
+                            "action_id": "menu-user-usages"
                         }
                     ]
                 },
