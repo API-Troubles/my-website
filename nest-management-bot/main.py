@@ -37,14 +37,6 @@ db = database.Database({
     "port": "5432"
 })
 
-status_emojis = {
-    "running": "🏃",
-    "sleeping": "😴",
-    "zombie": "🧟",
-    "stopped": "⏹️",
-    "disk-sleep": "💽"
-}
-
 me = os.environ['MY_SLACK_ID']
 pagination_page_size: int = 15 # Arbitrary number set cause i needed one, pretty safe to change whenever :D
 
@@ -80,10 +72,15 @@ async def update_home_tab(client, event, logger):
 
 
 @app.action("generate-dashboard")
-async def handle_some_action(ack, body, client, logger):
+async def generate_dashboard(ack, body, client, logger):
     user_id = body['user']['id']
     await views.dashboard.generate_dashboard(client, user_id, utils.get_global_resources())
+    await ack()
 
+
+@app.action("generate-settings")
+async def generate_settings(ack, body, client, logger): # unused for now, gotta work out db stuff
+    await client.views_open(trigger_id=body["trigger_id"], view=modals.settings_modal())
     await ack()
 
 
@@ -124,7 +121,7 @@ async def setup_user(ack, body, client, logger):
     await ack()
 
 
-async def send_paginated_result(client, user_id, user_token, page: int):
+async def send_paginated_result_process(client, user_id, user_token, page: int):
     result = await utils.send_command("obtain_all_process_info", user_token)
 
     page_contents = result["payload"][page*pagination_page_size:page*pagination_page_size+pagination_page_size]
@@ -137,7 +134,7 @@ async def menu_process_usage(ack, body, client, logger):
     user_id = body['user']['id']
     user_token = db.get_user(slack_id=user_id)[0]
 
-    await send_paginated_result(client, user_id, user_token, page=0)
+    await send_paginated_result_process(client, user_id, user_token, page=0)
     await ack()
 
 
@@ -149,36 +146,121 @@ async def processes_change_page(ack, body, client, logger):
 
     user_token = db.get_user(slack_id=user_id)[0]
 
-    await send_paginated_result(client, user_id, user_token, page)
-    await ack()
-
-
-@app.action("menu-systemd-services")
-async def menu_systemd_services(ack, body, logger):
-    user_id = body['user']['id']
-    logger.info(body)
-
+    await send_paginated_result_process(client, user_id, user_token, page)
     await ack()
 
 
 @app.action("manage-process")
-async def menu_manage_process(ack, body, logger):
+async def menu_manage_process(ack, body, client, logger):
     user_id = body['user']['id']
-    pid = body['actions'][0]['value']
-    logger.info(body)
+    pid = body['actions'][0]['value'].split("-")
 
     user_token = db.get_user(slack_id=user_id)[0]
-    await utils.send_command("obtain_process_info", user_token, payload={"pid": int(pid)})
+    result = await utils.send_command("obtain_process_info", user_token, payload={"pid": int(pid[0])})
+    process_info = result['payload']
+
+    if pid[1] == "update":
+        await client.views_update(view_id=body["view"]["id"], view=modals.process_info_modal(process_info))
+    else:
+        await client.views_open(trigger_id=body["trigger_id"], view=modals.process_info_modal(process_info))
 
     await ack()
 
 
-ws_handler = partial(ws_server, db=db)
+@app.action("kill-process-1")
+@app.action("kill-process-2") # Slack requires unique names, I have 2 buttons. They do the same thing so uhh lol
+async def process_kill(ack, body, client, logger):
+    user_id = body['user']['id']
+    pid = body['actions'][0]['value'].split("-")
+    logger.info(body)
+
+    user_token = db.get_user(slack_id=user_id)[0]
+    result = await utils.send_command("kill_process", user_token, payload={"pid": int(pid[0]), "method": pid[3]})
+
+    if result['status'] == 'command_response_error':
+        await client.views_update(
+            view_id=body["view"]["id"],
+            view=modals.error_modal(result['payload']['error'])
+        )
+    else:
+        await client.views_update(
+            view_id=body["view"]["id"],
+            view=modals.process_kill_success_modal(pid)
+        )
+    await ack()
+
+
+async def send_paginated_result_systemd(client, user_id, user_token, page: int):
+    result = await utils.send_command("list_services", user_token)
+
+    page_contents = result["payload"][page*pagination_page_size:page*pagination_page_size+pagination_page_size]
+    total_pages = math.ceil(len(result["payload"])/pagination_page_size)
+    await views.systemd_services_list_page(client, user_id, page_contents, page, total_pages)
+
+
+@app.action("menu-systemd-services")
+async def menu_systemd_services(ack, body, client, logger):
+    user_id = body['user']['id']
+    user_token = db.get_user(slack_id=user_id)[0]
+    logger.info(body)
+
+    await send_paginated_result_systemd(client, user_id, user_token, page=0)
+    await ack()
+
+
+@app.action("services-change-page-prev")
+@app.action("services-change-page-next")
+async def services_change_page(ack, body, client, logger):
+    user_id = body['user']['id']
+    page = int(body['actions'][0]['value'])
+
+    user_token = db.get_user(slack_id=user_id)[0]
+
+    await send_paginated_result_systemd(client, user_id, user_token, page)
+    await ack()
+
+
+@app.action("manage-service")
+async def menu_manage_service(ack, body, client, logger):
+    user_id = body['user']['id']
+    service_name = body['actions'][0]['value'].split("-")
+
+    user_token = db.get_user(slack_id=user_id)[0]
+    result = await utils.send_command("obtain_service_info", user_token, payload={"service_name": service_name[0]})
+    service_info = result['payload']
+
+    if service_name[1] == "update":
+        await client.views_update(view_id=body["view"]["id"], view=modals.service_info_modal(service_info))
+    else:
+        await client.views_open(trigger_id=body["trigger_id"], view=modals.service_info_modal(service_info))
+
+    await ack()
+
+
+@app.action("manage-service-action-1")
+@app.action("manage-service-action-2")
+@app.action("manage-service-action-3") # WHY SLACK DO THEY MUST BE UNIQUE? I just want my code to be readable is that too much to ask this Christmas?
+async def service_action(ack, body, client, logger):
+    user_id = body['user']['id']
+    service_info = body['actions'][0]['value'].split("-")
+
+    user_token = db.get_user(slack_id=user_id)[0]
+    result = await utils.send_command(f"{service_info[1]}_service", user_token, payload={"service_name": service_info[0]})
+
+    if result['status'] == 'command_response_error':
+        await client.views_update(view_id=body["view"]["id"], view=modals.error_modal(result['payload']['error']))
+    else:
+        await client.views_update(view_id=body["view"]["id"], view=modals.service_action_modal(service_info[0], service_info[1]))
+
+    await ack()
+
+
 async def ws_main():
     #ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
     #ssl_context.load_cert_chain("cert.pem", "private_key.pem")
 
-    async with serve(ws_handler, "localhost", 8989):#, ssl=ssl_context):
+    ws_handler = partial(ws_server, db=db)
+    async with serve(ws_handler, "localhost", 8989, ping_interval=10, ping_timeout=5):#, ssl=ssl_context):
         print("server running...")
         await asyncio.get_running_loop().create_future()  # run forever
 
