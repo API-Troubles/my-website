@@ -1,9 +1,13 @@
 import asyncio
 #import dbus
+import humanize
 import json
 import logging
 import os
+from datetime import datetime
+
 import psutil
+import re
 import ssl
 import signal
 import subprocess
@@ -14,7 +18,7 @@ from dotenv import load_dotenv
 
 logging.basicConfig( # Set up logging for the guaranteed errors >:(
     level=logging.INFO,
-    format='%(asctime)s [%(levelname)s]:\t %(message)s',
+    format='%(asctime)s [%(levelname)s]:\t%(message)s',
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 
@@ -53,6 +57,72 @@ def manage_systemd_service(service_name: str, action: Literal["start", "stop", "
     logging.info(f"{action}ed {service_name} successfully")
 
 
+
+def list_systemd_services() -> list:
+    """
+    List all services which exist to the user
+    :return: List of services
+    """
+    units = systemd_manager.ListUnits()
+    services = []
+    for unit in units:
+        if unit[0].endswith('.service'):
+            service_name = unit[0]
+
+            # All this chaos just to get the filepath of the file... thanks chatgpt for the help :pf:
+            service_unit = systemd_manager.GetUnit(service_name)
+            service_object = session_bus.get_object('org.freedesktop.systemd1', service_unit)
+            service_interface = dbus.Interface(service_object, 'org.freedesktop.DBus.Properties')
+            unit_path = service_interface.Get('org.freedesktop.systemd1.Unit', 'FragmentPath')
+
+            # Check if the service file is in ~/.config/systemd/user
+            if unit_path.startswith(os.path.expanduser('~/.config/systemd/user')):
+                services.append(service_name)
+
+    return services
+
+
+def get_service_info(service_name: str) -> dict:
+    """
+    Get information on a specific service
+    :return: List of services
+    """
+    if not service_name.endswith(".service"): # Append with .service if i was stupid and hadn't alr
+        service_name += ".service"
+
+    service_unit = systemd_manager.GetUnit(service_name)
+    service_object = session_bus.get_object('org.freedesktop.systemd1', service_unit)
+    service_interface = dbus.Interface(service_object, 'org.freedesktop.DBus.Properties')
+
+    unit_path = service_interface.Get('org.freedesktop.systemd1.Unit', 'FragmentPath')
+    main_pid = service_interface.Get('org.freedesktop.systemd1.Service', 'MainPID')
+    start_timestamp = int(service_interface.Get('org.freedesktop.systemd1.Service', 'ExecMainStartTimestamp')) / 1_000_000
+    exec_reload = service_interface.Get('org.freedesktop.systemd1.Unit', 'ExecReload')
+
+    uptime = None
+    time_ago = None
+    if main_pid > 0 and start_timestamp > 0:
+        time_dt_object = datetime.fromtimestamp(start_timestamp)
+        uptime = time_dt_object.strftime("%a %Y-%m-%d %H:%M:%S %Z")
+        time_ago = humanize.naturaltime(time_dt_object)
+
+    if uptime and time_ago:
+        formatted_uptime = f"{uptime}; {time_ago}"
+    else:
+        formatted_uptime = "Unable to calculate :("
+
+    return {
+        'name': service_name,
+        'description': service_interface.Get('org.freedesktop.systemd1.Unit', 'Description'),
+        'active_state': service_interface.Get('org.freedesktop.systemd1.Unit', 'ActiveState'),
+        'sub_state': service_interface.Get('org.freedesktop.systemd1.Unit', 'SubState'),
+        'file_location': unit_path,
+        'uptime': formatted_uptime,
+        'pid': main_pid,
+        'can_reload': True if exec_reload else False
+    }
+
+
 def get_storage() -> list:
     """
     Get the storage used by the user
@@ -78,7 +148,7 @@ def get_max_memory() -> float:
         capture_output=True,
         text=True,
         check=True
-    )
+    ).stdout
 
     quota_line = next((line for line in output.splitlines() if "/dev/" in line), None)
     extracted_line = list(map(int, re.findall(r"\d+", quota_line)))
@@ -123,7 +193,7 @@ async def client():
             raise Exception('Broke the server code prob lol') # TODO: Replace w/ better handling
 
         if server_response_json.get('status') == 'error':
-            raise ValueError(f"Server sent error message, we did a goof: {server_response_json.get('message')}")
+            raise ValueError(f"Server sent error, we did a goof: {server_response_json.get('message')}")
 
         logging.info("Authenticated :D")
 
@@ -225,8 +295,10 @@ def command_handler(message: str, payload: dict) -> dict:
                         "pid": payload.get('pid')
                     }
                 }
-            process = psutil.Process(payload['pid'])
-            process.terminate() # SIGTERM
+            if payload.get('method') == "SIGKILL": # the not so kind killing
+                process.kill()
+            elif payload.get('method') == "SIGTERM":  # nicely end a life
+                process.terminate()
             logging.info(f"Killed process with PID: {payload['pid']}")
             return {
                 "status": "command_response",
@@ -239,23 +311,87 @@ def command_handler(message: str, payload: dict) -> dict:
                 "message": f"Process was not killed. Error: {error}"
             }
 
+    elif message == "pause_process":
+        try:
+            try:
+                process = psutil.Process(payload.get('pid'))
+            except psutil.NoSuchProcess:
+                logging.error(f"Could not find process with PID - {payload.get('pid')}")
+                return {
+                    "status": "command_response_error",
+                    "message": "Could not pause process, it no longer exists :( You can safely close this error window and continue life as normal. (sry for the scare lol)",
+                    "payload": {
+                        "pid": payload.get('pid')
+                    }
+                }
+            process.suspend()
+
+            logging.info(f"Paused process with PID: {payload['pid']}")
+            return {
+                "status": "command_response",
+                "message": "Poor process didn't even get a choice, it was just forced to SIGSTOP"
+            }
+        except Exception as error:
+            logging.error(f"Process was not paused - error: {error}")
+            return {
+                "status": "command_response_error",
+                "message": f"Process was not paused. Error: {error}"
+            }
+
+    elif message == "resume_process":
+        try:
+            try:
+                process = psutil.Process(payload.get('pid'))
+            except psutil.NoSuchProcess:
+                logging.error(f"Could not find process with PID - {payload.get('pid')}")
+                return {
+                    "status": "command_response_error",
+                    "message": "Could not resume process, it no longer exists :( You can safely close this error window and continue life as normal. (sry for the scare lol)",
+                    "payload": {
+                        "pid": payload.get('pid')
+                    }
+                }
+            process.resume()
+
+            logging.info(f"Resumed process with PID: {payload['pid']}")
+            return {
+                "status": "command_response",
+                "message": "Keep going! The process is back in action (SIGCONT) :D"
+            }
+        except Exception as error:
+            logging.error(f"Process was not resumed - error: {error}")
+            return {
+                "status": "command_response_error",
+                "message": f"Process was not resumed. Error: {error}"
+            }
+
     elif message == "list_services":
-        ...
+        logging.info("Listing all services...")
+        return {
+            "status": "command_response",
+            "payload": list_systemd_services()
+        }
+
+    elif message == "obtain_service_info":
+        logging.info(f"Getting info for service '{payload['service_name']}'")
+        return {
+            "status": "command_response",
+            "payload": get_service_info(payload['service_name'])
+        }
 
     elif message == "start_service":
         try:
             manage_systemd_service(payload['service_name'], "start")
             return {
                 "status": "command_response",
-                "message": "response_start_service"
+                "message": "Started service, what a lovely day :D"
             }
         except dbus.DBusException as error:
             logging.error(f"Service was not started - error: {error}")
             return {
                 "status": "command_response_error",
-                "message": "response_start_service",
                 "payload": {
-                    "error": f"Service was not started. Error: {error}"
+                    "error": f"Service was not started. Error: {repr(error)}"
                 }
             }
 
@@ -264,15 +400,14 @@ def command_handler(message: str, payload: dict) -> dict:
             manage_systemd_service(payload['service_name'], "stop")
             return {
                 "status": "command_response",
-                "message": "response_stop_service"
+                "message": "Service stopped, what a sad day :("
             }
         except dbus.DBusException as error:
             logging.error(f"Service was not stopped - error: {error}")
             return {
                 "status": "command_response_error",
-                "message": "response_stop_service",
                 "payload": {
-                    "error": f"Service was not stopped. Error: {error}"
+                    "error": f"Service was not stopped. Error: {repr(error)}"
                 }
             }
 
@@ -281,40 +416,37 @@ def command_handler(message: str, payload: dict) -> dict:
             manage_systemd_service(payload['service_name'], "restart")
             return {
                 "status": "command_response",
-                "message": "response_restart_service",
+                "message": "Service was given a bit of a mental restart ¯\_(ツ)_/¯",
             }
         except dbus.DBusException as error:
             logging.error(f"Service was not restarted - error: {error}")
             return {
                 "status": "command_response_error",
-                "message": "response_restart_service",
                 "payload": {
-                    "error": f"Service was not restarted. Error: {error}"
+                    "error": f"Service was not restarted. Error: {repr(error)}"
                 }
             }
+
     elif message == "reload_service":
         try:
             manage_systemd_service(payload['service_name'], "reload")
             return {
                 "status": "command_response",
-                "message": f"response_reload_service"
+                "message": f"Service was given a mental reload ¯\_(ツ)_/¯"
             }
         except dbus.DBusException as error:
             logging.error(f"Service was not reloaded - error: {error}")
             return {
                 "status": "command_response_error",
-                "message": "response_reload_service",
                 "payload": {
-                    "error": error
+                    "error": f"Service was not reloaded. {repr(error)}"
                 }
             }
-    elif message == "exec_command":
-        ... # uhhh, unused for now lol (idk weather this will exist)
+
     else:
         raise ValueError(f"Server sent illegal command of type '{message}' and payload of '{payload}'")
 
 
-
 if __name__ == "__main__":
-    logger.info(f"Starting client websocket... version: {__version__}")
+    logging.info(f"Starting client websocket... version: {__version__}")
     asyncio.run(client())
