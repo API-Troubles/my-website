@@ -45,7 +45,7 @@ def process_info_modal(process_info):
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": f"*MEM Used (RSS):* {process_info['memory']['rss'] / 1024**3:.2f}/2.00 GB" # convert to GB
+                    "text": f"*MEM Used (RSS):* {process_info['memory']['rss'] / 1024**3:.2f}" # convert to GB
                 }
             },
             {
@@ -62,11 +62,21 @@ def process_info_modal(process_info):
                         "type": "button",
                         "text": {
                             "type": "plain_text",
-                            "text": "Kill the process :kirby_gun:",
+                            "text": "Kill the process :kirby_gun: (SIGTERM)",
                             "emoji": True
                         },
-                        "value": f"{process_info['pid']}",
-                        "action_id": "kill-process" # die process, die! (nicely, its SIGTERM not SIGKILL lol)
+                        "value": f"{process_info['pid']}-e-sigterm",
+                        "action_id": "kill-process-1" # die process, die! (SIGTERM)
+                    },
+                    {
+                        "type": "button",
+                        "text": {
+                            "type": "plain_text",
+                            "text": "Brutal Death (SIGKILL)",
+                            "emoji": True
+                        },
+                        "value": f"{process_info['pid']}-e-sigkill",
+                        "action_id": "kill-process-2" # die process, die! but not nicely (SIGKILL)
                     }
                 ]
             },
@@ -74,13 +84,43 @@ def process_info_modal(process_info):
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": f"_Be careful, killing processes can indeed cause problems, watch wat you wish for.{" This process is also critical to the running of this bot, killing *will* likely break something. Be careful... I'm not stopping you tho." if not process_info['safe_kill'] else ''}_"
+                    "text": f"_Use SIGTERM when possible. SIGTERM allows the process to gracefully shut down (or sometimes completely ignore it). SIGKILL is absolutely brutal, the process straight up dies. That leaves no chance for data saving and stuff so use only when needed._"
+                }
+            },
+            {
+                "type": "actions",
+                "elements": [
+                    {
+                        "type": "button",
+                        "text": {
+                            "type": "plain_text",
+                            "text": "Pause the Process",
+                            "emoji": True
+                        },
+                        "value": f"{process_info['pid']}",
+                        "action_id": "pause-process"
+                    }
+                ]
+            },
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": f"_Please remember to unpause it :im-sobbing:_"
+                }
+            },
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": f"_Be careful, messing with processes can indeed cause problems, watch wat you wish for.{" This process is also critical to the running of this bot, touching it *will* break something. Be careful... I'm not stopping you tho." if not process_info['safe_kill'] else ''}_"
                 }
             }
         ]
     }
 
-def process_kill_success_modal(process_info):
+
+def process_kill_success_modal(process_pid):
     return {
         "type": "modal",
         "title": {
@@ -98,7 +138,7 @@ def process_kill_success_modal(process_info):
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": f"You did it, you killed a process (`PID: `{process_info['pid']}`). Be proud of yourself I guess? Lay low and hope you aren't caught by the cops tho..."
+                    "text": f"You did it, you killed a process (`PID: {process_pid}`). Be proud of yourself I guess? Lay low and hope you aren't caught by the cops tho..."
                 }
             }
         ]
