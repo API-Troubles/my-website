@@ -6,14 +6,9 @@ def error_modal(error):
             "text": "Error Experienced :(",
             "emoji": True
         },
-        "submit": {
-            "type": "plain_text",
-            "text": "Submit",
-            "emoji": True
-        },
         "close": {
             "type": "plain_text",
-            "text": "Cancel",
+            "text": "Okay :(",
             "emoji": True
         },
         "blocks": [
