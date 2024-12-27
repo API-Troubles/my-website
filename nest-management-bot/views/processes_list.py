@@ -46,7 +46,7 @@ async def processes_list_page(client, user_id, processes, page, total_pages):
                     "text": "Manage Process",
                     "emoji": True
                 },
-                "value": f"{item['pid']}",
+                "value": f"{item['pid']}-e", # e is just a random value for the sake of it
                 "action_id": "manage-process"
             }
         }
