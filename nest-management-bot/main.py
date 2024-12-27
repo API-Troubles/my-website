@@ -84,6 +84,16 @@ async def generate_settings(ack, body, client, logger): # unused for now, gotta 
     await ack()
 
 
+@app.action("menu-user-usages")
+async def menu_user_usages(ack, body, client, logger):
+    user_id = body['user']['id']
+    user_token = db.get_user(slack_id=user_id)[0]
+    result = await utils.send_command("obtain_user_usages", user_token)
+    await views.user_usages_page(client, user_id, result)
+
+    await ack()
+
+
 @app.action("setup-get-client-token")
 async def setup_user(ack, body, client, logger):
     user_id = body['user']['id']
@@ -186,6 +196,48 @@ async def process_kill(ack, body, client, logger):
         await client.views_update(
             view_id=body["view"]["id"],
             view=modals.process_kill_success_modal(pid)
+        )
+    await ack()
+
+
+@app.action("pause-process")
+async def process_pause(ack, body, client, logger):
+    user_id = body['user']['id']
+    pid = body['actions'][0]['value']
+
+    user_token = db.get_user(slack_id=user_id)[0]
+    result = await utils.send_command("pause_process", user_token, payload={"pid": int(pid)})
+
+    if result['status'] == 'command_response_error':
+        await client.views_update(
+            view_id=body["view"]["id"],
+            view=modals.error_modal(result['payload']['error'])
+        )
+    else:
+        await client.views_update(
+            view_id=body["view"]["id"],
+            view=modals.process_action_success_modal("paus", pid)
+        )
+    await ack()
+
+
+@app.action("resume-process")
+async def process_resume(ack, body, client, logger):
+    user_id = body['user']['id']
+    pid = body['actions'][0]['value']
+
+    user_token = db.get_user(slack_id=user_id)[0]
+    result = await utils.send_command("resume_process", user_token, payload={"pid": int(pid)})
+
+    if result['status'] == 'command_response_error':
+        await client.views_update(
+            view_id=body["view"]["id"],
+            view=modals.error_modal(result['payload']['error'])
+        )
+    else:
+        await client.views_update(
+            view_id=body["view"]["id"],
+            view=modals.process_action_success_modal("resum", pid)
         )
     await ack()
 
