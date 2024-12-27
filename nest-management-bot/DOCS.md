@@ -65,6 +65,7 @@ Commands may have a payload in cases where more specific info is needed
 ```
 
 Commands can have the following message text:
+- `obtain_user_usages` (no payload)
 - `obtain_all_process_info` (no payload)
 - `obtain_process_info`(payload of `pid`)
 - `kill_process`(payload of `pid` and `method` [`SIGKILL` or `SIGTERM`])
