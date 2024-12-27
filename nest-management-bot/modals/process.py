@@ -45,7 +45,7 @@ def process_info_modal(process_info):
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": f"*MEM Used (RSS):* {process_info['memory']['rss'] / 1024**3:.2f}" # convert to GB
+                    "text": f"*MEM Used (RSS):* {process_info['memory']['rss'] / 1024**3:.2f} GB" # convert to GB
                 }
             },
             {
@@ -94,11 +94,11 @@ def process_info_modal(process_info):
                         "type": "button",
                         "text": {
                             "type": "plain_text",
-                            "text": "Pause the Process",
+                            "text": "Resume the Process" if process_info['status'] == "stopped" else "Pause the Process",
                             "emoji": True
                         },
                         "value": f"{process_info['pid']}",
-                        "action_id": "pause-process"
+                        "action_id": "resume-process" if process_info['status'] == "stopped" else "pause-process"
                     }
                 ]
             },
@@ -139,6 +139,31 @@ def process_kill_success_modal(process_pid):
                 "text": {
                     "type": "mrkdwn",
                     "text": f"You did it, you killed a process (`PID: {process_pid}`). Be proud of yourself I guess? Lay low and hope you aren't caught by the cops tho..."
+                }
+            }
+        ]
+    }
+
+
+def process_action_success_modal(action, process_pid):
+    return {
+        "type": "modal",
+        "title": {
+            "type": "plain_text",
+            "text": "Success :yay:",
+            "emoji": True
+        },
+        "close": {
+            "type": "plain_text",
+            "text": "Thanks :)",
+            "emoji": True
+        },
+        "blocks": [
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": f"You did it, you {action}ed a process (`PID: {process_pid}`). Get back to what you're doing now :D"
                 }
             }
         ]
