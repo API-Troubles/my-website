@@ -20,6 +20,20 @@ async def generate_dashboard(client, user_id, data: dict):
                     }
                 },
                 {
+                    "type": "actions",
+                    "elements": [
+                        {
+                            "type": "button",
+                            "text": {
+                                "type": "plain_text",
+                                "text": ":gear: Settings",
+                                "emoji": True
+                            },
+                            "action_id": "generate-settings"
+                        }
+                    ]
+                },
+                {
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
