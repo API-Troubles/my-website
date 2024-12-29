@@ -1,16 +1,9 @@
 """
-Database for handling random things which need to be stored
-
-WIP, borrowed from my url shortener, will modify but don't know whats gonna be stored yet
+Database for handling random things which need to be stored lol
 """
-import re
 from typing import Optional
 
 import psycopg # PostgreSQL db driver v3
-
-
-class DuplicateKey(Exception):
-    pass
 
 
 class Database:
@@ -68,6 +61,40 @@ class Database:
             raise ValueError("User already exists") from error
         else:
             self.conn.commit()
+
+
+    def get_setting(self, slack_id: str, setting: str) -> None:
+        """
+        Yoinks a setting for a user
+        """
+        self.cur.execute(f"SELECT * FROM Settings WHERE slack_id = %s AND setting = %s", (slack_id, setting))
+        setting = self.cur.fetchall()
+        if not setting:
+            return None
+        return setting[0]
+
+
+    def add_setting(self, slack_id: str, setting: str, setting_value: str) -> None:
+        """
+        Adds a setting for a user
+        """
+        self.cur.execute("""
+            INSERT INTO Settings (slack_id, setting, setting_value)
+            VALUES  (%s, %s, %s)""", (slack_id, setting, setting_value)
+        )
+        self.conn.commit()
+
+
+    def edit_setting(self, slack_id: str, setting: str, setting_value: str) -> None:
+        """
+        Changes settings for a user
+        """
+        self.cur.execute("""
+            UPDATE Settings
+            SET setting_value = %s
+            WHERE slack_id = %s AND setting = %s;""", (setting_value, slack_id, setting)
+        )
+        self.conn.commit()
 
 
     def update_token(self, slack_id: str, new_token: str) -> None:
