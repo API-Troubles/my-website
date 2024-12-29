@@ -27,6 +27,15 @@ async def systemd_services_list_page(client, user_id, services, page, total_page
                             "emoji": True
                         },
                         "action_id": "generate-dashboard"
+                    },
+                    {
+                        "type": "button",
+                        "text": {
+                            "type": "plain_text",
+                            "text": ":arrows_clockwise: Reload",
+                            "emoji": True
+                        },
+                        "action_id": "menu-systemd-services"
                     }
                 ]
             }

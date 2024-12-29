@@ -27,6 +27,15 @@ async def processes_list_page(client, user_id, processes, page, total_pages):
                             "emoji": True
                         },
                         "action_id": "generate-dashboard"
+                    },
+                    {
+                        "type": "button",
+                        "text": {
+                            "type": "plain_text",
+                            "text": ":arrows_clockwise: Reload",
+                            "emoji": True
+                        },
+                        "action_id": "menu-process-usage"
                     }
                 ]
             }
