@@ -67,6 +67,15 @@ async def generate_dashboard(client, user_id, data: dict):
                             "type": "button",
                             "text": {
                                 "type": "plain_text",
+                                "text": "My Usage Menu",
+                                "emoji": True
+                            },
+                            "action_id": "menu-user-usages"
+                        },
+                        {
+                            "type": "button",
+                            "text": {
+                                "type": "plain_text",
                                 "text": "Processes Menu",
                                 "emoji": True
                             },
@@ -80,20 +89,6 @@ async def generate_dashboard(client, user_id, data: dict):
                                 "emoji": True
                             },
                             "action_id": "menu-systemd-services"
-                        }
-                    ]
-                },
-                {
-                    "type": "actions",
-                    "elements": [
-                        {
-                            "type": "button",
-                            "text": {
-                                "type": "plain_text",
-                                "text": "View Your Usages",
-                                "emoji": True
-                            },
-                            "action_id": "menu-user-usages"
                         }
                     ]
                 },
@@ -230,13 +225,71 @@ async def generate_setup_websocket(client, user_id):
     """
     await client.views_publish(
         user_id=user_id,
-        view={}
+        view={
+            "type": "home",
+            "blocks": [
+                {
+                    "type": "header",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "Awesome! On to step 2 :D",
+                        "emoji": True
+                    }
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "This bot relies on a websocket, a standard used for communication. In this case, a websocket is run from your Nest user to a server I (@Felix Gao) run. This allows the bot to send and receive messages from your Nest user. There is an element of trust here, I promise to not touch your Nest stuff (too lazy anyways :p).",
+                        "emoji": True
+                    }
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "With that out of the way, let's get setup! To start, run this command. It simply adds a bash script. That bash script handles the setup for the websocket and runs it. You can find it at the repo below, 100% open source :D! This prompt will remain open until you run the command, so come back if you need it again :).",
+                        "emoji": True
+                    }
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": "```command_here --felix_pls_fix```"
+                    }
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": "_Make with 100% open-source love, find the repo here: https://github.com/felixgao-0/my-website _"
+                    }
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": "Forgot to yoink that token? I got you :D =>"
+                    },
+                    "accessory": {
+                        "type": "button",
+                        "text": {
+                            "type": "plain_text",
+                            "text": "Get Token",
+                            "emoji": True
+                        },
+                        "action_id": "setup-get-client-token"
+                    }
+                }
+            ]
+        }
     )
 
 
 async def generate_not_connected(client, user_id):
     """
-    Generate a error page when the websocket isn't connected :(
+    Generate an error page when the websocket isn't connected :(
     :param client:
     :param user_id:
     :return:
@@ -258,21 +311,6 @@ async def generate_not_connected(client, user_id):
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": "*I just setup the bot!*"
-                    }
-                },
-                {
-                    "type": "section",
-                    "text": {
-                        "type": "plain_text",
-                        "text": "Don't fear yet! Continue the setup instructions as normal. If you setup the client correctly this will disappear :).",
-                        "emoji": True
-                    }
-                },
-                {
-                    "type": "section",
-                    "text": {
-                        "type": "mrkdwn",
                         "text": "*What went wrong?*"
                     }
                 },
@@ -280,7 +318,7 @@ async def generate_not_connected(client, user_id):
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": "This bot relies on the websocket for all information and functionality. Check that you have setup and ran the websocket script correctly (`systemctl --user status nest-msg-bot.service` to check its running). For support, ask in #nest-management-bot."
+                        "text": "This bot relies on the websocket to function. Check that the websocket script is running (`systemctl --user status nest-msg-bot.service`). Try starting it with `systemctl --user start nest-msg-bot.service`. For support, ask in #nest-management-bot."
                     }
                 }
             ]
