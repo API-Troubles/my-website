@@ -274,8 +274,7 @@ def command_handler(message: str, payload: dict) -> dict:
                 "status": process.status(),
                 "memory": {
                     "rss": process_mem_info.rss,
-                    "swap": process_mem_info.swap,
-                    "max": get_max_memory()
+                    "swap": process_mem_info.swap
                 },
                 "started": process.create_time(),
                 "safe_kill": safe_to_kill
