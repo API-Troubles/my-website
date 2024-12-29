@@ -63,15 +63,22 @@ class Database:
             self.conn.commit()
 
 
-    def get_setting(self, slack_id: str, setting: str) -> None:
+    def get_setting(self, slack_id: str, setting: Optional[str] = None) -> Optional[list]:
         """
         Yoinks a setting for a user
         """
-        self.cur.execute(f"SELECT * FROM Settings WHERE slack_id = %s AND setting = %s", (slack_id, setting))
-        setting = self.cur.fetchall()
-        if not setting:
+        if setting:
+            self.cur.execute(f"SELECT * FROM Settings WHERE slack_id = %s AND setting = %s", (slack_id, setting))
+        else:
+            self.cur.execute(f"SELECT * FROM Settings WHERE slack_id = %s", (slack_id,))
+
+        setting_result = self.cur.fetchall()
+        if not setting_result:
             return None
-        return setting[0]
+
+        if setting:
+            return setting_result[0]
+        return setting_result
 
 
     def add_setting(self, slack_id: str, setting: str, setting_value: str) -> None:
