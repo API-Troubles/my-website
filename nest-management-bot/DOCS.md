@@ -99,3 +99,28 @@ The server will verify the data sent and then either disconnect the client if th
 }
 ```
 Once that message is received, the client is fully connected. The server will log the client as connected and the user can interface with the bot, sending it commands through the websocket.
+
+# Database Docs
+
+This bot makes use of PostgreSQL to store data and settings for users. This documentation covers what is stored basically.
+
+## Tables (Not case sensitive)
+### `Users`
+With columns:
+- `token` text, a token used to connect to the websocket (see websocket docs)
+- `slack_id` varchar(73), the user's slack ID
+
+The token's generation code can be found in `client_utils.py` somewhere
+
+### `Settings`
+With columns:
+- `slack_id`: varchar(73), the user's slack ID (linked to `users.slack_id`)
+- `setting`: varchar(256), the setting name (see below for valid values)
+- `setting_value`: varchar(256), the setting value
+
+Valid settings and their values:
+
+*marks the default value
+- `storage_unit_of_measurement`: Either `bytes`, `gigabytes`*, or `gibibytes`
+- `mem_or_ram`: Either `mem`* or `ram` (`mem` is ofc better)
+- `tutorial`: A number between `stage_1` and `stage_3` (solely used internally to measure user tutorial progress, `stage_3` is done)
