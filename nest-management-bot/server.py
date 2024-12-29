@@ -8,7 +8,7 @@ import server_utils as utils
 from server_utils import clients
 from views.dashboard import generate_not_connected, generate_dashboard
 
-ws_clients = {} # Internal list used to manage connection state
+ws_clients = {} # Internal list used to manage connection states
 
 async def ws_server(websocket, db, client):
     if not db:
@@ -84,15 +84,13 @@ async def ws_server(websocket, db, client):
         user = db.get_user(token=client_token_provided)
         await generate_dashboard(client.web_client, user[1], utils.get_global_resources())
 
+        if db.get_setting(user[1], 'tutorial')[2] == "stage_2": # stage 2 means the user has just connected :D
+            db.edit_setting(user[1], 'tutorial', 'stage_3') # promote to stage 3, finished :D
+
         # Add client to list to use for sending messages later
         clients[client_token_provided]: websocket = websocket
         ws_clients[websocket.id]: str = client_token_provided
         print("ACTIVE CLIENTS:", clients.keys())
-
-        # Update any existing home tabs :yay:
-        #user_id = db.get_user(token=client_token_provided)[1] # 1 is the user_id col
-        #await home.generate_dashboard(client, user_id, utils.get_global_resources())
-        # TODO finish
 
         await websocket.wait_closed() # Hold the connection open until websocket disconnects, muhahaha
 
