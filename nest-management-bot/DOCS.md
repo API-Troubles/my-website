@@ -121,6 +121,6 @@ With columns:
 Valid settings and their values:
 
 *marks the default value
-- `storage_unit_of_measurement`: Either `bytes`, `gigabytes`*, or `gibibytes`
+- `storage_unit_of_measurement`: Either `bytes`, `gb`*, or `gib`
 - `mem_or_ram`: Either `mem`* or `ram` (`mem` is ofc better)
 - `tutorial`: A number between `stage_1` and `stage_3` (solely used internally to measure user tutorial progress, `stage_3` is done)
