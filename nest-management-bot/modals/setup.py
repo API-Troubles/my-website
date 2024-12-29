@@ -47,7 +47,7 @@ def manage_token_wizard_modal(user_token):
         "type": "modal",
         "title": {
             "type": "plain_text",
-            "text": "My App",
+            "text": "Token Info",
             "emoji": True
         },
         "close": {
