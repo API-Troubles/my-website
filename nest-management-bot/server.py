@@ -6,10 +6,11 @@ import websockets
 
 import server_utils as utils
 from server_utils import clients
+from views.dashboard import generate_not_connected, generate_dashboard
 
 ws_clients = {} # Internal list used to manage connection state
 
-async def ws_server(websocket, db):
+async def ws_server(websocket, db, client):
     if not db:
         raise ValueError('Database not initialized/provided')
     try:
@@ -80,6 +81,9 @@ async def ws_server(websocket, db):
         # User authenticated yay
         await websocket.send(json.dumps({'status': 'info', 'message': 'Authenticated :D'}))
 
+        user = db.get_user(token=client_token_provided)
+        await generate_dashboard(client.web_client, user[1], utils.get_global_resources())
+
         # Add client to list to use for sending messages later
         clients[client_token_provided]: websocket = websocket
         ws_clients[websocket.id]: str = client_token_provided
@@ -90,7 +94,7 @@ async def ws_server(websocket, db):
         #await home.generate_dashboard(client, user_id, utils.get_global_resources())
         # TODO finish
 
-        await asyncio.Future() # Keep the connection open forever muhahahahaha
+        await websocket.wait_closed() # Hold the connection open until websocket disconnects, muhahaha
 
     except websockets.exceptions.ConnectionClosed as e:
         print(f"Connection suddenly closed: {e}")
@@ -101,4 +105,9 @@ async def ws_server(websocket, db):
         client_id = ws_clients.get(websocket.id)
         if clients.get(client_id):
             clients.pop(client_id)
-        print("ACTIVE CLIENTS:", clients.keys())
+
+        user = db.get_user(token=client_id)
+
+        await generate_not_connected(client.web_client, user[1])
+
+        print("CHANGE TO ACTIVE CLIENTS:", clients.keys())
