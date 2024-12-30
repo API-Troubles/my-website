@@ -133,6 +133,15 @@ async def generate_dashboard(client, user_id, data: dict):
                             "text": "I am not liable for any misuse of this bot. I do not warranty this bot at all. use at your own risk. Please report any security vulns by pinging me a million times in DMs (@Felix Gao) /srs."
                         }
                     ]
+                },
+                {
+                    "type": "context",
+                    "elements": [
+                        {
+                            "type": "mrkdwn",
+                            "text": "Feature suggestions? Ping me in #nest-management-bot :D. Contributions? Make a PR to the nest-management-bot folder at https://github.com/felixgao-0/my-website."
+                        }
+                    ]
                 }
             ]
         }
@@ -294,6 +303,22 @@ async def generate_setup_websocket(client, user_id):
                             "emoji": True
                         },
                         "action_id": "setup-get-client-token"
+                    }
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": "_P.S. This bot has settings! Check it out here >_"
+                    },
+                    "accessory": {
+                        "type": "button",
+                        "text": {
+                            "type": "plain_text",
+                            "text": ":gear: Settings",
+                            "emoji": True
+                        },
+                        "action_id": "generate-settings"
                     }
                 }
             ]
