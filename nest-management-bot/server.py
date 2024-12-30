@@ -105,7 +105,6 @@ async def ws_server(websocket, db, client):
             clients.pop(client_id)
 
         user = db.get_user(token=client_id)
-
         await generate_not_connected(client.web_client, user[1])
 
         print("CHANGE TO ACTIVE CLIENTS:", clients.keys())
