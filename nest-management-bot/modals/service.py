@@ -130,6 +130,14 @@ def service_info_modal(service_info):
                 }
             ]
         })
+    if service_info['name'] == "nest-management-bot.service": # Hope this warning works, prob not but oh well :pf:
+        base["blocks"].append({
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": "_Woah there! This service is quite literally the service that makes this bot function. Watch what you do but I'm not stopping you ¯\\_(ツ)_/¯._"
+            }
+        })
 
     return base
 

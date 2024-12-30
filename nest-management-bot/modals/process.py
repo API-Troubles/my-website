@@ -6,7 +6,7 @@ status_emojis = {
     "disk-sleep": "💽"
 }
 
-def process_info_modal(process_info):
+def process_info_modal(process_info, mem_or_ram: str, ram_info: str):
     return {
         "type": "modal",
         "title": {
@@ -45,7 +45,7 @@ def process_info_modal(process_info):
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": f"*MEM Used (RSS):* {process_info['memory']['rss'] / 1024**3:.2f} GB" # convert to GB
+                    "text": f"*{mem_or_ram.upper()} Used (RSS):* {ram_info}"
                 }
             },
             {
