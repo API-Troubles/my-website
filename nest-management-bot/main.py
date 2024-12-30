@@ -88,7 +88,13 @@ async def generate_dashboard(ack, body, client, logger):
 
 @app.action("generate-settings")
 async def generate_settings(ack, body, client, logger): # unused for now, gotta work out db stuff
-    await client.views_open(trigger_id=body["trigger_id"], view=modals.settings_modal())
+    settings = db.get_setting(body['user']['id'])
+
+    settings_dict = {}
+    for setting in settings:
+        settings_dict[setting[1]] = setting[2]
+
+    await client.views_open(trigger_id=body["trigger_id"], view=modals.settings_modal(settings_dict))
     await ack()
 
 
@@ -116,6 +122,8 @@ async def setup_user(ack, body, client, logger):
         user_token = utils.generate_token()
         db.add_user(user_id, user_token)
         db.add_setting(user_id, "tutorial", "stage_2")
+        db.add_setting(user_id, "mem_vs_ram", "mem")
+        db.add_setting(user_id, "storage_unit_of_measurement", "gb")
         await views.dashboard.generate_setup_websocket(client, user_id)
         logger.info(f"Created token for {user_id}, moving on to websocket setup")
 
@@ -177,10 +185,13 @@ async def menu_manage_process(ack, body, client, logger):
     result = await utils.send_command("obtain_process_info", user_token, payload={"pid": int(pid[0])})
     process_info = result['payload']
 
+    mem_or_ram = db.get_setting(user_id, "mem_vs_ram")[2]
+    mem_info = utils.unit_converter(process_info['memory']['rss'], db.get_setting(user_id, "storage_unit_of_measurement")[2])
+
     if pid[1] == "update":
-        await client.views_update(view_id=body["view"]["id"], view=modals.process_info_modal(process_info))
+        await client.views_update(view_id=body["view"]["id"], view=modals.process_info_modal(process_info, mem_or_ram, mem_info))
     else:
-        await client.views_open(trigger_id=body["trigger_id"], view=modals.process_info_modal(process_info))
+        await client.views_open(trigger_id=body["trigger_id"], view=modals.process_info_modal(process_info, mem_or_ram, mem_info))
 
     await ack()
 
@@ -311,6 +322,26 @@ async def service_action(ack, body, client, logger):
         await client.views_update(view_id=body["view"]["id"], view=modals.error_modal(result['payload']['error']))
     else:
         await client.views_update(view_id=body["view"]["id"], view=modals.service_action_modal(service_info[0], service_info[1]))
+
+    await ack()
+
+
+@app.action("settings-unit-data")
+async def settings_unit_data(ack, body, logger):
+    selection = body['actions'][0]['selected_option']['value']
+    user_id = body['user']['id']
+
+    db.edit_setting(user_id, "storage_unit_of_measurement", selection)
+
+    await ack()
+
+
+@app.action("settings-mem-vs-ram")
+async def settings_mem_is_better(ack, body, client, logger):
+    selection = body['actions'][0]['selected_option']['value']
+    user_id = body['user']['id']
+
+    db.edit_setting(user_id, "mem_vs_ram", selection)
 
     await ack()
 
