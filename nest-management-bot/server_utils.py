@@ -6,7 +6,9 @@ import hashlib
 import secrets
 import json
 import socket
+from multiprocessing.managers import Value
 from typing import Optional
+
 #import dbus # Does not work cause well... my dev
 
 
@@ -132,6 +134,21 @@ def get_global_resources():
         "mem": "45/400MB",
         "storage": "42.234GB/100GB",
     }
+
+
+def unit_converter(value: float, unit: str) -> str:
+    """
+    Converts any value given in bytes to the specified unit
+    :return: Converted value
+    """
+    if unit.lower() == "gb":
+        return f"{round(value / 10**9, 3)} GB"
+    elif unit.lower() == "gib":
+        return f"{round(value / 1024**3, 3)} GiB"
+    elif unit.lower() == "bytes":
+        return f"{value} Bytes"
+    else:
+        raise ValueError(f"Invalid unit specified, what on earth is a {unit}?!?")
 
 if __name__ == "__main__":
     print(generate_token())
