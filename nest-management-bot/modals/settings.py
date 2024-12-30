@@ -1,10 +1,10 @@
-def settings_modal():
+def settings_modal(settings_info):
     return {
         "type": "modal",
         "title": {
             "type": "plain_text",
-            "text": "Service Action",
-            "emoji": true
+            "text": "Settings",
+            "emoji": True
         },
         "close": {
             "type": "plain_text",
@@ -23,38 +23,38 @@ def settings_modal():
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": "_Note: Whatever option is bolded is what you have selected currently._"
+                    "text": "_Note: Whatever option is in gray in the selection box is what you have selected currently._"
                 }
             },
             {
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": "*MEM* / RAM"
+                    "text": "MEM / RAM"
                 },
                 "accessory": {
                     "type": "static_select",
                     "placeholder": {
                         "type": "plain_text",
-                        "text": "Select MEM pls",
+                        "text": settings_info['mem_vs_ram'],
                         "emoji": True
                     },
                     "options": [
                         {
                             "text": {
                                 "type": "plain_text",
-                                "text": "*MEM*",
+                                "text": "MEM",
                                 "emoji": True
                             },
-                            "value": "mem"
+                            "value": "MEM"
                         },
                         {
                             "text": {
                                 "type": "plain_text",
-                                "text": "*RAM*",
+                                "text": "RAM",
                                 "emoji": True
                             },
-                            "value": "ram"
+                            "value": "RAM"
                         },
                     ],
                     "action_id": "settings-mem-vs-ram"
@@ -64,39 +64,39 @@ def settings_modal():
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": "Unit of Measurement (Data)"
+                    "text": "Unit of Measurement (Storage)"
                 },
                 "accessory": {
                     "type": "static_select",
                     "placeholder": {
                         "type": "plain_text",
-                        "text": "Select a Unit",
+                        "text": settings_info['storage_unit_of_measurement'],
                         "emoji": True
                     },
                     "options": [
                         {
                             "text": {
                                 "type": "plain_text",
-                                "text": "*GB*",
+                                "text": "GB",
                                 "emoji": True
                             },
-                            "value": "gb"
+                            "value": "GB"
                         },
                         {
                             "text": {
                                 "type": "plain_text",
-                                "text": "*GiB*",
+                                "text": "GiB",
                                 "emoji": True
                             },
-                            "value": "gib"
+                            "value": "GiB"
                         },
                         {
                             "text": {
                                 "type": "plain_text",
-                                "text": "*Bytes*",
+                                "text": "Bytes",
                                 "emoji": True
                             },
-                            "value": "bytes"
+                            "value": "Bytes"
                         }
                     ],
                     "action_id": "settings-unit-data"
