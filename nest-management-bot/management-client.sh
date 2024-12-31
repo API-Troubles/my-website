@@ -36,7 +36,7 @@ if [ ! -d "./nest-management-bot" ]; then
 fi
 
 
-if [ ! -f SERVICE_FILEPATH ]; then
+if [ -f SERVICE_FILEPATH ]; then
     if [ "$(sha256sum "$SERVICE_FILEPATH")" == "$service_remote_hash" ]; then
             echo "Systemd service file exists and is up to date"
         else
