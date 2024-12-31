@@ -54,21 +54,21 @@ async def generate_dashboard(client, user_id, data: dict):
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": f"*CPU:* {data["cpu"]}"
+                        "text": f"*CPU:* {data['cpu']}"
                     }
                 },
                 {
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": f"*MEM:* {data["mem"]}"
+                        "text": f"*MEM:* {data['mem']}"
                     }
                 },
                 {
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": f"*Storage:* {data["storage"]}"
+                        "text": f"*Storage:* {data['storage']}"
                     }
                 },
                 {
@@ -103,6 +103,20 @@ async def generate_dashboard(client, user_id, data: dict):
                                 "emoji": True
                             },
                             "action_id": "menu-systemd-services"
+                        }
+                    ]
+                },
+                {
+                    "type": "actions",
+                    "elements": [
+                        {
+                            "type": "button",
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Get a Port",
+                                "emoji": True
+                            },
+                            "action_id": "menu-get-port"
                         }
                     ]
                 },

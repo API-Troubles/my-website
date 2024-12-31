@@ -84,7 +84,7 @@ def service_info_modal(service_info):
                         "text": "Start Service",
                         "emoji": True
                     },
-                    "value": f"{service_info["name"]}-start",
+                    "value": f"{service_info['name']}-start",
                     "action_id": "manage-service-action-1"
                 }
             ]
@@ -100,7 +100,7 @@ def service_info_modal(service_info):
                         "text": "Stop Service",
                         "emoji": True
                     },
-                    "value": f"{service_info["name"]}-stop",
+                    "value": f"{service_info['name']}-stop",
                     "action_id": "manage-service-action-1"
                 },
                 {
@@ -125,7 +125,7 @@ def service_info_modal(service_info):
                         "text": "Reload Service",
                         "emoji": True
                     },
-                    "value": f"{service_info["name"]}-reload",
+                    "value": f"{service_info['name']}-reload",
                     "action_id": "manage-service-action-3"
                 }
             ]
