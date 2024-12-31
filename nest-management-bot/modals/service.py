@@ -110,7 +110,7 @@ def service_info_modal(service_info):
                         "text": "Restart Service",
                         "emoji": True
                     },
-                    "value": f"{service_info["name"]}-restart",
+                    "value": f"{service_info['name']}-restart",
                     "action_id": f"manage-service-action-2"
                 }
             ]
