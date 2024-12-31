@@ -79,9 +79,10 @@ async def send_error(error_msg, user_uuid: str, *, possible=False, disconnect=Tr
     :param disconnect: Disconnect the server after the error message is sent
     :return:
     """
+    send_help = "This shouldn\'t happen, send a message in #slack-management-bot for help."
     await clients[user_uuid].send(json.dumps(
         {
-            'message': f"{error_msg}{' This shouldn\'t happen, send a message in #slack-management-bot for help.' if not possible else ''}",
+            'message': f"{error_msg}{send_help if not possible else ''}",
             'status': 'error'
         }
     ))
