@@ -113,7 +113,7 @@ def process_info_modal(process_info, mem_or_ram: str, ram_info: str):
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": f"_Be careful, messing with processes can indeed cause problems, watch wat you wish for.{' This process is also critical to the running of this bot, touching it *will* break something. Be careful... I\'m not stopping you tho.' if not process_info['safe_kill'] else ''}_"
+                    "text": f'_Be careful, messing with processes can indeed cause problems, watch wat you wish for.{" This process is also critical to the running of this bot, touching it *will* break something. Be careful... I\'m not stopping you tho." if not process_info['safe_kill'] else ""}_'
                 }
             }
         ]
