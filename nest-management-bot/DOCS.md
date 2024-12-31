@@ -77,6 +77,7 @@ Commands can have the following message text:
 - `stop_service` (payload of `service_name`)
 - `restart_service` (payload of `service_name`)
 - `reload_service` (payload of `service_name`)
+- `get_port` Who needs this?
 
 ### Connecting:
 To connect fully, the client needs to send the following message (with a different `client_token`)

@@ -326,6 +326,17 @@ async def service_action(ack, body, client, logger):
     await ack()
 
 
+@app.action("menu-get-port")
+async def menu_get_port(ack, body, client, logger):
+    user_id = body['user']['id']
+    user_token = db.get_user(slack_id=user_id)[0]
+
+    result = await utils.send_command("get_port", user_token)
+    modals.get_port_modal(result["payload"])
+
+    await ack()
+
+
 @app.action("settings-unit-data")
 async def settings_unit_data(ack, body, logger):
     selection = body['actions'][0]['selected_option']['value']
