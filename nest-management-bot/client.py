@@ -444,7 +444,7 @@ def command_handler(message: str, payload: dict) -> dict:
 
     elif message == "get_port":
         result = subprocess.run(
-            ["nest" "get_port"],
+            ["nest", "get_port"],
             capture_output=True,
             text=True,
             check=True

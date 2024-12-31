@@ -50,10 +50,10 @@ async def update_home_tab(client, event, logger):
     try: # todo: Catch any errors and display a error home tab
         user = db.get_user(slack_id=user_id)
 
-        if user_id != me: # Testing check, blocks others from using D:
-            await views.dashboard.generate_unauthorized(client, user_id)
-            logger.warning(f"{user_id} is not authorized to use this bot")
-            return
+        #if user_id != me: # Testing check, blocks others from using D:
+        #    await views.dashboard.generate_unauthorized(client, user_id)
+        #    logger.warning(f"{user_id} is not authorized to use this bot")
+        #    return
 
         if not user: # User not registered, signup!
             await views.dashboard.generate_setup_token(client, user_id)
@@ -343,7 +343,7 @@ async def menu_get_port(ack, body, client, logger):
     user_token = db.get_user(slack_id=user_id)[0]
 
     result = await utils.send_command("get_port", user_token)
-    modals.get_port_modal(result["payload"])
+    await client.views_open(trigger_id=body["trigger_id"], view=modals.get_port_modal(result["payload"]))
 
     await ack()
 

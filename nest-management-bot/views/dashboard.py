@@ -65,7 +65,7 @@ async def generate_dashboard(client, user_id, data: dict, mem_info: str, storage
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": f"*CPU:* {data['cpu']['percent']}"
+                        "text": f"*CPU:* {data['cpu']['percent']}%"
                     }
                 },
                 {
