@@ -196,7 +196,7 @@ async def generate_unauthorized(client, user_id):
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": "Check back in soon! Bot is in active development"
+                        "text": "I guess you've been banned? What on earth did you do lol"
                     }
                 }
             ]
@@ -296,7 +296,7 @@ async def generate_setup_websocket(client, user_id):
                     "type": "section",
                     "text": {
                         "type": "plain_text",
-                        "text": "With that out of the way, let's get setup! To start, run this command. It simply adds a bash script. That bash script handles the setup for the websocket and runs it. You can find it at the repo below, 100% open source :D! This prompt will remain open until you run the command, so come back if you need it again :).",
+                        "text": "With that out of the way, let's get setup! Read the canvas link below:",
                         "emoji": True
                     }
                 },
@@ -304,7 +304,7 @@ async def generate_setup_websocket(client, user_id):
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": "```command_here --felix_pls_fix```"
+                        "text": "https://hackclub.slack.com/docs/T0266FRGM/F07UDKPC3RV"
                     }
                 },
                 {
