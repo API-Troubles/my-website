@@ -18,7 +18,7 @@ SERVICE_REMOTE_URL="https://raw.githubusercontent.com/felixgao-0/my-website/refs
 SERVICE_FILEPATH="./.config/systemd/user/nest-management-bot.service"
 
 # Yes I shoved all my requirements on a single line of bash, oh welp :pf:
-DEPENDENCIES=("psutil" "websockets" "humanize" "python-dotenv")
+DEPENDENCIES=("psutil" "websockets" "humanize" "python-dotenv" "dbus")
 # END configuration variables
 
 client_remote_hash=$(curl -s CLIENT_REMOTE_URL | sha256sum)
