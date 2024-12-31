@@ -3,26 +3,24 @@ All the utilities used by server.py to make life easier lol
 """
 import asyncio
 import hashlib
-import secrets
 import json
-import socket
-from multiprocessing.managers import Value
+
+import humanize
+import psutil
+import secrets
+#import socket
 from typing import Optional
 
-#import dbus # Does not work cause well... my dev
 
-
-# DBus bindings to systemd
-"""
-session_bus = dbus.SessionBus()
-systemd = session_bus.get_object('org.freedesktop.systemd1', '/org/freedesktop/systemd1')
-manager = dbus.Interface(systemd, 'org.freedesktop.systemd1.Manager')"""
 
 clients = {}
 
 
-class ClientError(Exception):
-    pass
+def get_uptime() -> str:
+    with open('/proc/uptime', 'r') as f:
+        uptime_seconds = float(f.readline().split()[0])
+
+    return humanize.naturaltime(uptime_seconds)
 
 
 async def send_message(message: str, user_uuid: str) -> None:
@@ -126,13 +124,24 @@ def verify_token_checksum(token: str) -> bool:
 
 def get_global_resources():
     """
-    Get a list of systemd processes which the user has
+    Get resources and info for the entirety of Nest
     :return: A list of services
     """
+    mem_info = psutil.virtual_memory()
+    storage_info = psutil.disk_usage('/')
     return {
-        "cpu": "40%",
-        "mem": "45/400MB",
-        "storage": "42.234GB/100GB",
+        "cpu": {
+            "percent": psutil.cpu_percent(interval=0.1),
+            "cores": psutil.cpu_count(),
+        "mem": {
+            "total": mem_info.total,
+            "used": mem_info.total - mem_info.available,
+        },
+        "storage": {
+            "total": storage_info.total,
+            "used": storage_info.used
+        },
+        "uptime": get_uptime()
     }
 
 
