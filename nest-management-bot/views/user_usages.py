@@ -50,6 +50,7 @@ async def user_usages_page(client, user_id, usage):
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
+                    # todo: use settings instead of hardcoding gb
                     "text": "\n".join([f"`{item[1]}`: {round(int(item[0]) / 10**9, 4)} GB" for item in usage['storage']])
                 }
             },

@@ -85,8 +85,8 @@ async def ws_server(websocket, db, client):
 
         all_info = utils.get_global_resources()
         unit = db.get_setting(user[1], "storage_unit_of_measurement")[2]
-        mem_info = f"{utils.unit_converter(all_info['mem']['used'], unit, include_unit=False)}{utils.unit_converter(all_info['mem']['total'], unit)}"
-        storage_info = f"{utils.unit_converter(all_info['storage']['used'], unit, include_unit=False)}{utils.unit_converter(all_info['storage']['total'], unit)}"
+        mem_info = f"{utils.unit_converter(all_info['mem']['used'], unit, include_unit=False)}/{utils.unit_converter(all_info['mem']['total'], unit)}"
+        storage_info = f"{utils.unit_converter(all_info['storage']['used'], unit, include_unit=False)}/{utils.unit_converter(all_info['storage']['total'], unit)}"
         await generate_dashboard(client.web_client, user[1], all_info, mem_info, storage_info)
 
         if db.get_setting(user[1], 'tutorial')[2] == "stage_2": # stage 2 means the user has just connected :D
