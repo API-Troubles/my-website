@@ -7,7 +7,6 @@ import os
 from datetime import datetime
 
 import psutil
-import re
 import ssl
 import signal
 import subprocess
@@ -141,7 +140,7 @@ def get_storage() -> list:
 
 
 async def client():
-    uri = "ws://0e72-135-0-146-179.ngrok-free.app/"
+    uri = "ws://localhost:36183"
 
     #ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
     #ssl_context.load_verify_locations("cert.pem")
