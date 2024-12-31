@@ -147,17 +147,17 @@ def get_global_resources():
     }
 
 
-def unit_converter(value: float, unit: str) -> str:
+def unit_converter(value: float, unit: str, *, include_unit = True) -> str:
     """
     Converts any value given in bytes to the specified unit
     :return: Converted value
     """
     if unit.lower() == "gb":
-        return f"{round(value / 10**9, 3)} GB"
+        return f"{round(value / 10**9, 3)}{' GB' if include_unit else ''}"
     elif unit.lower() == "gib":
-        return f"{round(value / 1024**3, 3)} GiB"
+        return f"{round(value / 1024**3, 3)}{' GiB' if include_unit else ''}"
     elif unit.lower() == "bytes":
-        return f"{value} Bytes"
+        return f"{value}{' Bytes' if include_unit else ''}"
     else:
         raise ValueError(f"Invalid unit specified, what on earth is a {unit}?!?")
 

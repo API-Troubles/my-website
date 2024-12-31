@@ -1,9 +1,11 @@
-async def generate_dashboard(client, user_id, data: dict):
+async def generate_dashboard(client, user_id, data: dict, mem_info: str, storage_info: str):
     """
     Generates the default dashboard
     :param client:
     :param user_id:
     :param data: The data to display on the dashboard
+    :param mem_info: The memory info to display
+    :param storage_info: The storage info to display
     :return:
     """
     await client.views_publish(
@@ -37,7 +39,7 @@ async def generate_dashboard(client, user_id, data: dict):
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": "View your Nest stats quickly below!\nDEVELOPMENT - attempting real data :pf:"
+                        "text": "View your Nest stats quickly below!\nPUBLIC BETA: Real Data, report problems to #nest-management-bot"
                     }
                 },
                 {
@@ -54,21 +56,21 @@ async def generate_dashboard(client, user_id, data: dict):
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": f"*CPU:* {data['cpu']}"
+                        "text": f"*CPU:* {data['cpu']['percent']}"
                     }
                 },
                 {
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": f"*MEM:* {data['mem']}"
+                        "text": f"*MEM:* {mem_info}"
                     }
                 },
                 {
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": f"*Storage:* {data['storage']}"
+                        "text": f"*Storage:* {storage_info}"
                     }
                 },
                 {
