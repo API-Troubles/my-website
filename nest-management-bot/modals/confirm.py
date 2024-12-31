@@ -28,7 +28,7 @@ def confirm_prompt(action: str, consequence: str):
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": f"_Reminder: {consequence if consequence else "Be careful with what you do :pf:"}_"
+                    "text": f"_Reminder: {consequence if consequence else 'Be careful with what you do :pf:'}_"
                 }
             }
         ]
