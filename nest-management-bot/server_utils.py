@@ -67,7 +67,7 @@ async def send_command(message: str, user_uuid: str, *, payload: Optional[dict] 
     if response.get('status') in ['command_response', 'command_response_error']:
         return response
     else:
-        raise ValueError(f'Response was not of valid type ({response.get('status', 'no status?!?')}), code is cashing out')
+        raise ValueError(f"Response was not of valid type ({response.get('status', 'no status?!?')}), code is cashing out")
 
 
 async def send_error(error_msg, user_uuid: str, *, possible=False, disconnect=True) -> None:
@@ -81,7 +81,7 @@ async def send_error(error_msg, user_uuid: str, *, possible=False, disconnect=Tr
     """
     await clients[user_uuid].send(json.dumps(
         {
-            'message': f'{error_msg}{' This shouldn\'t happen, send a message in #slack-management-bot for help.' if not possible else ''}',
+            'message': f"{error_msg}{' This shouldn\'t happen, send a message in #slack-management-bot for help.' if not possible else ''}",
             'status': 'error'
         }
     ))
