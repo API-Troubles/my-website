@@ -75,8 +75,8 @@ async def update_home_tab(client, event, logger):
         all_info = utils.get_global_resources()
 
         unit = db.get_setting(user_id, "storage_unit_of_measurement")[2]
-        mem_info = f"{utils.unit_converter(all_info['mem']['used'], unit, include_unit=False)}{utils.unit_converter(all_info['mem']['total'], unit)}"
-        storage_info = f"{utils.unit_converter(all_info['storage']['used'], unit, include_unit=False)}{utils.unit_converter(all_info['storage']['total'], unit)}"
+        mem_info = f"{utils.unit_converter(all_info['mem']['used'], unit, include_unit=False)}/{utils.unit_converter(all_info['mem']['total'], unit)}"
+        storage_info = f"{utils.unit_converter(all_info['storage']['used'], unit, include_unit=False)}/{utils.unit_converter(all_info['storage']['total'], unit)}"
         await views.dashboard.generate_dashboard(client, user_id, all_info, mem_info, storage_info)
 
     except Exception as e:
@@ -91,8 +91,8 @@ async def generate_dashboard(ack, body, client, logger):
     all_info = utils.get_global_resources()
 
     unit = db.get_setting(user_id, "storage_unit_of_measurement")[2]
-    mem_info = f"{utils.unit_converter(all_info['mem']['used'], unit, include_unit=False)}{utils.unit_converter(all_info['mem']['total'], unit)}"
-    storage_info = f"{utils.unit_converter(all_info['storage']['used'], unit, include_unit=False)}{utils.unit_converter(all_info['storage']['total'], unit)}"
+    mem_info = f"{utils.unit_converter(all_info['mem']['used'], unit, include_unit=False)}/{utils.unit_converter(all_info['mem']['total'], unit)}"
+    storage_info = f"{utils.unit_converter(all_info['storage']['used'], unit, include_unit=False)}/{utils.unit_converter(all_info['storage']['total'], unit)}"
     await views.dashboard.generate_dashboard(client, user_id, all_info, mem_info, storage_info)
     await ack()
 

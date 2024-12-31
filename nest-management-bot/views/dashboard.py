@@ -32,6 +32,15 @@ async def generate_dashboard(client, user_id, data: dict, mem_info: str, storage
                                 "emoji": True
                             },
                             "action_id": "generate-settings"
+                        },
+                        {
+                            "type": "button",
+                            "text": {
+                                "type": "plain_text",
+                                "text": ":arrows_clockwise: Reload",
+                                "emoji": True
+                            },
+                            "action_id": "generate-dashboard"
                         }
                     ]
                 },
