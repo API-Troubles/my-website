@@ -133,6 +133,7 @@ def get_global_resources():
         "cpu": {
             "percent": psutil.cpu_percent(interval=0.1),
             "cores": psutil.cpu_count(),
+        },
         "mem": {
             "total": mem_info.total,
             "used": mem_info.total - mem_info.available,
