@@ -39,6 +39,7 @@
 .env.*
 .gitconfig
 venv/*
+**/venv/
 
 # Secret keys and such
 *.pem
