@@ -4,7 +4,7 @@ for questions and to contribute, DM @Felix Gao on Hack Club's slack :D
 
 ## Websocket Docs
 ### Message Syntax
-All messages have a status, along with a message or payload. Usually messages aren't read by the code, but often used to hide funny easter eggs and to transmit certain messages for the user to see.
+The websocket uses a very basic structure made of JSON. All messages have a status, along with a message or payload. Usually messages aren't read by the code, but often used to hide funny easter eggs and to transmit certain messages for the user to see.
 ```json
 {
   "status": "info",
@@ -20,7 +20,7 @@ or...
   }
 }
 ```
-Payloads can either be a dictionary (`{'key': 'value'}`) or a list (`[1, 2, 3, 4, 5]`) depending on its usage.
+Payloads can either be a dictionary (`{'key': 'value'}`), a message (`"None of the code works"`), or a list (`[1, 2, 3, 4, 5]`) depending on its usage.
 
 
 The following are valid status types:
@@ -35,7 +35,6 @@ Command responses and commands can also include a payload item with anything ins
 ```json
 {
   "status": "command_response",
-  "message": "response_download_raid_shadow_legends",
   "payload": {
     "example_data": "pls i downloaded, let my family go :sob:"
   }
@@ -46,7 +45,6 @@ Errors suck :(
 ```json
 {
   "status": "command_response_error",
-  "message": "response_download_raid_shadow_legends",
   "payload": {
     "error": "I like NordVPN better l bozo take that mister server!"
   }
@@ -101,11 +99,11 @@ The server will verify the data sent and then either disconnect the client if th
 ```
 Once that message is received, the client is fully connected. The server will log the client as connected and the user can interface with the bot, sending it commands through the websocket.
 
-# Database Docs
+## Database Docs
 
 This bot makes use of PostgreSQL to store data and settings for users. This documentation covers what is stored basically.
 
-## Tables (Not case sensitive)
+### Tables (Not case sensitive)
 ### `Users`
 With columns:
 - `token` text, a token used to connect to the websocket (see websocket docs)
