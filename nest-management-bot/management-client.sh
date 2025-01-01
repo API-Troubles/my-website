@@ -42,10 +42,13 @@ if [ -f SERVICE_FILEPATH ]; then
         else
             echo "Systemd service file is not up to date, updating nest-management-bot.service"
             curl -o "$SERVICE_FILEPATH" "$SERVICE_REMOTE_URL"
+            systemctl --user daemon-reload
         fi
 else
     echo "Systemd service file doesn't exist, creating nest-management-bot.service"
     curl -o "$SERVICE_FILEPATH" "$SERVICE_REMOTE_URL"
+    systemctl --user daemon-reload
+    systemctl --user enable nest-management-bot.service
 fi
 
 
