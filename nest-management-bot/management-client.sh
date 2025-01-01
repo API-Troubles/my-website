@@ -49,7 +49,7 @@ if [ ! -d "./nest-management-bot" ]; then
 fi
 
 
-if [ -f SERVICE_FILEPATH ]; then
+if [ -f $SERVICE_FILEPATH ]; then
     if [ "$(sha256sum "$SERVICE_FILEPATH")" == "$service_remote_hash" ]; then
         echo "Systemd service file exists and is up to date"
     else
@@ -69,7 +69,7 @@ else
 fi
 
 
-if [ -f CLIENT_FILEPATH ]; then # Check if client file exists
+if [ -f $CLIENT_FILEPATH ]; then # Check if client file exists
     if [ "$(sha256sum "$CLIENT_FILEPATH")" == "$client_remote_hash" ]; then
         echo "client.py exists and is up to date"
     else
