@@ -83,6 +83,13 @@ async def generate_dashboard(client, user_id, data: dict, mem_info: str, storage
                     }
                 },
                 {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": f"Nest has been up since `{data['uptime']}`! :yay:"
+                    }
+                },
+                {
                     "type": "divider"
                 },
                 {
