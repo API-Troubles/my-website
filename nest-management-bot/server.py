@@ -10,7 +10,7 @@ from views.dashboard import generate_not_connected, generate_dashboard
 
 ws_clients = {} # Internal list used to manage connection states
 
-async def ws_server(websocket, db, client):
+async def ws_server(websocket, db, client, logger):
     if not db:
         raise ValueError('Database not initialized/provided')
     try:
@@ -95,21 +95,30 @@ async def ws_server(websocket, db, client):
         # Add client to list to use for sending messages later
         clients[client_token_provided]: websocket = websocket
         ws_clients[websocket.id]: str = client_token_provided
-        print("ACTIVE CLIENTS:", clients.keys())
+        #print("ACTIVE CLIENTS:", clients.keys())
 
         await websocket.wait_closed() # Hold the connection open until websocket disconnects, muhahaha
 
     except websockets.exceptions.ConnectionClosed as e:
-        print(f"Connection suddenly closed: {e}")
+        logger.error(f"Connection suddenly closed: {e}")
     except asyncio.TimeoutError:
-        print("Client disappeared, closing connection")
+        logger.error("Client disappeared, closing connection")
         await websocket.close()
     finally:
         client_id = ws_clients.get(websocket.id)
+
+        if not client_id:
+            logger.warning("client_id not found in ws_clients list")
+
         if clients.get(client_id):
             clients.pop(client_id)
+        else:
+            logger.warning("Client not be found in clients list")
 
-        user = db.get_user(token=client_id)
-        await generate_not_connected(client.web_client, user[1])
+        try:
+            user = db.get_user(token=client_id)
+            await generate_not_connected(client.web_client, user[1])
+        except ValueError:
+            logger.error("User not found in database, cannot generate not connected message")
 
-        print("CHANGE TO ACTIVE CLIENTS:", clients.keys())
+        #print("CHANGE TO ACTIVE CLIENTS:", clients.keys())

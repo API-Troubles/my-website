@@ -50,10 +50,10 @@ async def update_home_tab(client, event, logger):
     try: # todo: Catch any errors and display a error home tab
         user = db.get_user(slack_id=user_id)
 
-        #if user_id != me: # Testing check, blocks others from using D:
-        #    await views.dashboard.generate_unauthorized(client, user_id)
-        #    logger.warning(f"{user_id} is not authorized to use this bot")
-        #    return
+        if user_id != me: # Testing check, blocks others from using D:
+            await views.dashboard.generate_unauthorized(client, user_id)
+            logger.warning(f"{user_id} is not authorized to use this bot")
+            return
 
         if not user: # User not registered, signup!
             await views.dashboard.generate_setup_token(client, user_id)
@@ -372,7 +372,7 @@ async def ws_main(client):
     #ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
     #ssl_context.load_cert_chain("cert.pem", "private_key.pem")
 
-    ws_handler = partial(ws_server, db=db, client=client)
+    ws_handler = partial(ws_server, db=db, client=client, logger=logging)
     async with serve(ws_handler, "localhost", 8989):#, ssl=ssl_context):
         print("server running...")
         await asyncio.get_running_loop().create_future()  # run forever
