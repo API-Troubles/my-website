@@ -36,6 +36,7 @@
 
 # Env, venv & git
 .env
+.env.*
 .gitconfig
 venv/*
 
