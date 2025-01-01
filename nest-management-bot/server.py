@@ -94,7 +94,7 @@ async def ws_server(websocket, db, client, logger):
 
         # Add client to list to use for sending messages later
         clients[client_token_provided]: websocket = websocket
-        ws_clients[websocket.id]: str = client_token_provided
+        ws_clients[f"{websocket.id}"]: str = str(client_token_provided)
         logger.info(f"Client connected: user_id = {user[1]}, token = {client_token_provided}")
         #print("ACTIVE CLIENTS:", clients.keys())
 
@@ -106,7 +106,7 @@ async def ws_server(websocket, db, client, logger):
         logger.error("Client disappeared, closing connection")
         await websocket.close()
     finally:
-        client_id = ws_clients.get(websocket.id)
+        client_id = ws_clients.get(f"{websocket.id}")
 
         if not client_id:
             logger.warning("client_id not found in ws_clients list")
