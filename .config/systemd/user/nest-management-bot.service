@@ -1,0 +1,20 @@
+# Hello!
+# This is the service file template for the Nest Management Bot
+# Don't edit this file, it will overwrite itself the next time the bot reboots
+
+# Bot by Felix - Written 100% with open source love :D
+# https://github.com/felixgao-0/my-website/
+
+[Unit]
+Description=Nest Management Bot, the ultimate solution to your Nest problems!
+DefaultDependencies=no
+After=network-online.target dbus.service
+Requires=dbus.service
+
+[Service]
+Type=oneshot
+ExecStart=/home/$HOME/nest-management-bot/management-client.sh
+TimeoutStartSec=0
+
+[Install]
+WantedBy=default.target
