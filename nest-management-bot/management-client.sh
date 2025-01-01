@@ -29,12 +29,12 @@ colour_echo () {
     # Syntax: colour_echo <message> <colour>
     if [ "$2" == "red" ]; then
         # I shoved error handling here cause why else use red? (famous last words)
-        echo -e "\033[31m{$1}\033[0m" >&2
+        echo -e "\033[31m$1\033[0m" >&2
         exit 1
     elif [ "$2" == "green" ]; then
-        echo -e "\033[32m{$1}\033[0m"
+        echo -e "\033[32m$1\033[0m"
     elif [ "$2" == "yellow" ]; then
-        echo -e "\033[33m{$1}\033[0m"
+        echo -e "\033[33m$1\033[0m"
     fi
 }
 
