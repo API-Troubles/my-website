@@ -258,6 +258,13 @@ async def generate_setup_token(client, user_id):
                             "action_id": "setup-get-client-token"
                         }
                     ]
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": "_Protip: Make sure you set a gitignore for `.env.*` which includes the token's env file._"
+                    }
                 }
             ]
         }
