@@ -50,10 +50,10 @@ fi
 
 
 if [ -f $SERVICE_FILEPATH ]; then
-    if [ "$(sha256sum "$SERVICE_FILEPATH")" == "$service_remote_hash" ]; then
-        echo "Systemd service file exists and is up to date"
+    if [ "$(sha256sum "$SERVICE_FILEPATH")" = "$service_remote_hash" ]; then
+        echo "Setup: Systemd service file exists and is up to date"
     else
-        echo "Systemd service file is not up to date, updating nest-management-bot.service"
+        echo "Setup: Systemd service file is not up to date, updating nest-management-bot.service"
         curl -o "$SERVICE_FILEPATH" "$SERVICE_REMOTE_URL"
         systemctl --user daemon-reload
     fi
@@ -63,29 +63,29 @@ else
     systemctl --user daemon-reload
     systemctl --user enable nest-management-bot.service
     systemctl --user start nest-management-bot.service
-    echo "Exiting as the service file was created... bot is running from the service file now"
+    echo "Setup: Exiting as the service file was created... bot is running from the service file now"
     colour_echo "Hint: Check systemctl --user status nest-management-bot.service\u001b" "yellow"
     exit 0
 fi
 
 
 if [ -f $CLIENT_FILEPATH ]; then # Check if client file exists
-    if [ "$(sha256sum "$CLIENT_FILEPATH")" == "$client_remote_hash" ]; then
-        echo "client.py exists and is up to date"
+    if [ "$(sha256sum "$CLIENT_FILEPATH")" = "$client_remote_hash" ]; then
+        echo "Setup: client.py exists and is up to date"
     else
-        echo "client.py is not up to date, updating client.py"
+        echo "Setup: client.py is not up to date, updating client.py"
         curl -o "$CLIENT_FILEPATH" "$CLIENT_REMOTE_URL"
     fi
 else # Client doesn't exist, make it exist :D
-    echo "client.py does not exist, setting up client.py"
+    echo "Setup: client.py does not exist, setting up client.py"
     curl -o "$CLIENT_FILEPATH" "$CLIENT_REMOTE_URL"
 fi
 
 
 if [ -f "nest-management-bot/venv/bin/activate" ]; then
-    echo "Virtual environment exists"
+    echo "Setup: Virtual environment exists"
 else
-    echo "Virtual environment does not exist, setting up a venv"
+    echo "Setup: Virtual environment does not exist, setting up a venv"
     python3 -m venv ./nest-management-bot/venv
     source ./nest-management-bot/venv/bin/activate
     pip install "${DEPENDENCIES[@]}"
@@ -94,4 +94,4 @@ fi
 
 
 colour_echo "Running client.py... finally!" "green"
-nest-management-bot/venv/bin/python3.11 nest-management-bot/client.py &
+exec nest-management-bot/venv/bin/python3.11 nest-management-bot/client.py
