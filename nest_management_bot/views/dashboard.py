@@ -396,7 +396,7 @@ async def generate_not_connected(client, user_id):
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": "This bot relies on the websocket to function. Check that the websocket script is running (`systemctl --user status nest-msg-bot.service`). Try starting it with `systemctl --user start nest-msg-bot.service`. For support, ask in #nest-management-bot."
+                        "text": "This bot relies on the websocket to function. Check that the websocket script is running (`systemctl --user status nest_management_bot.service`). Try starting it with `systemctl --user start nest_management_bot.service`. For support, ask in #nest-management-bot."
                     }
                 }
             ]
