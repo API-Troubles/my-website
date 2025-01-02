@@ -53,7 +53,7 @@ async def send_command(message: str, user_uuid: str, *, payload: Optional[dict] 
     try:
         async with asyncio.timeout(1):
             response_json = await client.recv()
-            print(response_json)
+            #print(response_json)
     except asyncio.TimeoutError:
         await send_error('Wheres my response? Did not receive a command_response.', user_uuid)
         return

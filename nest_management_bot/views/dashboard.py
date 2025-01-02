@@ -48,7 +48,7 @@ async def generate_dashboard(client, user_id, data: dict, mem_info: str, storage
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": "View your Nest stats quickly below!\nPUBLIC BETA: Real Data, report problems to #nest-management-bot"
+                        "text": "View your Nest stats quickly below!"
                     }
                 },
                 {

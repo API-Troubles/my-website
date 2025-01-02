@@ -19,7 +19,6 @@ import modals
 import server_utils as utils
 from server import ws_server
 
-
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
 
@@ -29,16 +28,22 @@ app = AsyncApp(
     signing_secret=os.environ["NEST_MANAGEMENT_SIGNING_SECRET"]
 )
 
-# Open database for account management
-db = database.Database({
-    "dbname": "felixgao_nest_management",
-    "user": "felixgao",
-    "host": "/run/postgresql"
-})
-
 me = os.environ['MY_SLACK_ID']
 dev_mode = os.environ.get("DEV") == "true"
 pagination_page_size: int = 15 # Arbitrary number set cause i needed one, pretty safe to change whenever :D
+
+# Open database for account management
+conn_params = {
+    "dbname": "felixgao_nest_management",
+    "user": "felixgao",
+}
+if os.environ.get("DEV") == "true":
+    conn_params["password"] = os.environ['DB_PASSWORD']
+    conn_params["host"] = "hackclub.app"
+    conn_params["port"] = "5432"
+else:
+    conn_params["host"] = "/run/postgresql"
+db = database.Database(conn_params)
 
 
 @app.event("app_home_opened")
@@ -46,7 +51,7 @@ async def update_home_tab(client, event, logger):
     user_id = event['user']
     logger.info(f"{user_id} opened the home tab")
 
-    try: # todo: Catch any errors and display a error home tab
+    try:
         user = db.get_user(slack_id=user_id)
 
         if user_id != me and dev_mode: # Testing check, blocks others from using D:
@@ -78,9 +83,8 @@ async def update_home_tab(client, event, logger):
         storage_info = f"{utils.unit_converter(all_info['storage']['used'], unit, include_unit=False)}/{utils.unit_converter(all_info['storage']['total'], unit)}"
         await views.dashboard.generate_dashboard(client, user_id, all_info, mem_info, storage_info)
 
-    except Exception as e:
-        logger.error(f"Error updating home tab: {e}")
-        return
+    except Exception as error:
+        await views.generate_error(client, user_id, repr(error))
 
 
 @app.action("generate-dashboard")
@@ -392,7 +396,7 @@ async def ws_main(client):
 
 
     async with server_serve:#, ssl=ssl_context):
-        print("server running...")
+        logging.info("Websocket server running...")
         await asyncio.get_running_loop().create_future()  # run forever
 
 
