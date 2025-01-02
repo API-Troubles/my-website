@@ -11,11 +11,11 @@
 
 # Configuration variables :D (Don't modify unless important)
 # TODO: REMOVE DEV BRANCH AND REPLACE WITH MAIN BRANCH
-CLIENT_REMOTE_URL="https://raw.githubusercontent.com/felixgao-0/my-website/refs/heads/feat/nest-management-bot/nest-management-bot/client.py"
-CLIENT_FILEPATH="./nest-management-bot/client.py"
+CLIENT_REMOTE_URL="https://raw.githubusercontent.com/felixgao-0/my-website/refs/heads/feat/nest-management-bot/nest_management_bot/client.py"
+CLIENT_FILEPATH="./nest_management_bot/client.py"
 
-SERVICE_REMOTE_URL="https://raw.githubusercontent.com/felixgao-0/my-website/refs/heads/feat/nest-management-bot/nest-management-bot/service_file_template.txt"
-SERVICE_FILEPATH="./.config/systemd/user/nest-management-bot.service"
+SERVICE_REMOTE_URL="https://raw.githubusercontent.com/felixgao-0/my-website/refs/heads/feat/nest-management-bot/nest_management_bot/service_file_template.txt"
+SERVICE_FILEPATH="./.config/systemd/user/nest_management_bot.service"
 
 # Yes I shoved all my requirements on a single line of bash, oh welp :pf:
 DEPENDENCIES=("psutil" "websockets" "humanize" "python-dotenv" "dbus-python")
@@ -39,13 +39,13 @@ colour_echo () {
 }
 
 
-if [ ! -f "./.env.nest-management-bot" ]; then
+if [ ! -f "./.env.nest_management_bot" ]; then
     colour_echo "Before you run this setup script make sure you run the token setup script" "red"
 fi
 
-if [ ! -d "./nest-management-bot" ]; then
-    mkdir ./nest-management-bot
-    echo "Folder didn't exist, created ./nest-management-bot/"
+if [ ! -d "./nest_management_bot" ]; then
+    mkdir ./nest_management_bot
+    echo "Folder didn't exist, created ./nest_management_bot/"
 fi
 
 
@@ -53,18 +53,18 @@ if [ -f $SERVICE_FILEPATH ]; then
     if [ "$(sha256sum "$SERVICE_FILEPATH")" = "$service_remote_hash" ]; then
         echo "Setup: Systemd service file exists and is up to date"
     else
-        echo "Setup: Systemd service file is not up to date, updating nest-management-bot.service"
+        echo "Setup: Systemd service file is not up to date, updating nest_management_bot.service"
         curl -o "$SERVICE_FILEPATH" "$SERVICE_REMOTE_URL"
         systemctl --user daemon-reload
     fi
 else
-    echo "Systemd service file doesn't exist, creating nest-management-bot.service"
+    echo "Systemd service file doesn't exist, creating nest_management_bot.service"
     curl -o "$SERVICE_FILEPATH" "$SERVICE_REMOTE_URL"
     systemctl --user daemon-reload
-    systemctl --user enable nest-management-bot.service
-    systemctl --user start nest-management-bot.service
+    systemctl --user enable nest_management_bot.service
+    systemctl --user start nest_management_bot.service
     echo "Setup: Exiting as the service file was created... bot is running from the service file now"
-    colour_echo "Hint: Check systemctl --user status nest-management-bot.service\u001b" "yellow"
+    colour_echo "Hint: Check systemctl --user status nest_management_bot.service\u001b" "yellow"
     exit 0
 fi
 
@@ -82,16 +82,16 @@ else # Client doesn't exist, make it exist :D
 fi
 
 
-if [ -f "nest-management-bot/venv/bin/activate" ]; then
+if [ -f "nest_management_bot/venv/bin/activate" ]; then
     echo "Setup: Virtual environment exists"
 else
     echo "Setup: Virtual environment does not exist, setting up a venv"
-    python3 -m venv ./nest-management-bot/venv
-    source ./nest-management-bot/venv/bin/activate
+    python3 -m venv ./nest_management_bot/venv
+    source ./nest_management_bot/venv/bin/activate
     pip install "${DEPENDENCIES[@]}"
     deactivate
 fi
 
 
 colour_echo "Running client.py... finally!" "green"
-exec nest-management-bot/venv/bin/python3.11 nest-management-bot/client.py
+exec nest_management_bot/venv/bin/python3.11 nest_management_bot/client.py
