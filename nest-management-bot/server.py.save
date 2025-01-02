@@ -92,10 +92,9 @@ async def ws_server(websocket, db, client, logger):
 
         # Add client to list to use for sending messages later
         clients[client_token_provided]: websocket = websocket
-
+<<<<<<< Updated upstream
         ws_clients[f"{websocket.id}"]: str = client_token_provided
         logger.info(f"Client connected: user_id = {user[1]}")
-
         #print("ACTIVE CLIENTS:", clients.keys())
 
         await websocket.wait_closed() # Hold the connection open until websocket disconnects, muhahaha
@@ -123,3 +122,14 @@ async def ws_server(websocket, db, client, logger):
             logger.error("User not found in database, cannot generate not connected message")
 
         #print("CHANGE TO ACTIVE CLIENTS:", clients.keys())
+
+
+quit
+
+
+
+
+
+
+
+

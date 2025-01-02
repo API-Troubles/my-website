@@ -13,7 +13,7 @@ Requires=dbus.service
 
 [Service]
 Type=oneshot
-ExecStart=/home/$HOME/nest-management-bot/management-client.sh
+ExecStart=%h/nest-management-bot/management-client.sh
 TimeoutStartSec=0
 
 [Install]
