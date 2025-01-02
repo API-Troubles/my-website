@@ -21,8 +21,8 @@ SERVICE_FILEPATH="./.config/systemd/user/nest_management_bot.service"
 DEPENDENCIES=("psutil" "websockets" "humanize" "python-dotenv" "dbus-python")
 # END configuration variables
 
-client_remote_hash=$(curl -s CLIENT_REMOTE_URL | sha256sum)
-service_remote_hash=$(curl -s SERVICE_REMOTE_URL | sha256sum)
+client_remote_hash=$(curl -s CLIENT_REMOTE_URL | sha256sum | cut -d ' ' -f 1)
+service_remote_hash=$(curl -s SERVICE_REMOTE_URL | sha256sum | cut -d ' ' -f 1)
 
 
 colour_echo () {
@@ -50,7 +50,7 @@ fi
 
 
 if [ -f $SERVICE_FILEPATH ]; then
-    if [ "$(sha256sum "$SERVICE_FILEPATH")" = "$service_remote_hash" ]; then
+    if [ "$(sha256sum "$SERVICE_FILEPATH" | cut -d ' ' -f 1)" = "$service_remote_hash" ]; then
         echo "Setup: Systemd service file exists and is up to date"
     else
         echo "Setup: Systemd service file is not up to date, updating nest_management_bot.service"
@@ -70,7 +70,7 @@ fi
 
 
 if [ -f $CLIENT_FILEPATH ]; then # Check if client file exists
-    if [ "$(sha256sum "$CLIENT_FILEPATH")" = "$client_remote_hash" ]; then
+    if [ "$(sha256sum "$CLIENT_FILEPATH" | cut -d ' ' -f 1)" = "$client_remote_hash" ]; then
         echo "Setup: client.py exists and is up to date"
     else
         echo "Setup: client.py is not up to date, updating client.py"
