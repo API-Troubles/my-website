@@ -26,7 +26,7 @@ session_bus = dbus.SessionBus()
 systemd = session_bus.get_object('org.freedesktop.systemd1', '/org/freedesktop/systemd1')
 systemd_manager = dbus.Interface(systemd, 'org.freedesktop.systemd1.Manager')
 
-__version__ = "0.1.0a" # Use for later version checking
+__version__ = "1.0.0" # Use for later version checking
 
 load_dotenv(dotenv_path='.env.nest-management-bot')
 

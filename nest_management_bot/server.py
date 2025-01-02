@@ -8,7 +8,7 @@ from views.dashboard import generate_not_connected, generate_dashboard
 
 ws_clients = {} # Internal list used to manage connection states
 
-async def ws_server(websocket, db, client, logger):
+async def ws_server(websocket, db, client: dict, logger, client_version: str):
     if not db:
         raise ValueError('Database not initialized/provided')
     try:
@@ -68,7 +68,7 @@ async def ws_server(websocket, db, client, logger):
             await websocket.close()
             return
 
-        elif first_message.get('payload', {}).get('version') != "0.1.0a":
+        elif first_message.get('payload', {}).get('version') != client_version:
             await websocket.send(json.dumps({
                 'message': 'Your version is out of date or the client sent malformed data.',
                 'status': 'error'
