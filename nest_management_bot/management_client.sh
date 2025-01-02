@@ -4,8 +4,6 @@
 # If client.py doesn't exist, this script will setup the file
 # This script also keeps client.py updated with the latest version from the repository
 
-# Don't modify this script, it will be overwritten next time it runs
-
 # Written and maintained by Felix Gao - proudly open source :)
 # Check out the repo at https://github.com/felixgao-0/my-website
 
