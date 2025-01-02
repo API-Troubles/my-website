@@ -12,7 +12,7 @@ After=network-online.target dbus.service
 Requires=dbus.service
 
 [Service]
-Type=oneshot
+Type=simple
 ExecStart=%h/nest-management-bot/management-client.sh
 TimeoutStartSec=0
 
