@@ -5,7 +5,7 @@ from functools import partial
 import logging
 import os
 
-from websockets.asyncio.server import serve
+from websockets.asyncio.server import serve, unix_serve
 
 from slack_bolt import App
 from slack_bolt.async_app import AsyncApp
@@ -373,7 +373,17 @@ async def ws_main(client):
     #ssl_context.load_cert_chain("cert.pem", "private_key.pem")
 
     ws_handler = partial(ws_server, db=db, client=client, logger=logging)
-    async with serve(ws_handler, "localhost", 8989):#, ssl=ssl_context):
+    if os.environ.get("DEV") == "true":
+        server_serve = serve(ws_handler, "localhost", 8989)
+        logging.warning("Running in development mode")
+    else:
+        socket_file = "/var/community/nest-management-bot.sock"
+        if os.path.exists(socket_file): # Clear existing sock file
+            os.remove(socket_file)
+        server_serve = unix_serve(ws_handler, socket_file)
+
+
+    async with server_serve:#, ssl=ssl_context):
         print("server running...")
         await asyncio.get_running_loop().create_future()  # run forever
 

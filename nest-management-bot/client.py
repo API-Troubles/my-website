@@ -4,14 +4,14 @@ import humanize
 import json
 import logging
 import os
-from datetime import datetime
-
 import psutil
-import ssl
 import signal
+import ssl
 import subprocess
+
+from datetime import datetime
 from typing import Literal
-from websockets.asyncio.client import connect
+from websockets.asyncio.client import connect, unix_connect
 
 from dotenv import load_dotenv
 
@@ -54,7 +54,6 @@ def manage_systemd_service(service_name: str, action: Literal["start", "stop", "
 
     actions[action](service_name, 'replace')
     logging.info(f"{action}ed {service_name} successfully")
-
 
 
 def list_systemd_services() -> list:
@@ -140,13 +139,18 @@ def get_storage() -> list:
 
 
 async def client():
-    uri = "ws://localhost:36183"
-
     #ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
     #ssl_context.load_verify_locations("cert.pem")
 
+    if os.environ.get('DEV') == "true":
+        client_connection = connect(os.environ['WS_URL'])#, ssl=ssl_context):
+        logging.warning("Running in development mode")
+    else:
+        socket_file = "/var/community/nest-management-bot.sock"
+        client_connection = unix_connect(socket_file)#, ssl=ssl_context):
+
     logging.info("Attempting to connect to server...")
-    async for websocket in connect(uri):#, ssl=ssl_context):
+    async for websocket in client_connection:
         logging.info("Connected to server... :D")
 
         loop = asyncio.get_running_loop()
