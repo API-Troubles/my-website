@@ -39,7 +39,7 @@ colour_echo () {
 }
 
 
-if [ ! -f "./.env.nest_management_bot" ]; then
+if [ ! -f "./.env.nest-management-bot" ]; then
     colour_echo "Before you run this setup script make sure you run the token setup script" "red"
 fi
 
