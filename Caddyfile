@@ -1,9 +1,11 @@
 {
 	admin unix//home/felixgao/caddy-admin.sock
 }
-http://felixgao.hackclub.app, http://felixgao.dev {
-	bind unix/.webserver.sock|777
-	bind unix/.felixgao.dev.webserver.sock|777
+
+http://felixgao.hackclub.app, http://felixgao.dev, http://felixgao.is-a.dev {
+	bind unix//home/felixgao/.webserver.sock|777
+	bind unix//home/felixgao/.felixgao.dev.webserver.sock|777
+        bind unix//home/felixgao/.felixgao.is-a.dev.webserver.sock|777
 
 	root * /home/felixgao/main
 	file_server {
@@ -12,21 +14,23 @@ http://felixgao.hackclub.app, http://felixgao.dev {
 }
 
 http://monitor.felixgao.hackclub.app, http://monitor.felixgao.dev {
-	bind unix/.monitor.webserver.sock|777
-	bind unix/.monitor.felixgao.dev.webserver.sock|777
+	bind unix//home/felixgao/.monitor.webserver.sock|777
+	bind unix//home/felixgao/.monitor.felixgao.dev.webserver.sock|777
 
 	reverse_proxy :33925
 }
 
-http://url.felixgao.dev, http://url.dino.icu {
-	bind unix/.url.dino.icu.webserver.sock|777
-	bind unix/.url.felixgao.dev.webserver.sock|777
+http://url.felixgao.dev, http://url.dino.icu, http://blahaj.click {
+	bind unix//home/felixgao/.url.felixgao.dev.webserver.sock|777
+	bind unix//home/felixgao/.url.dino.icu.webserver.sock|777
+	bind unix//home/felixgao/.blahaj.click.webserver.sock|777
 
 	reverse_proxy :34191
 }
 
-http://qr.felixgao.dev {
+http://qr.felixgao.dev, http://qr.dino.icu {
     bind unix//home/felixgao/.qr.felixgao.dev.webserver.sock|777
+    bind unix//home/felixgao/.qr.dino.icu.webserver.sock|777
 
     root * /home/felixgao/qr_code
     file_server {

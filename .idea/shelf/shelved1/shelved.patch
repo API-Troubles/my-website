@@ -1,0 +1,29 @@
+Index: shortener/template/index.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>{% extends \"layout.html\" %}\n\n{% block head %}\n    <script src=\"{{ url_for('static', filename='formHandler.js') }}\"></script>\n    <link rel=\"stylesheet\" href=\"{{ url_for('static', filename='index.css') }}\">\n{% endblock %}\n\n{% block content %}\n    <h1>URL Shortener</h1>\n    <p>By Felix G. - Hosted with \uD83D\uDC96 on <a href=\"https://hackclub.app\">Nest</a></p>\n\n    <div id=\"create-url\">\n    {% with messages = get_flashed_messages() %}\n        {% if messages %}\n        <ul class=\"error-flashes\">\n            <p>Mission control, we have errors which need your attention!</p>\n            {% for message in messages %}\n                <li>{{ message }}</li>\n            {% endfor %}\n        </ul>\n        {% endif %}\n    {% endwith %}\n\n        <form method=\"POST\" action=\"{{ url_for('_api_url_creator') }}\" id=\"create-url-form\" class=\"center\">\n            <label for=\"original-link-field\">URL to redirect to:</label><br>\n            <input type=\"text\" name=\"original-link-field\" id=\"original-link-field\" required><br>\n\n            <label for=\"shortened-link-field\">URL will become:</label><br>\n            <div class=\"input-group center\">\n                <p>url.felixgao.dev/u/</p>\n                <input type=\"text\" name=\"shortened-link-field\" id=\"shortened-link-field\" required>\n            </div>\n\n            <input type=\"submit\" value=\"Shorten my URL!\" id=\"submit-btn\">\n        </form>\n    </div>\n{% endblock %}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/shortener/template/index.html b/shortener/template/index.html
+--- a/shortener/template/index.html	(revision fca17b9194becddd57f5f5708189c2ccfd04f0ff)
++++ b/shortener/template/index.html	(date 1725233752823)
+@@ -3,6 +3,9 @@
+ {% block head %}
+     <script src="{{ url_for('static', filename='formHandler.js') }}"></script>
+     <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
++
++    <!-- Cloudflare turnstile -->
++    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+ {% endblock %}
+ 
+ {% block content %}
+@@ -31,6 +34,8 @@
+                 <input type="text" name="shortened-link-field" id="shortened-link-field" required>
+             </div>
+ 
++            <div class="cf-turnstile" data-sitekey="0x4AAAAAAAih_9a4nppTrGVp"></div>
++
+             <input type="submit" value="Shorten my URL!" id="submit-btn">
+         </form>
+     </div>
