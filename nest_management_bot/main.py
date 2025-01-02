@@ -127,16 +127,19 @@ async def setup_user(ack, body, client, logger):
     if user:
         user_token = user[0]
         logger.info(f"Obtained existing token for {user_id}")
+
+        await client.views_open(trigger_id=body["trigger_id"], view=modals.manage_token_wizard_modal(user_token))
     else:
         user_token = utils.generate_token()
         db.add_user(user_id, user_token)
         db.add_setting(user_id, "tutorial", "stage_2")
         db.add_setting(user_id, "mem_vs_ram", "mem")
         db.add_setting(user_id, "storage_unit_of_measurement", "gb")
+
         await views.dashboard.generate_setup_websocket(client, user_id)
         logger.info(f"Created token for {user_id}, moving on to websocket setup")
 
-    await client.views_open(trigger_id=body["trigger_id"], view=modals.setup_token_wizard_modal(user_token))
+        await client.views_open(trigger_id=body["trigger_id"], view=modals.setup_token_wizard_modal(user_token))
     await ack()
 
 
