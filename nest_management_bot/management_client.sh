@@ -21,8 +21,8 @@ SERVICE_FILEPATH="./.config/systemd/user/nest_management_bot.service"
 DEPENDENCIES=("psutil" "websockets" "humanize" "python-dotenv" "dbus-python")
 # END configuration variables
 
-client_remote_hash=$(curl -s CLIENT_REMOTE_URL | sha256sum | cut -d ' ' -f 1)
-service_remote_hash=$(curl -s SERVICE_REMOTE_URL | sha256sum | cut -d ' ' -f 1)
+client_remote_hash=$(curl -s $CLIENT_REMOTE_URL | sha256sum | cut -d ' ' -f 1)
+service_remote_hash=$(curl -s $SERVICE_REMOTE_URL | sha256sum | cut -d ' ' -f 1)
 
 
 colour_echo () {
