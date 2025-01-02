@@ -33,9 +33,7 @@ app = AsyncApp(
 db = database.Database({
     "dbname": "felixgao_nest_management",
     "user": "felixgao",
-    "password": os.environ['DB_PASSWORD'],
-    "host": "hackclub.app",
-    "port": "5432"
+    "host": "/run/postgresql"
 })
 
 me = os.environ['MY_SLACK_ID']

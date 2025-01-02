@@ -92,8 +92,10 @@ async def ws_server(websocket, db, client, logger):
 
         # Add client to list to use for sending messages later
         clients[client_token_provided]: websocket = websocket
+
         ws_clients[f"{websocket.id}"]: str = client_token_provided
         logger.info(f"Client connected: user_id = {user[1]}")
+
         #print("ACTIVE CLIENTS:", clients.keys())
 
         await websocket.wait_closed() # Hold the connection open until websocket disconnects, muhahaha
