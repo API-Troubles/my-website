@@ -385,6 +385,7 @@ async def ws_main(client):
         logger=logging,
         client_version=os.environ["NEST_MANAGEMENT_CLIENT_VERSION"]
     )
+    socket_file = None
     if os.environ.get("DEV") == "true":
         server_serve = serve(ws_handler, "localhost", 8989)
         logging.warning("Running in development mode")
@@ -397,6 +398,8 @@ async def ws_main(client):
 
     async with server_serve:#, ssl=ssl_context):
         logging.info("Websocket server running...")
+        if socket_file: # Basically, if running with socket file
+            os.chmod(socket_file, 0o766)
         await asyncio.get_running_loop().create_future()  # run forever
 
 
