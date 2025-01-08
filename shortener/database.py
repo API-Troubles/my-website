@@ -1,7 +1,16 @@
+import os
 from typing import Optional
 
 import psycopg  # PostgreSQL db driver v3
-from psycopg import sql
+
+
+conn_params = {
+    "dbname": "felixgao_url_shortener",
+    "user": "felixgao",
+    "password": os.environ['DB_PASSWORD'],
+    "host": "hackclub.app",
+    "port": "5432"
+}
 
 # Note to self, database table formats :D
 """
@@ -17,7 +26,7 @@ felixgao_url_shortener=> SELECT * FROM Analytics;
 """
 
 class Database:
-    def __init__(self, conn_params):
+    def __init__(self):
         print("Database opened")
         self.conn = psycopg.connect(**conn_params)
         self.cur = self.conn.cursor()
@@ -85,12 +94,7 @@ class Database:
         """
         Checks if a table item already exists
         """
-
-        query = sql.SQL("SELECT COUNT(*) FROM URLs WHERE {} = %s").format(
-            sql.Identifier(table_item)
-        )
-
-        self.cur.execute(query, (table_value,))
+        self.cur.execute(f"SELECT COUNT(*) FROM URLs where {table_item} = %s", (table_value,))
         result = self.cur.fetchall()
 
         if result[0][0] > 1:
