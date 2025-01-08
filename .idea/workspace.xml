@@ -1,0 +1,640 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="29ae9ba7-6aae-42f7-9bc0-e4efd5e6f43d" name="Changes" comment="(wip) validate client token">
+      <change beforePath="$PROJECT_DIR$/nest-management-bot/server_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/nest-management-bot/server_utils.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FlaskConsoleOptions" custom-start-script="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))">
+    <envs>
+      <env key="FLASK_APP" value="app" />
+    </envs>
+    <option name="myCustomStartScript" value="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))" />
+    <option name="myEnvs">
+      <map>
+        <entry key="FLASK_APP" value="app" />
+      </map>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="Current" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;felixgao-0&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/felixgao-0/my-website.git&quot;,
+    &quot;accountId&quot;: &quot;a88db3bb-0003-45e6-8d4d-7b9bdea67a59&quot;
+  }
+}</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/nest-management-bot/DOCS.md" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2mhutiNvmqCH0c0EbxHDTe9Bn77" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Python.Management Bot.executor&quot;: &quot;Run&quot;,
+    &quot;Python.WS Client.executor&quot;: &quot;Run&quot;,
+    &quot;Python.WS Server.executor&quot;: &quot;Run&quot;,
+    &quot;Python.database.executor&quot;: &quot;Run&quot;,
+    &quot;Python.home.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.management_websocket.executor&quot;: &quot;Run&quot;,
+    &quot;Python.server_utils.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.utils.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feat/nest-management-bot&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/macmini/IdeaProjects/my-website/nest-management-bot&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.toDoOptions&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
+    ]
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/nest-management-bot" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/nest-management-bot/cert" />
+      <recent name="$PROJECT_DIR$/nest-management-bot" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.Management Bot">
+    <configuration name="Management Bot" type="PythonConfigurationType" factoryName="Python">
+      <module name="my-website" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.12 (my-website)" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/nest-management-bot" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <EXTENSION ID="net.ashald.envfile">
+        <option name="IS_ENABLED" value="false" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
+        </ENTRIES>
+      </EXTENSION>
+      <option name="SCRIPT_NAME" value="main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="WS Client" type="PythonConfigurationType" factoryName="Python">
+      <module name="my-website" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.12 (my-website)" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/nest-management-bot" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <EXTENSION ID="net.ashald.envfile">
+        <option name="IS_ENABLED" value="false" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
+        </ENTRIES>
+      </EXTENSION>
+      <option name="SCRIPT_NAME" value="client.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="WS Server" type="PythonConfigurationType" factoryName="Python">
+      <module name="my-website" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.12 (my-website)" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/nest-management-bot" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <EXTENSION ID="net.ashald.envfile">
+        <option name="IS_ENABLED" value="false" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
+        </ENTRIES>
+      </EXTENSION>
+      <option name="SCRIPT_NAME" value="server.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="my-website" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.12 (my-website)" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/shortener" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <EXTENSION ID="net.ashald.envfile">
+        <option name="IS_ENABLED" value="false" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
+        </ENTRIES>
+      </EXTENSION>
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/shortener/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="utils" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="my-website" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/nest-management-bot" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/nest-management-bot/utils.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23726.103" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23726.103" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="29ae9ba7-6aae-42f7-9bc0-e4efd5e6f43d" name="Changes" comment="" />
+      <created>1727541346508</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1727541346508</updated>
+      <workItem from="1727541347790" duration="7281000" />
+      <workItem from="1727548647020" duration="12541000" />
+      <workItem from="1727616494765" duration="22132000" />
+      <workItem from="1727884659354" duration="4762000" />
+      <workItem from="1727970953149" duration="6691000" />
+      <workItem from="1728506697058" duration="187000" />
+      <workItem from="1728507129341" duration="30000" />
+      <workItem from="1728507160770" duration="6436000" />
+      <workItem from="1728601984186" duration="9197000" />
+      <workItem from="1728652102997" duration="18723000" />
+      <workItem from="1728740853906" duration="29922000" />
+      <workItem from="1728824006818" duration="23271000" />
+      <workItem from="1728911912832" duration="21706000" />
+      <workItem from="1729110584036" duration="12536000" />
+      <workItem from="1729127937429" duration="285000" />
+      <workItem from="1729292544152" duration="931000" />
+      <workItem from="1729979629319" duration="2542000" />
+      <workItem from="1730032197645" duration="599000" />
+      <workItem from="1730072124964" duration="997000" />
+      <workItem from="1730243906482" duration="58000" />
+      <workItem from="1730245933601" duration="6609000" />
+      <workItem from="1730317659243" duration="3674000" />
+      <workItem from="1730559893122" duration="31389000" />
+      <workItem from="1730756828170" duration="4226000" />
+      <workItem from="1730825741622" duration="199000" />
+      <workItem from="1731031412744" duration="696000" />
+      <workItem from="1731071886798" duration="4529000" />
+      <workItem from="1731155011758" duration="722000" />
+      <workItem from="1731183979962" duration="3000" />
+      <workItem from="1731184020972" duration="1000" />
+      <workItem from="1731184034648" duration="13280000" />
+      <workItem from="1731270040887" duration="8880000" />
+      <workItem from="1731343659466" duration="4638000" />
+    </task>
+    <task id="LOCAL-00001" summary="Idk what I did ok :sob:">
+      <option name="closed" value="true" />
+      <created>1727547031539</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1727547031539</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Fix database query error :sob:">
+      <option name="closed" value="true" />
+      <created>1727550474178</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1727550474178</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Add Nest logo, modify css to make it work :)">
+      <option name="closed" value="true" />
+      <created>1727552421414</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1727552421414</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Add nest logo :yay:">
+      <option name="closed" value="true" />
+      <created>1727552570382</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1727552570382</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Rename files to be consistent, setup more stuff">
+      <option name="closed" value="true" />
+      <created>1728603710273</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1728603710273</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Setup token creation and verification">
+      <option name="closed" value="true" />
+      <created>1728671173192</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1728671173192</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Edit views, file setup, idk what else">
+      <option name="closed" value="true" />
+      <created>1728671206880</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1728671206880</updated>
+    </task>
+    <task id="LOCAL-00008" summary="setup client and server, should be mostly good to go :yay:">
+      <option name="closed" value="true" />
+      <created>1728778856888</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1728778856888</updated>
+    </task>
+    <task id="LOCAL-00009" summary="borrow some code from my url shortener">
+      <option name="closed" value="true" />
+      <created>1728778927474</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1728778927474</updated>
+    </task>
+    <task id="LOCAL-00010" summary="attempt to setup ident (idk if it works yet), add checks to client deletion">
+      <option name="closed" value="true" />
+      <created>1728786840949</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1728786840949</updated>
+    </task>
+    <task id="LOCAL-00011" summary="add websocket documentation">
+      <option name="closed" value="true" />
+      <created>1728835301710</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1728835301710</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Document timestamp (help adrian is holding me hostage)">
+      <option name="closed" value="true" />
+      <created>1728859803035</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1728859803035</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Update docs (muahahaha)">
+      <option name="closed" value="true" />
+      <created>1728956577295</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1728956577295</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Replace utils.py with server_utils.py. Move functions from server.py to server_utils.py">
+      <option name="closed" value="true" />
+      <created>1728956682095</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1728956682095</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Start working on data plumbing (wip)">
+      <option name="closed" value="true" />
+      <created>1728956705846</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1728956705846</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Delete random comment">
+      <option name="closed" value="true" />
+      <created>1728956723993</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1728956723993</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Setup homepage more">
+      <option name="closed" value="true" />
+      <created>1730246902109</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1730246902109</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Add buttons and modals, setup database properly">
+      <option name="closed" value="true" />
+      <created>1730246980451</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1730246980451</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Listen to @samuel, use socket mode :skull:">
+      <option name="closed" value="true" />
+      <created>1730247231377</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1730247231377</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Create __init__.py">
+      <option name="closed" value="true" />
+      <created>1730249677244</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1730249677244</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Move buttons around">
+      <option name="closed" value="true" />
+      <created>1730249704461</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1730249704461</updated>
+    </task>
+    <task id="LOCAL-00022" summary="make pylint shut up (nicely)">
+      <option name="closed" value="true" />
+      <created>1730256109879</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1730256109879</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Update dashboard when code is generated, change client param to user_id">
+      <option name="closed" value="true" />
+      <created>1730562637195</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1730562637195</updated>
+    </task>
+    <task id="LOCAL-00024" summary="someone cure my stupidy, change app home to modal type">
+      <option name="closed" value="true" />
+      <created>1730649077142</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1730649077142</updated>
+    </task>
+    <task id="LOCAL-00025" summary="add ability to reset token (wip)">
+      <option name="closed" value="true" />
+      <created>1730650401424</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1730650401425</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Add token reset button to homepage">
+      <option name="closed" value="true" />
+      <created>1730651290752</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1730651290752</updated>
+    </task>
+    <task id="LOCAL-00027" summary="fix new token generation">
+      <option name="closed" value="true" />
+      <created>1730651688805</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1730651688805</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Remove global process option since it can more easily be run on the server">
+      <option name="closed" value="true" />
+      <created>1731190294917</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1731190294917</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Document functions, setup new home view">
+      <option name="closed" value="true" />
+      <created>1731190374178</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1731190374178</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Random misc things in main.py, create the setup/update script :D">
+      <option name="closed" value="true" />
+      <created>1731200841050</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1731200841050</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Add print statement, add payload item and setup dotenv">
+      <option name="closed" value="true" />
+      <created>1731206628291</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1731206628291</updated>
+    </task>
+    <task id="LOCAL-00032" summary="(wip) validate client token">
+      <option name="closed" value="true" />
+      <created>1731206738123</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1731206738123</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="borrow some code from my url shortener" />
+    <MESSAGE value="attempt to setup ident (idk if it works yet), add checks to client deletion" />
+    <MESSAGE value="add websocket documentation" />
+    <MESSAGE value="Document timestamp, (help adrian is holding me hostage)" />
+    <MESSAGE value="Document timestamp (help adrian is holding me hostage)" />
+    <MESSAGE value="Update docs (muahahaha)" />
+    <MESSAGE value="Replace utils.py with server_utils.py. Move functions from server.py to server_utils.py" />
+    <MESSAGE value="Start working on data plumbing (wip)" />
+    <MESSAGE value="Delete random comment" />
+    <MESSAGE value="Setup homepage more" />
+    <MESSAGE value="Add buttons and modals, setup database properly" />
+    <MESSAGE value="Listen to @samuel, use socket mode :skull:" />
+    <MESSAGE value="Create __init__.py" />
+    <MESSAGE value="Move buttons around" />
+    <MESSAGE value="make pylint shut up (nicely)" />
+    <MESSAGE value="Update dashboard when code is generated, change client param to user_id" />
+    <MESSAGE value="someone cure my stupidy, change app home to modal type" />
+    <MESSAGE value="add ability to reset token (wip)" />
+    <MESSAGE value="Add token reset button to homepage" />
+    <MESSAGE value="fix new token generation" />
+    <MESSAGE value="Remove global process option since it can more easily be run on the server" />
+    <MESSAGE value="Document functions, setup new home view" />
+    <MESSAGE value="Random misc things in main.py, create the setup/update script :D" />
+    <MESSAGE value="Add print statement, add payload item and setup dotenv" />
+    <MESSAGE value="(wip) validate client token" />
+    <option name="LAST_COMMIT_MESSAGE" value="(wip) validate client token" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/my_website$utils.coverage" NAME="utils Coverage Results" MODIFIED="1728672234705" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/nest-management-bot" />
+    <SUITE FILE_PATH="coverage/my_website$main.coverage" NAME="main Coverage Results" MODIFIED="1728672240301" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/shortener" />
+    <SUITE FILE_PATH="coverage/my_website$WS_Server.coverage" NAME="WS Server Coverage Results" MODIFIED="1728955604443" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/nest-management-bot" />
+    <SUITE FILE_PATH="coverage/my_website$test.coverage" NAME="test Coverage Results" MODIFIED="1728673058768" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/nest-management-bot" />
+    <SUITE FILE_PATH="coverage/my_website$management_websocket.coverage" NAME="management_websocket Coverage Results" MODIFIED="1728611748043" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/nest-management-bot" />
+    <SUITE FILE_PATH="coverage/my_website$Management_Bot.coverage" NAME="Management Bot Coverage Results" MODIFIED="1731185384107" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/nest-management-bot" />
+    <SUITE FILE_PATH="coverage/my_website$database.coverage" NAME="database Coverage Results" MODIFIED="1728670019133" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/nest-management-bot" />
+    <SUITE FILE_PATH="coverage/my_website$WS_Client.coverage" NAME="WS Client Coverage Results" MODIFIED="1728956307265" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/nest-management-bot" />
+    <SUITE FILE_PATH="coverage/my_website$home.coverage" NAME="home Coverage Results" MODIFIED="1728613499763" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/nest-management-bot/views" />
+    <SUITE FILE_PATH="coverage/my_website$server_utils.coverage" NAME="server_utils Coverage Results" MODIFIED="1729111979668" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/nest-management-bot" />
+  </component>
+</project>

@@ -53,6 +53,13 @@ class Database:
         self.cur.execute("SELECT * FROM URLs WHERE shortened_url = %s;", (shortened_url,))
         return self.cur.fetchall()
 
+    def get_hostname(self, url_id: str) -> list:
+        """
+        Fetch URL data from the database
+        """
+        self.cur.execute("SELECT * FROM domains WHERE url_id = %s;", (url_id,))
+        return self.cur.fetchall()
+
 
     def get_analytics(self, analytics_url: str) -> Optional[list]:
         """
@@ -68,14 +75,21 @@ class Database:
         return self.cur.fetchall()
 
 
-    def add_url(self, original_url: str, shortened_url: str, analytics_url: str) -> None:
+    def add_url(self, original_url: str, shortened_url: str, analytics_url: str, url_hostnames: list) -> None:
         """
         Creates a database entry for a new URL
         """
         self.cur.execute("""
         INSERT INTO URLs (original_url, shortened_url, analytics_url) 
         VALUES (%s, %s, %s)
+        RETURNING id
         """, (original_url, shortened_url, analytics_url))
+        url_id = self.cur.fetchone()[0]
+        for domain in url_hostnames:
+            self.cur.execute("""
+            INSERT INTO domains (url_id, domain) 
+            VALUES (%s, %s)
+            """, (url_id, domain))
         self.conn.commit()
 
 

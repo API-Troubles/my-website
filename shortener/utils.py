@@ -33,7 +33,7 @@ class CheckViruses:
 
 
     def check_viruses(self, url: str):
-        return self._check_google(url) or self._check_virustotal(url) or self._check_phishtank(url)
+        return self._check_google(url) or self._check_virustotal(url) #or self._check_phishtank(url)
 
 
     def _check_google(self, url: str):
@@ -76,6 +76,7 @@ class CheckViruses:
         return response.json().get('positives', 0) > 0
 
 
+    """
     @staticmethod  # No API key so self isn't needed, thus staticmethod
     def _check_phishtank(url: str):
         response = requests.post(
@@ -90,6 +91,7 @@ class CheckViruses:
         )
         response.raise_for_status()
         return response.json().get('results', {}).get('in_database', False)
+    """
 
 
     #def _check_phish_directory(self, url: str):

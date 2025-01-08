@@ -1,0 +1,233 @@
+GET http://127.0.0.1:8080/u/monitor
+Content-Type: application/x-www-form-urlencoded
+Referer: www.google.com
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.0.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+cookie:
+content-length: 0
+
+<> 2024-08-28T111151.200.html
+
+###
+
+POST http://127.0.0.1:8080/u/monitor
+Content-Type: application/x-www-form-urlencoded
+Referer: www.google.com
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.0.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+<> 2024-08-28T111144.405.html
+
+###
+
+POST http://127.0.0.1:8080/api/create_url
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 53
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.0.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+shortened-link-field=woah&original-link-field=monitor
+
+<> 2024-08-28T090050.400.html
+
+###
+
+POST http://127.0.0.1:8080/api/create_url
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 53
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.0.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+shortened-link-field=woah&original-link-field=monitor
+
+<> 2024-08-28T085601.201.html
+
+###
+
+POST http://127.0.0.1:8080/api/create_url
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 53
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.0.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+shortened-link-field=woah&original-link-field=monitor
+
+<> 2024-08-28T084914.201.html
+
+###
+
+POST http://127.0.0.1:8080/api/create_url
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 53
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.0.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+shortened-link-field=woah&original-link-field=monitor
+
+<> 2024-08-28T084844.201.html
+
+###
+
+POST http://127.0.0.1:8080/api/create_url
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 58
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.0.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+shortened-link-field=analytics&original-link-field=monitor
+
+<> 2024-08-28T084234.400.html
+
+###
+
+POST http://127.0.0.1:8080/api/create_url
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 113
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.0.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+shortened-link-field=adminnnnnnnnnnnnnnnn%24nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn&original-link-field=monitor
+
+<> 2024-08-28T084208.400.html
+
+###
+
+POST http://127.0.0.1:8080/api/create_url
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 44
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.0.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+shortened-link-field=adminnnnnnnnnnnnnnnn%24
+
+<> 2024-08-28T084200.400.html
+
+###
+
+POST http://127.0.0.1:8080/api/create_url
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 110
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.0.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+shortened-link-field=adminnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn&original-link-field=monitor
+
+<> 2024-08-28T084139.413.html
+
+###
+
+POST http://127.0.0.1:8080/api/create_url
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 54
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.0.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+shortened-link-field=admin&original-link-field=monitor
+
+<> 2024-08-28T075550.400.html
+
+###
+
+POST http://127.0.0.1:8080/api/create_url
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 56
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.0.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+shortened-link-field=monitor&original-link-field=monitor
+
+<> 2024-08-28T075220.500.html
+
+###
+
+POST http://127.0.0.1:8080/api/create_url
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 69
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.0.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+shortened-link-field=monitor&original-link-field=monitor.felixgao.dev
+
+<> 2024-08-27T164226.201.html
+
+###
+
+POST http://127.0.0.1:8080/api/create_url
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 69
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.0.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+shortened-link-field=monitor&original-link-field=monitor.felixgao.dev
+
+<> 2024-08-27T163949.500.html
+
+###
+
+POST http://127.0.0.1:8080/api/create_url
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 69
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.0.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+shortened-link-field=monitor&original-link-field=monitor.felixgao.dev
+
+<> 2024-08-27T163845.500.html
+
+###
+
+POST http://127.0.0.1:8080/api/create_url
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 69
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.0.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+shortened-link-field=monitor&original-link-field=monitor.felixgao.dev
+
+<> 2024-08-27T163812.500.html
+
+###
+
+POST http://127.0.0.1:8080/api/create_url
+Content-Length: 73
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.0.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+shortened-link-field = monitor
+original-link-field = monitor.felixgao.dev
+
+<> 2024-08-27T163359.400.html
+
+###
+
+POST http://127.0.0.1:8080
+Content-Length: 73
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.0.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+shortened-link-field = monitor
+original-link-field = monitor.felixgao.dev
+
+<> 2024-08-27T163226.405.html
+
+###
+
