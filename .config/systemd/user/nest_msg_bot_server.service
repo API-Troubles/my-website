@@ -1,0 +1,9 @@
+[Unit]
+Description=Nest Management Bot; server edition (NOT CLIENT)
+After=network-online.target postgresql.target
+
+[Service]
+ExecStart=/home/felixgao/venv/bin/python3.11 nest_management_bot/main.py
+
+[Install]
+WantedBy=default.target

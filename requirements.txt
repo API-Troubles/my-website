@@ -5,3 +5,5 @@ validators
 qrcode
 requests
 python-dotenv
+websockets
+slack_bolt

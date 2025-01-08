@@ -1,24 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="felixgao_url_shortener@hackclub.app" uuid="2136bf40-0275-41c6-9e67-7a89698624ce">
+    <data-source source="LOCAL" name="felixgao_nest_management@hackclub.app" uuid="e24bf3e0-edc1-495b-85b4-b44b338db66a">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
-      <remarks>URL Shortener DB</remarks>
-      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://hackclub.app:5432/felixgao_url_shortener</jdbc-url>
-      <jdbc-additional-properties>
-        <property name="com.intellij.clouds.kubernetes.db.host.port" />
-        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
-        <property name="com.intellij.clouds.kubernetes.db.resource.type" value="Deployment" />
-        <property name="com.intellij.clouds.kubernetes.db.container.port" />
-      </jdbc-additional-properties>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="felixgao_nest_management@hackclub.app" uuid="b57b0048-f9e9-41fd-aaed-c861554501a1">
-      <driver-ref>postgresql</driver-ref>
-      <synchronize>true</synchronize>
-      <remarks>Nest Management Bot</remarks>
+      <remarks>nest management bot</remarks>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://hackclub.app:5432/felixgao_nest_management</jdbc-url>
       <jdbc-additional-properties>

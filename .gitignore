@@ -32,13 +32,12 @@
 .forward
 .ssh/
 **/__pycache__/
-.idea # intellij nonsense
+.idea/* # intellij nonsense
 
 # Env, venv & git
 .env
 .env.*
 .gitconfig
-venv/*
 **/venv/
 
 # Secret keys and such
