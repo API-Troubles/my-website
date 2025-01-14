@@ -1,64 +1,81 @@
 body {
-    margin: 5px 5px;
+  margin: 5px 5px;
 }
 
 .gallery {
-    display: flex;
-    flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
 
-    margin-top: 5px;
-    margin-bottom: 20px;
+  margin-top: 5px;
+  margin-bottom: 20px;
 }
 
 .gallery-item {
-    width: 8rem;
-    height: 8rem;
+  width: 8rem;
+  height: 8rem;
 
-    aspect-ratio: 1 / 1;
+  aspect-ratio: 1 / 1;
 
-    border: 2px solid blue;
-    border-radius: 5px;
+  border: 2px solid blue;
+  border-radius: 5px;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    background-color: white;
+  background-color: white;
 
-    margin-right: 2rem;
-    margin-top: 2rem;
+  margin-right: 2rem;
+  margin-top: 2rem;
 }
 
 .gallery-item img {
-    max-width: 90%;
-    height: auto;
+  max-width: 90%;
+  height: auto;
 }
 
 img.smaller {
-    max-width: 80% !important;
+  max-width: 80% !important;
 }
 
 .hidden {
-    display: none;
+  display: none;
 }
 
 .align-side {
-    display: inline-flex;
+  display: inline-flex;
 }
 
 .margin-10-top {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .margin-5-sides {
-    margin-left: 5px;
-    margin-right: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 .margin-0-top {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 #qr-code {
-    margin: 2rem 1rem;
+  margin: 2rem 1rem;
+}
+
+.colour-options {
+  display: flex;
+  gap: 1rem;
+  margin: 15px 0;
+}
+
+.color-options div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.color-options input[type="color"] {
+  width: 100px;
+  height: 40px;
 }
