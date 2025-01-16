@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+<<<<<<< Updated upstream
   <component name="Black">
     <option name="sdkName" value="Python 3.12 (my-website)" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_23" project-jdk-name="Python 3.12 (my-website)" project-jdk-type="Python SDK">
+=======
+  <component name="ProjectRootManager">
+>>>>>>> Stashed changes
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>
