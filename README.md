@@ -5,11 +5,7 @@ It's my website, my little corner of the internet!
 
 Find my site here: (TODO: Add URL me)
 
-Hosted on Nest! Nest is a free website host run by Hack Club! Free for anyone under 18, anywhere, everywhere. Google "hack club" for more!
-
-## Setup
-
-Just this repo ig, I'm not cloning yet from this repo but will soon! I'm working on an SSH github action to push this repo to Nest.
+Hosted on Nest! Nest is a free server run by Hack Club! Free for anyone under 18, anywhere, everywhere. Learn more about [Nest](https://hackclub.app/) here and Hack Club [here](https://hackclub.com/).
 
 ## Cool things I've Built
 <details>
@@ -37,9 +33,11 @@ Add the URL you want to shorten in the first field. Ensure it starts with https:
 </details>
 
 <details>
-<summary>QR Code Generator (TBD)</summary>
+<summary>QR Code Generator (https://qr.felixgao.dev)</summary>
 <br>
 A simple link QR code generator, also static. Functional but not pretty. Makes it easy to create Hack Club or custom themed QR codes. Ads and trackers not included :).
 
-[Image tba]
+![Screenshot 2025-01-31 1 13 00 PM](https://github.com/user-attachments/assets/847bb4a0-559c-40c8-b7d5-599e17715a7e)
+![Screenshot 2025-01-31 1 13 07 PM](https://github.com/user-attachments/assets/fc20b54f-088e-4e82-b64c-7b80e60e8fd1)
+
 </details>
